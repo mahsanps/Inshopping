@@ -1,0 +1,4 @@
+<h4> your order has been successful </h4>
+{% for order in orders %}
+<a href={% url 'order_detail' pk=order.pk %} >see order details</a>
+{% endfor %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block body %}
+
+<div class='container' style="background-color:white; margin-top:10px; height:auto; text-align:right; padding:5%;">
+  <h1>سبد خرید</h1>
+  <div>
+    
+    <ul>
+        {% for item in cart.cart_items %}
+        <li>
+          <div style="padding:10px; margin:5px; border:1px solid gray; width:90%;  display:flex;"> 
+            <div style="display:flex; flex-direction:row;" >
+             
+              <a href="{% url 'singleproductpage' store_name=store_name product_pk=item.product_id %}">
+              <div style=" max-width:100px !important; max-height:100px !important; margin:10px;"><img src="{{ item.image }}"></div>
+              <div>
+              <p>{{ item.name }}</p>
+              <p>تعداد :{{item.quantity}}</p>
+              <p>قیمت: {{ item.price }}</p>
+              <p>رنگ: {{ item.color|default:'N/A' }}</p>
+              <p>سایز: {{ item.size|default:'N/A' }}</p>
+              </a>
+              
+              </div>
+            </div>  
+            <div style="align-items:right; justify-content:right; display:flex;" >
+             
+              
+              <!-- Form for deleting item -->
+              <form method="post" action="{% if item.variation_id %}{% url 'delete_cart_item' store_name=item.store_name variation_pk=item.variation_id %}{% else %}{% url 'delete_cart_item' store_name=item.store_name variation_pk='none' %}{% endif %}">
+                {% csrf_token %}
+                <input type="hidden" name="name" value="{{ item.name }}">
+                <button style="margin:5px; background-color:white; color:#149ddd;" type="submit">حذف</button>
+              </form>
+              
+           </div>
+          </div>
+          
+        </li>      
+       
+        {% endfor %}
+      </ul>    
+  </div>
+  <p>مجموع قیمت: {{ total_price }}</p>
+  <a style="margin:5px;" href={% url 'storepage' store_name=store_name %}>بازگشت به فروشگاه</a>
+  <div class="inputs">
+  <button >
+  <a style="color:white;" href="{% url 'checkout' store_name=store_name %}">ادامه پرداخت</a>
+  </button>
+  </div>
+</div>
+{% endblock %}

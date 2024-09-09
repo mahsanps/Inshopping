@@ -1,0 +1,34 @@
+
+{% load static %}
+{% load i18n %}
+{% load jformat %}
+
+<section id="myorders"  >
+    <div class="container" >
+
+      <div class="section-title">
+        <h2>{% trans 'My Orders' %}</h2>
+        <p>{% trans 'You can see your orders, by clicking on each order you can see all details related to order' %}.</p>
+      </div>
+      <ul class="orders-registered">
+        {%for order in orders%}
+        <li>
+        <a href="#order_details" hx-get="{% url 'order_detail' pk=order.pk  %}" hx-target="#outerContainer" > {{order.created_at|jformat:"%Y/%m/%d"}}</a>
+        {% if order.delivery.status %}
+              <button style="background-color:#443344; color:white; border:1px solid #443344; border-radius:5px; padding:5px; margin:auto;">
+              {% trans order.delivery.status %}
+              </button>
+              <p> کد رهگیری پست:{{order.delivery.tracking_number}}</p>
+              {% endif %}
+        </li>
+        {%endfor%}
+      </ul>   
+      
+      
+    <div id="order-details" ></div>
+</section>    
+
+
+
+
+ 

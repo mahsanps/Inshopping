@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+<head>
+    
+    <style>
+        .success-message {
+            display: none;
+            background-color: green;
+            margin-top: 20px;
+            color:white;
+            width:40%;
+            margin:auto;
+            border:1px;
+            border-radius:8px;
+            padding:10px;
+        }
+        .error-message {
+            display: none;
+            background-color: red;
+            margin-top: 20px;
+            color:white;
+            width:40%;
+            margin:auto;
+            border:1px;
+            border-radius:8px;
+            padding:10px;
+        }
+    </style>
+</head>
+
+
+<section >
+    <div class="about">
+
+      <div class="section-title">
+        <h2>تماس با ما</h2>
+        <p>از اینکه به این شاپینگ سر زده‌اید بسیار خرسندیم! اگر سوالی دارید یا به کمک نیاز دارید، تیم پشتیبانی ما همیشه آماده پاسخگویی به شماست. لطفاً از طریق فرم تماس زیر پیام خود را ارسال کنید یا با ما از طریق ایمیل و شبکه‌های اجتماعی در ارتباط باشید. منتظر شنیدن نظرات و پیشنهادات شما هستیم!</p>
+      </div>
+
+      <div class="row" data-aos="fade-in" style="margin-top:5%;">
+
+        <div class="col-lg-5 d-flex align-items-stretch">
+          <div class="info">
+            
+            <br>
+            <div class="email">
+             
+              <h4><img style="width:30px; height:30px;" src="{% static 'images/Email_icon.png' %}"> ایمیل :</h4>
+              <p> <a href="mailto:info@inshopping.ir">info@inshopping.ir</a></p>
+            </div>
+            <br>
+            <div class="phone">
+            
+              <h4><img style="width:30px; height:30px;" src="{% static 'images/phone-icon.png' %}"> تلفن پشتیبانی :</h4>
+              <p> +1 5589 55488 55</p>
+            </div>
+
+           
+          </div>
+
+        </div>
+
+      
+            <form class="forms" method="post" id="contactForm" style="height:auto; flex:1; text-align: center; width:90%; background-color:#d9d9d9; padding:auto; border:1px; left:0; border-radius:10px;">
+                <h3>فرم تماس با ما<h3>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn" style="width:75%; background-color:#5fa7de; color:white; border:1px; border-radius:8px; " type="submit">ارسال</button>
+            </form>
+     
+
+      </div>
+
+    </div>
+    
+  </section><!-- End Contact Section -->
+  <div class="success-message" id="successMessage">پیام شما با موفقیت ارسال شد, در سریع ترین زمان ممکن به شما پاسخ خواهیم داد.</div>
+  <div class="error-message" id="errorMessage">خطایی رخ داده است. لطفاً دوباره تلاش کنید.</div>
+ 
+ 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contactForm');
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the default form submission
+            const formData = new FormData(form);
+
+            fetch('{% url "contactus" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrftoken,
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();  // Parse the response as JSON
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    form.reset();
+                } else {
+                    console.log(data.errors);
+                    document.getElementById('errorMessage').textContent = 'خطایی رخ داده است: ' + JSON.stringify(data.errors);
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').textContent = 'خطایی رخ داده است: ' + error;
+                document.getElementById('errorMessage').style.display = 'block';
+            });
+        });
+    });
+</script>
+{%endblock%}

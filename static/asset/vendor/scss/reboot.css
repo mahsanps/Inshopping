@@ -1,0 +1,124 @@
+
+.forms {
+    padding:30px;
+    border:1px solid #ebf1f5; 
+    margin:30px; 
+    background-color:#ebf1f5;
+    border-radius: 4px;
+
+}
+
+.inputs-form input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: 1px solid lightgray ;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 4px;
+}
+
+.inputs input, optgroup, select, textarea{
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: 1px solid lightgray ;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 4px;
+    max-width: 50%;
+    width: 50%;
+}
+.signinputs input{
+    width:100%;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: 1px solid lightgray ;
+    border-radius: 4px;
+}
+.inputs button{
+    background: #149ddd;
+    border: 0;
+    padding: 5px 10px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 4px;
+    margin: 10px;
+}
+.inputs-form button {
+    background-color: transparent;
+    color: #149ddd;
+    border: none;
+}
+.box-li {
+    flex-shrink: 0;
+    width: 30%;
+    padding-right: calc(var(--bs-gutter-x)* .5);
+    padding-left: calc(var(--bs-gutter-x)* .5);
+    margin-top: var(--bs-gutter-y);
+    text-align: center;
+}
+.product-list-img {
+    max-height:30vh;
+}
+.orders-registered li {
+    display:flex; 
+    border:1px solid #44334480; 
+    border-radius:5px; 
+    margin:2px; 
+    padding:3px; 
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+    .forms {
+       padding: 5px;
+       height: auto;
+    }
+    .product-list-img {
+        max-height: 100px;
+      
+    
+    }
+    .box-li {
+        padding: 0;
+        width: 50%;
+    }
+    .back-btn {
+        float: left;
+    }
+    #outerContainer {
+        padding-top: 30px;
+        padding-right: 0;
+    }
+    .container {
+        padding: 0px;
+        margin-top: 0px;
+    }
+   .product-list {
+    padding-left: 0;
+    padding: 0;
+   }
+   .inputs-form input {
+    width: 70px;
+   }
+   .orders-registered {
+    padding: 0;
+    margin: 0;
+   }
+   .orders-registered li {
+    display: block;
+   }
+   .orders-registered a {
+    display: block;
+   }
+   .inputs input, select, textarea {
+    max-width: 100%;
+    width: 100%;
+   }
+}

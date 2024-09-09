@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container" style="padding:2%; background-color:white; text-align:right; direction:rtl;">
+
+<p>نتایج برا جستجوی "{{ query }}":</p>
+
+
+<ul style="width:100%;">
+    {% if product_results %}
+        {% for product in product_results %}
+        <li style="width:100%;">
+            <a href="{% url 'singleproductpage' store_name=product.shop.store_name product_pk=product.pk %}">
+            <div style="padding:10px; border:1px solid gray; width:100%; height:200px; margin:5px; display:flex;" >   
+            <div style=" max-width:100px !important; max-height:100px !important; margin:10px;"><img  src="{{product.image.url}}"></div>
+            <h4>{{ product.name }}</h4>
+            <p>{{product.description}}</p>
+            <p>{{product.price}}</p>
+            </div>
+        </a>
+        </li>    
+        {% endfor %}
+    {% endif %}
+</ul>
+
+
+<ul>
+    {% if shop_results %}
+        {% for shop in shop_results %}
+            <li>
+                <a href="{% url 'storepage' store_name=shop.store_name %}">
+                <div style="padding:10px; border:1px solid gray; width:100%; height:200px; display:flex;">   
+                <div style="max-width:100px !important; max-height:100px !important; margin:10px;"><img style="width:100px; height:100px;"  src="{{shop.image.url}}"></div>    
+                <h4>{{ shop.store_name }}</h4>
+                
+                
+                </div>
+            </a>
+            </li> 
+        {% endfor %}
+    
+    {% endif %}
+</ul>
+</div>
+{% endblock %}

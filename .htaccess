@@ -1,0 +1,10 @@
+PassengerEnabled on
+PassengerAppEnv production
+PassengerPython /home/username/public_html/yourproject/myenv/bin/python
+
+# Ensure Passenger runs in the project directory
+DocumentRoot /home/username/public_html/yourproject/public
+<Directory /home/username/public_html/yourproject/public>
+    Allow from all
+    Options -MultiViews
+</Directory>

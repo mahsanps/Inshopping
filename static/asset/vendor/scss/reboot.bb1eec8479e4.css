@@ -1,0 +1,37 @@
+
+.forms {
+    padding:30px;
+    border:1px solid #efecf6; 
+    margin:30px; 
+    background-color:#efecf6;
+    border-radius: 4px;
+
+}
+
+.inputs input, optgroup, select, textarea{
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: 1px solid lightgray ;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 4px;
+}
+.signinputs input{
+    width:100%;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: 1px solid lightgray ;
+    border-radius: 4px;
+}
+.inputs button{
+    background: #149ddd;
+    border: 0;
+    padding: 5px 10px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 4px;
+    margin: 10px;
+}

@@ -1,0 +1,19 @@
+{% load static %}
+
+
+<div class="row" data-aos="fade-up" id="outerContainer4">
+  
+</div>
+<ui>
+  <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="100">
+    {% for previous_form in previous_forms %}
+    <div>
+        <p>سایز: {{ previous_form.size }}</p>
+        <p>تعداد: {{ previous_form.quantity }}</p>
+        <p>رنگ: {{ previous_form.color }}</p>
+    </div>
+{% endfor %}
+  </div>
+</ui>
+
+

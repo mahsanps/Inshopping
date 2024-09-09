@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<!-- fashion section start -->
+<div class="fashion_section">
+   <div id="main_slider" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner" style="background-color: white; margin-top:10px; padding-top:10px; min-height:550px;">
+         <div class="carousel-item active">
+            <div class="container">
+               <h3 style="background-color:#f5ba01; color:black; margin:auto; width:90%; padding:10px; text-align:center; border:1px; border-radius:8px;">{{ subname }}</h3>
+               <div class="fashion_section_2">
+                  <div class="row">
+                     {% for product in subcategory_products %}
+                     <div class="most-sellers">
+                        <div class="box_main">
+                           <a href="{% url 'singleproductpage' store_name=product.shop.store_name product_pk=product.pk %}">
+                              
+                              <div class="tshirt_img"><img  src="{{ product.image.url }}" alt="{{ product.name }}"></div>
+                              <h4 class="shirt_text">{{ product.name }}</h4>
+                              <p class="price_text"> <span >{{product.price}}</span></p>
+                           </a>
+                        </div>
+                     </div>
+                     {% endfor %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- fashion section end -->
+{% endblock %}

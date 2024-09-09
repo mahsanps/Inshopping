@@ -1,0 +1,53 @@
+{% extends 'base.html' %} 
+
+{% load static %}
+{% block body %} 
+      <!-- fashion section start -->
+      <div class="fashion_section">
+         <div id="main_slider" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" style="background-color: white; margin-top:10px; padding-top:10px; min-height:550px;">
+               <div class="carousel-item active">
+                  <div class="container">
+                     
+                     <h3  style="background-color:#f5ba01; color:black; margin:auto; width:90%; padding:10px; border:1px; border-radius:8px; text-align:center; ">{{ category_name }}</h3>
+                     <ul>
+                        
+                            
+                        
+                     <div class="fashion_section_2">
+                        <div class="row">
+                           {% for subcategory in subcategories %}
+                           <div class="most-sellers" >
+                              <li>
+                                 <a href="{% url 'subcategory' subname=subcategory.subname %}">
+                              <div class="box_main" >
+                                 
+                                 
+                                 {% if subcategory.image %}
+                                 <div class="tshirt_img"><img style="height:200px;" src="{{subcategory.image.url}}"></div>
+                                   
+                                 {% else %}
+                                 <div class="tshirt_img"><img style="height:200px;" src="{% static 'images/tshirt-img.png' %}"></div>
+                                   
+                                 {% endif %}
+                                 <h4 class="shirt_text" style="text-align:center;">{{ subcategory.subname }}</h4>
+                                 
+                              </div>
+                           </a>
+                           </li>
+                           </div>
+                        
+                           
+                           {% endfor %}
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
+            
+         </div>
+      </div>
+      <!-- fashion section end -->
+     {% endblock %}

@@ -1,0 +1,86 @@
+{% load i18n %}
+{% load jformat %}
+
+<section id="dashboard" class="about" style=" padding:15px;">
+      
+    <div id="outerContainer" class="container" >
+      
+     
+      <div class="section-title">
+        <h2>{% trans 'Orders Registered' %}</h2>
+        <ul class="orders-registered">
+          {% for order in orders_registered %}
+          <li >
+              <a href="#" hx-get="{% url 'order-registered-details' pk=order.pk %}" hx-target="#outerContainer" hx-swap="innerHTML">
+                {{ order.created_at|jformat:"%Y/%m/%d" }}
+              </a>
+              {% if order.delivery.status %}
+              <button style="background-color:#443344; color:white; border:1px solid #443344; border-radius:5px; padding:5px; margin:auto;">
+              <a href="#" hx-get="{% url 'order_delivery' order_id=order.id %}" hx-target="#outerContainer" hx-swap="innerHTML" > {% trans order.delivery.status %}</a>
+              </button>
+              <p> کد رهگیری پست:{{order.delivery.tracking_number}}</p>
+              {% endif %}
+               {% if not order.delivery.status %}
+               <button style="background-color:#443344; color:white; border:1px solid #443344; border-radius:5px; padding:5px; margin:auto;">
+               <a href="#" hx-get="{% url 'order_delivery' order_id=order.id %}" hx-target="#outerContainer" hx-swap="innerHTML" >وضعیت ارسال</a>
+               </button>
+               {%endif%}
+              </li>
+          {% endfor %}
+      </ul>
+      <br>
+      <br>
+
+        <h2>{% trans 'Reports' %}</h2>
+        <h5   style=" width: fit-content; background-color:#30302e; color: white; padding: 10px; border-radius: 5px; font-weight:normal;"  >{% trans 'Total Sales' %}: {{ total_price }} ریال</h5>
+        <br>
+        <br>
+        <div style="background-color:#ebf1f5; padding:10px; width:100%;">
+        <h5>{% trans 'Daily Sales' %}</h5>
+        <p>{% trans 'Total Sales Today' %}: {{ daily_sales }}</p>
+        <br>
+        <h5>{% trans 'Top 5 Daily Sold Products' %}</h5>
+        <ul>
+        {% for product in daily_top_products %}
+        <li> <img src="{{product.image.url}}" style="width: 50px; height: 50px;">
+          {{ product.name }} -تعداد فروخته شده:  {{ product.total_sold }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+        <br>
+        <div style=" width:100%;">
+        <h5>{% trans 'Weekly Sales' %}</h5>
+        <p>{% trans 'Total Sales This Week' %}: {{ weekly_sales }}</p>
+        <br>
+        <h5>{% trans 'Top 5 Weekly Sold Products' %}</h5>
+        <ul>
+        {% for product in weekly_top_products %}
+        <li><img src="{{ product.image.url}}" style="width: 50px; height: 50px;" >{{ product.name }}  -تعداد فروخته شده:  {{ product.total_sold }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+        <br>
+        <div style="background-color:#ebf1f5; padding:10px; width:100%;">
+        <h5>{% trans 'Monthly Sales' %}</h5>
+        <p>{% trans 'Total Sales This Month' %}: {{ monthly_sales }}</p>
+        <br>
+        <h5>{% trans 'Top 5 Monthly Sold Products' %}</h5>
+        <ul>
+            {% for product in monthly_top_products %}
+            <li>
+              <img src="{{ product.image.url}}" style="width: 50px; height: 50px;" >
+              {{ product.name }}  -تعداد فروخته شده:  {{ product.total_sold }}
+              
+          </li>
+            {% endfor %}
+        </ul>
+      </div>
+        <br>
+        <br>
+        
+      </div>
+    </div>
+   
+</section>
+
+

@@ -1,0 +1,63 @@
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<!-- Coding by CodingLab | www.codinglabweb.com-->
+    <html lang="fa">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Login </title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <link href="{% static 'asset/vendor/scss/reboot.css' %}" rel="stylesheet">   
+        <!-- Boxicons CSS -->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+         <!-- JavaScript -->
+        <script src="{% static 'assets/js/script.js' %}"></script>               
+    </head>
+    <body style="direction:rtl">
+        {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <div style="text-align:center; margin-top:20px;" class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        <section class="container forms" style="height:100vh;">
+            
+            <div class="form login">
+                <div class="form-content"> 
+                    <header>ورود</header>
+                    <form class="signinputs" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                       <div class="form-link">
+                            <a href="{% url 'password_reset' %}" class="forgot-pass">فراموشی رمز عبور</a>
+                        </div>
+
+                        <div class="field button-field">
+                            <button type="submit">ورود</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>حساب کاربری ندارید؟ <a href="{% url 'signup' %} " >عضویت</a></span>
+                    </div>
+                </div>
+
+                
+
+            
+        </section>
+
+        
+        
+    </body>
+</html>
+{% endblock %}
+

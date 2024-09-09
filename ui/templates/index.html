@@ -1,0 +1,223 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{% load static %}
+{% block body %} 
+
+         <!-- header section end -->
+         <!-- banner section start -->
+         <div class="banner_section layout_padding">
+            <div class="container">
+               <div id="my_slider" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <div class="row" style="float:right">
+                           <div class="col-sm-12" >
+                              
+                              <h1 style="color:#e4e0dc !important;  font-family:'Shabnam'; font-size:46px;" class="banner_taital">هوشمند و شیک خرید کنید </h1>
+                              <br>
+                              <h4 style="color:#e4e0dc !important; font-size:18px;" class="banner_taital">خریدی منحصر به فرد از بهترین آنلاین شاپ های اینستاگرام</h4>
+                              <br>
+                              <br>
+                              <h5 class="heading-banner" >به این شاپینگ خوش آمدید، مقصد نهایی شما برای کشف و خرید از مجموعه‌ای متنوع از فروشگاه‌های اینستاگرامی!</h5>
+                              
+                              
+                           </div>
+                        </div>
+                     </div>
+                     
+                    
+                  </div>
+                 
+               </div>
+            </div>
+         </div>
+         <!-- banner section end -->
+      </div>
+      <!-- banner bg main end -->
+       <!-- jewellery  section start -->
+       <div class="jewellery_section" style="background-color: #f0f0f0;">
+         
+         <div id="jewellery_main_slider" class="carousel slide" data-ride="carousel" style="line-height:0.5 ; border:1px; border-radius:8px; width: 99%; margin: auto; background-color: white; border: 1px; borer-radius: 8px; margin-top: 3px;">
+            <div class="carousel-inner">
+               <div class="carousel-item active">
+                  <div class="container">
+                     
+                     <div class="fashion_section_2">
+                        
+                        <div class="row">
+                           {%for shop in shop_list%}
+                                         <a  href="{% url 'storepage' store_name=shop.store_name  %}">
+                                             <div class="col-lg-4 col-sm-4" style="max-width:12%;">
+                                                <div class="box-shop">
+                                                   
+                                                   
+                                                   <div ><img  src="{{shop.image.url}}">
+                                                      
+                                                   </div>
+                                                   <h4 style="font-size:12px; text-align:center;  margin-right:0; " class="shirt_text">{{shop.store_name}}</h4>
+                                                </div>
+                                             </div>
+                                          </a>                
+                            {%endfor%}
+                           
+                           
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <div class="container">
+                     
+                     <div class="fashion_section_2">
+                        <div class="row">
+                           {% for shop in shop_list %}
+                           <a href="{% url 'storepage' store_name=shop.store_name %}">
+                               <div class="col-lg-4 col-sm-4" style="max-width:12%;">
+                                   <div class="box-shop">
+                                       
+                                       <div >
+                                           <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
+                                           
+                                       </div>
+                                       <h4 style="font-size:12px; text-align:center; margin-right:0; " class="shirt_text">{{ shop.store_name }}</h4>
+                                   </div>
+                               </div>
+                           </a>
+                       {% endfor %}
+                           
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <div class="container">
+                     
+                     <div class="fashion_section_2">
+                        <div class="row">
+                           {% for shop in shop_list %}
+                           <a href="{% url 'storepage' store_name=shop.store_name %}">
+                               <div class="col-lg-4 col-sm-4" style="max-width:12%;">
+                                   <div class="box-shop" >
+                                       
+                                       <div>
+                                           <img  src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
+                                           
+                                       </div>
+                                       <h4 style="font-size:12px; text-align:center; margin-right:0; " class="shirt_text">{{ shop.store_name }}</h4>
+                                   </div>
+                               </div>
+                           </a>
+                       {% endfor %}
+                           
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+       <br>
+       <br>
+
+      
+      <!-- electronic section start -->
+      <div class="fashion_section">
+         <div id="electronic_main_slider" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" >
+               <div class="carousel-item active" style="margin-top:3px;">
+                  <h1 class="fashion_taital" >انتخاب کالا بر اساس دسته بندی</h1>
+                  <div style="margin:auto; padding:2%; background-color: white; border: 1px; border-radius: 8px;  ">
+                     
+                     <div class="fashion_section_2" style="display:flex;  overflow-x: auto;;">
+                        
+                        
+                           {% for subcategory in categories %}
+                           <a class="cat-link"  href="{% url 'category' category_name=subcategory.name %}">
+                           <div >
+                              <li>
+                              <div class="cat-container" style="text-align:center; margin:5px;">
+                                 
+                                 {% if subcategory.image %}
+                                 <div class="cat-img"  style="text-align:center;"  ><img  src="{{subcategory.image.url}}"></div>
+                                 
+                                 {% else %}
+                                 <div style="text-align:center;  " ><img style="height:100px;" src="{% static 'images/tshirt-img.png' %}"></div>
+                                 
+                                 {% endif %}
+                                 <h4 style="font-size:14px; margin-top:3px; " class="shirt_text">{{ subcategory.name }}</h4>
+                  
+                              </div>
+                           </li>
+                           </div>
+                           </a>
+                           {% endfor %}
+                        </div>   
+                     </div>
+             </div>
+
+             <div class="banner2" >
+               <div class="banner2-div" >
+               <img src="{% static 'images/main1.png' %}">
+             
+               </div>
+               
+               <div class="banner2-text" >
+                  <h3 >هر آنلاین شاپ, یک وبسایت فروش</h3>
+                  <p >برای ساختن فروشگاه خود در این شاپینگ و اتصال آن به 
+                  
+                  آنلاین شاپ خود در اینستاگرام و
+                     ارتقای کیفیت فروش خود به  
+                   حساب کاربری
+                     خود بروید و فروشگاه خود را تعریف کنید.
+                  </p>
+                  <button class="banner2-btn" >
+                     <a href="{% url 'signup' %}" >
+                     عضویت
+                     </a>
+                  </button>
+                  <button style="background-color: #f5ba01; margin-right:10px;" class="banner2-btn" >
+                     <a href="{% url 'about' %}" >
+                     بیشتر
+                     </a>
+                  </button>
+               </div>
+             </div>
+
+
+                  <div class="main-list">
+                  
+                  
+                     <h1 style="margin-top:5%; " class="fashion_taital"> پیشنهاد ما</h1>
+                     
+                     <div class="fashion_section_2">
+                        <div class="row">
+                           {%for product in products %}
+                           <div class="most-sellers">
+                           <a href="{% url 'singleproductpage' store_name=product.shop.store_name product_pk=product.pk %}">
+                              <div class="box_main">
+                                 <div class="electronic_img"><img  src="{{product.image.url}}"></div>
+                                 <h4 class="shirt_text">{{product.name}}</h4>
+                                 <p class="price_text"> <span > {{product.price}}</span></p>
+                                 
+                                 
+                              </div>
+                           </a>
+                           </div>
+                           {%endfor%}
+                          
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+               
+            </div>
+            
+         </div>
+      </div>
+      <!-- electronic section end -->
+     
+           
+         </div>
+      </div>
+      <!-- jewellery  section end -->
+      
+{% endblock %}  

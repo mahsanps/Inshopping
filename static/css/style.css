@@ -1,0 +1,1545 @@
+---------------------------------------------------------- import Files ---------------------------------------------------------------------*/
+
+@import url(animate.min.css);
+@import url(normalize.css);
+@import url(icomoon.css);
+@import url(css/font-awesome.min.css);
+@import url(meanmenu.css);
+@import url(owl.carousel.min.css);
+@import url(swiper.min.css);
+@import url(slick.css);
+@import url(jquery.fancybox.min.css);
+@import url(jquery-ui.css);
+@import url(nice-select.css);
+
+/*--------------------------------------------------------------------- skeleton ---------------------------------------------------------------------*/
+
+@font-face {
+    font-family:'Shabnam';
+    src: url('/static/fonts/Shabnam.woff2') format('woff2'),
+         url('/static/fonts/Shabnam.woff') format('woff'),
+         url('/static/fonts/Shabnam.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+* {
+    box-sizing: border-box !important;
+    transition: ease all 0.5s;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.80857;
+    font-weight: normal;
+    overflow-x: hidden;
+    font-family: 'Shabnam', sans-serif;
+    direction:rtl;
+}
+
+a {
+    font-family: 'Shabnam', sans-serif;
+    color: #1f1f1f;
+    text-decoration: none !important;
+    outline: none !important;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    letter-spacing: 0;
+    font-weight: normal;
+    position: relative;
+    padding: 0 0 10px 0;
+    font-weight: normal;
+    line-height: normal;
+    color: #111111;
+    margin: 0;
+    font-family: 'Shabnam', sans-serif;
+}
+
+h1 {
+    font-size: 24px
+}
+
+h2 {
+    font-size: 22px
+}
+
+h3 {
+    font-size: 18px
+}
+
+h4 {
+    font-size: 16px
+}
+
+h5 {
+    font-size: 14px
+}
+
+h6 {
+    font-size: 13px
+}
+
+*,
+*::after,
+*::before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    color: #212121;
+    text-decoration: none!important;
+    opacity: 1
+}
+
+button:focus {
+    outline: none;
+}
+
+ul,
+li,
+ol {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+p {
+    margin: 20px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    font-family: 'Shabnam', sans-serif;
+}
+
+a {
+    color: #222222;
+    text-decoration: none;
+    outline: none !important;
+}
+
+a,
+.btn {
+    text-decoration: none !important;
+    outline: none !important;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    
+}
+
+ :focus {
+    outline: 0;
+}
+
+.paddind_bottom_0 {
+    padding-bottom: 0 !important;
+}
+
+.btn-custom {
+    margin-top: 20px;
+    background-color: transparent !important;
+    border: 2px solid #ddd;
+    padding: 12px 40px;
+    font-size: 16px;
+}
+.store-name {
+    background-color: #f5ba01;  
+    padding: 5px; 
+    width: 55%;
+    border: 1px; 
+    border-radius: 5px;
+    color: black;
+    text-align:right;
+}
+
+.lead {
+    font-size: 18px;
+    line-height: 30px;
+    color: #767676;
+    margin: 0;
+    padding: 0;
+}
+
+.form-control:focus {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 .2rem rgba(255, 255, 255, .25);
+}
+
+.navbar-form input {
+    border: none !important;
+}
+
+.contain {
+    width: 100%;
+    padding-right: 15px; 
+    padding-left: 15px; 
+    margin-right: auto;
+    margin-left: auto;
+    order: 1;
+}
+.header1 {
+    display:flex;
+    position:relative;
+    flex-wrap: nowrap;
+}
+
+.logo img {
+    width:150px; 
+    
+}
+
+.badge {
+    font-weight: 500;
+}
+
+blockquote {
+    margin: 20px 0 20px;
+    padding: 30px;
+}
+
+button {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.full {
+    float: left;
+    width: 100%;
+}
+
+.layout_padding {
+    padding-top: 90px;
+    padding-bottom: 0px;
+}
+
+.padding_0 {
+    padding: 0px;
+}
+
+
+/* banner bg main start */
+
+.banner_bg_main {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    background-image: url(../images/main.png) !important;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height:600px;
+    
+}
+
+.cat-items li a:hover {
+    background-color: #1f1f1f50;
+}
+
+/* banner bg main end */
+
+
+/* header top section start */
+
+.header_section_top {
+    width: 100%;
+    float: left;
+    background-color: #050505ba;
+    clip-path: polygon(0 0, 100% 0, 96% 100%, 3% 100%);
+    height: auto;
+    padding: 10px 0px;
+}
+.cat-img img {
+    height:100px;
+    border-radius:50%;
+}
+.login-cat {
+    width:15%; 
+    display:flex; 
+    order:1; 
+   
+}
+
+.custom_menu {
+    width: 90%;
+    margin: 0 auto;
+    text-align: right;
+    display: flex;
+    position: relative;
+}
+
+.custom_menu ul {
+    margin: 0px 50px;
+    padding: auto;
+    display: inline-block;
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.custom_menu li {
+    font-size: 18px;
+    color: #f1f1f1;
+    text-align: center;
+    display: inline;
+    padding: 6px 10px 0px 10px;
+}
+
+.custom_menu li a {
+    color: #f1f1f1;
+}
+
+.custom_menu li a:hover {
+    color: #DFCCB7;
+}
+
+
+
+/* header top section end */
+
+
+/* logo section start */
+
+.logo_section {
+    width: 100%;
+    float: left;
+}
+
+.logo {
+    width: 100%;
+    float: left;
+    text-align: center;
+    padding: 10px;
+    order: 2;
+}
+
+.heading-banner {
+    text-align:right; 
+    background-color:#f5ba01; 
+    color: #252525; 
+    margin:10px; 
+    padding:10px; 
+    border:1px solid #f5ba01; 
+    border-radius:10px
+}
+
+/* logo section end */
+
+
+/* header section start */
+
+.header_section {
+    width: 50%;
+    display: flex;
+    float: left;
+}
+
+.containt_main {
+    display: flex;
+}
+
+.row-in {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.about-store {
+    width:50%; 
+    display:block; 
+    color:#f0e9e9;  
+    border: 1px; 
+    background-color: #0009; 
+    border-radius:5px; 
+    padding:10px;
+    margin-right: 10%;
+}
+/* opennav bar start */
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f26522;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+.toggle_icon {
+    cursor: pointer;
+    color: #ffffff;
+    order: 2;
+    width:20px;
+}
+
+.header_box {
+    order: 2;
+    display: flex;
+}
+
+.dropdown,
+.dropleft,
+.dropright,
+.dropup {
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    order: 2;
+    margin:10px;
+}
+
+.btn-secondary {
+    background-color: whitesmoke;
+    border-color: #30302e;
+    font-size: 14px;
+    color:#000;
+    margin-right: 5px;
+}
+
+.btn-secondary:hover {
+    color: #DFCCB7;
+    background-color: #30302e;
+    border-color: #30302e;
+}
+
+.show>.btn-secondary.dropdown-toggle:focus {
+    box-shadow: none;
+}
+
+
+/* opennav bar end */
+
+
+/* Styles for wrapping the search box start */
+
+.main {
+    margin: 0 auto 0 0;
+    display: inline-block;
+    order: 2;
+    width: 50%;
+}
+
+.banner2 {
+    display:flex; 
+    padding:2% 10% 2% 10%; 
+    width: 98%;
+    margin: auto;
+    background-color: #f0f0f0;
+    margin-bottom: 5px;
+    align-items: center;
+
+}
+.banner2 img {
+    height:300px;  
+    border-radius: 20%;
+}
+.head-cart {
+    margin-right: 10%;
+}
+.banner2-text {
+    float:right; 
+    border:1px; 
+    border-radius:10px; 
+    display: inline; 
+    text-align: center; 
+    padding:5%;
+    width: 50%;
+    
+}
+
+.banner2-btn {
+    background-color:white; 
+    border:1px; 
+    border-radius:5px; 
+    padding:8px;
+}
+.most-sellers {
+    position: relative;
+    width: 25%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    height: auto;
+}
+.cart {
+    background-color:#30302e; 
+    padding:5px 8px; 
+    width:100px; 
+    border-radius:5px; 
+    margin:5px; 
+}
+
+/* Bootstrap 4 text input with search icon */
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+
+/* Styles for wrapping the search box end */
+
+.login_menu {
+    display: flex;
+    text-align: right;
+    float: right;
+}
+
+.login_menu ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+.login_menu li {
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    text-transform: uppercase;
+    padding-left: 10px;
+    padding-top: 4px;
+}
+
+.login_menu li a {
+    color: #ffffff;
+}
+
+.login_menu li a:hover {
+    color: #DFCCB7;
+}
+
+.padding_10 {
+    padding-left: 10px;
+    color:white;
+}
+
+.search-input {
+    width: 100%;
+    border:1px;
+    border-radius: 0 5px 5px 0;
+   
+}
+.btn-search {
+    background-color:#febd69; 
+    border: 1px;    
+    padding: 5px 10px;
+    border-radius: 5px 0 0 5px;
+}
+/* flage css start */
+
+.lang_box {
+    display: flex;
+    float: right;
+    background: #fff;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+.containers {
+    padding-top:10% ;
+   
+}
+.shop-list {
+   
+    margin-top: 10%;
+}
+
+.nav-link {
+    display: block;
+    padding: .4rem 1rem;
+}
+
+a:hover {
+    color: #f26522;
+    text-decoration: underline;
+}
+
+
+/* flage css end */
+
+
+/* header section end */
+
+
+/* banner section start */
+
+.banner_section {
+    width: 100%;
+    float: left;
+    padding-bottom: 60px;
+}
+
+.banner_taital {
+    width: 100%;
+    text-align: right;
+    text-transform: uppercase;
+    font-weight: normal;
+}
+.befor-form {
+    padding:10% 20%;
+}
+
+.buynow_bt {
+    width: 170px;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.buynow_bt a {
+    width: 100%;
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #252525;
+    text-align: center;
+    padding: 10px 0px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.buynow_bt a:hover {
+    background-color: #f26522;
+    color: #ffffff;
+}
+
+#my_slider a.carousel-control-next {
+    right: 0px;
+    top: 40px;
+}
+
+#my_slider a.carousel-control-prev {
+    left: 0px;
+    top: 40px;
+}
+
+#my_slider .carousel-control-next,
+#my_slider .carousel-control-prev {
+    width: 45px;
+    height: 45px;
+    background: rgb(242, 222, 172, 0.80);
+    opacity: 1;
+    font-size: 20px;
+    color: #000;
+    border-radius: 100px;
+}
+
+#my_slider .carousel-control-next:focus,
+#my_slider .carousel-control-next:hover,
+#my_slider .carousel-control-prev:focus,
+#my_slider .carousel-control-prev:hover {
+    color: #fff;
+}
+
+
+/* banner section end */
+
+
+/* fashion section start */
+
+.fashion_section {
+    width: 100%;
+    float: left;
+    
+}
+
+.fashion_taital {
+    width: 100%;
+    font-size: 26px;
+    color: #252525;
+    text-align: center;
+    font-weight: normal;
+    
+}
+
+.main-list {
+   
+    background-color: white;
+    padding-top: 5px;
+    padding-bottom: 5%;
+    margin: auto;
+    border: 1px;
+    border-radius: 8px;
+    
+}
+
+.fashion_section_2 {
+    width: 90%;
+    margin-top: 30px;
+    margin: auto;
+}
+
+.box_main {
+    margin: 10px;
+    width: 100%;
+    border: 1px;
+    border-radius: 8px;
+    
+}
+.box-shop {
+    width:100px; 
+    height:120px; 
+    margin:5px;
+    padding: 10px;
+ 
+}
+.box-shop img {
+    width:100%; 
+    height:80px;
+    border: 1px;
+    border-radius: 8px;
+}
+
+.shirt_text {
+    width: 100%;
+    font-size: 18px;
+    color: #252525;
+    text-align: right;
+    font-weight: normal;
+    padding-bottom: 5px;
+    font-weight: 400;
+    margin-right: 5px;
+}
+.banner2-div {
+    display: inline; 
+    width:50%;
+}
+
+.price_text {
+    width: 100%;
+    font-size: 16px;
+    color: #c30707;
+    text-align: right;
+    margin: 0px;
+    font-weight: 400;
+    margin-right: 5px;
+}
+
+.tshirt_img {
+    width: 100%;
+    text-align: center;
+    height: auto;
+}
+.tshirt_img img {
+    max-height: 300px;
+    border: 1px;
+    border-radius: 8px;
+}
+
+.btn_main {
+    width: 100%;
+    display: flex;
+}
+
+.buy_bt {
+    float: right;
+    width: 100%;
+    text-align: right;
+}
+
+.buy_bt a {
+    width: 100%;
+    font-size: 14px;
+    background-color: transparent;
+    font-weight: normal;
+    text-align: right;
+}
+
+.buy_bt a:hover {
+    background-color: transparent;
+    color: #B5977F;
+}
+
+.seemore_bt {
+    width: 100%;
+    float: right;
+    text-align: right;
+}
+
+.seemore_bt a {
+    width: 100%;
+    font-size: 14px;
+    color: #262626;
+    background-color: transparent;
+    text-align: right;
+}
+
+.seemore_bt a:hover {
+    background-color: transparent;
+    color: #B5977F;
+}
+
+#main_slider a.carousel-control-next {
+    right: 615px;
+    top: 105%;
+}
+
+#main_slider a.carousel-control-prev {
+    left: 615px;
+    top: 105%;
+}
+
+#main_slider .carousel-control-next,
+#main_slider .carousel-control-prev {
+    width: 55px;
+    height: 55px;
+    background-color: #30302e;
+    opacity: 1;
+    font-size: 30px;
+    color: #ffffff;
+}
+.cat-link{
+    margin: auto;
+    text-align:center;
+}
+
+#main_slider .carousel-control-next:focus,
+#main_slider .carousel-control-next:hover,
+#main_slider .carousel-control-prev:focus,
+#main_slider .carousel-control-prev:hover {
+    color: #fff;
+    background-color: #f26522;
+}
+
+
+/* fashion section end */
+
+
+/* electronic section start */
+
+.electronic_img {
+    width: 100%;
+    text-align: center;
+    height: 100%;
+}
+.electronic_img img {
+    max-height: 300px;
+    border: 1px;
+    border-radius: 8px;
+}
+.about{
+    background-color:white; 
+    margin:10%; 
+    padding:5%; 
+    direction: rtl; 
+    text-align: right;
+}
+
+
+#electronic_main_slider a.carousel-control-next {
+    right: 615px;
+    top: 105%;
+}
+
+#electronic_main_slider a.carousel-control-prev {
+    left: 615px;
+    top: 105%;
+}
+
+#electronic_main_slider .carousel-control-next,
+#electronic_main_slider .carousel-control-prev {
+    width: 55px;
+    height: 55px;
+    background-color: #30302e;
+    opacity: 1;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+#electronic_main_slider .carousel-control-next:focus,
+#electronic_main_slider .carousel-control-next:hover,
+#electronic_main_slider .carousel-control-prev:focus,
+#electronic_main_slider .carousel-control-prev:hover {
+    color: #fff;
+    background-color: #f26522;
+}
+
+
+/* electronic section end */
+
+
+/* jewellery section start */
+
+.jewellery_section {
+    width: 100%;
+    float: left;
+  
+}
+.top-banner{
+    display: none;
+}
+.jewellery_img {
+    width: 100%;
+    text-align: center;
+    margin: 50px 0px;
+    height: 200px;
+}
+
+#jewellery_main_slider a.carousel-control-next {
+    right: 615px;
+    top: 75%;
+}
+
+#jewellery_main_slider a.carousel-control-prev {
+    left: 615px;
+    top: 75%;
+}
+
+#jewellery_main_slider .carousel-control-next,
+#jewellery_main_slider .carousel-control-prev {
+    width: 55px;
+    height: 55px;
+    background-color: #30302e;
+    opacity: 1;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+#jewellery_main_slider .carousel-control-next:focus,
+#jewellery_main_slider .carousel-control-next:hover,
+#jewellery_main_slider .carousel-control-prev:focus,
+#jewellery_main_slider .carousel-control-prev:hover {
+    color: #fff;
+    background-color: #f26522;
+}
+.logo {
+    width:15%;
+}
+
+
+/* loader bar css start */
+
+.loader_main {
+    width: 100%;
+    text-align: center;
+    margin-top: 140px;
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #414744;
+    border-right: 16px solid #f26522;
+    border-bottom: 16px solid #414744;
+    border-left: 16px solid #f26522;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 6s linear infinite;
+    margin: 0 auto;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* loader bar css end */
+
+
+/* jewellery section end */
+
+
+/* footer section start */
+
+
+/* footer section start */
+
+.footer_section {
+    width: 100%;
+    float: left;
+    background-color: #252525;
+    height: auto;
+}
+
+.footer_logo {
+    width: 100%;
+    text-align: center;
+}
+
+.input_bt {
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+.mail_bt {
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    color: #fff;
+    background-color: transparent;
+    padding: 5px 0px 5px 0px;
+    height: 60px;
+    border: 0px;
+}
+
+input.mail_bt::placeholder {
+    color: #fff;
+}
+
+.subscribe_bt {
+    width: 30%;
+    float: right;
+    font-size: 16px;
+    color: #f26522;
+    background-color: transparent;
+    padding: 20px 0px 5px 0px;
+    border-radius: 30px;
+    border: 0px;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+.subscribe_bt a {
+    color: #f26522;
+}
+
+.subscribe_bt a:hover {
+    color: #ffffff;
+}
+
+.footer_menu {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer_menu ul {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
+
+.footer_menu li {
+    float: left;
+    font-size: 16px;
+    color: #f1f1f1;
+    padding: 20px 10px 0px 10px;
+}
+
+.footer_menu li a {
+    color: #f1f1f1;
+}
+
+.footer_menu li a:hover {
+    color: #f26522;
+}
+
+.location_main {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.location_main {
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    padding: 30px 30px 30px 30px;
+}
+
+.location_main a {
+    color: #ffffff;
+}
+
+.location_main a:hover {
+    color: #f26522;
+}
+
+
+/* footer section end */
+
+
+/* copyright section start */
+
+.copyright_section {
+    width: 100%;
+    float: left;
+    background-color: #252525;
+    height: auto;
+}
+
+.copyright_text {
+    width: 100%;
+    float: left;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    margin: 20px 0px;
+}
+
+.copyright_text a {
+    color: #ffffff;
+}
+
+.copyright_text a:hover {
+    color: #f26522;
+}
+
+.margin_top90 {
+    margin-top: 90px;
+}
+
+.forms input  {
+ border: 1px solid white;
+ border-radius: 8px;
+ padding: 5px;
+ margin: auto;
+ width:80%;
+ 
+
+}
+
+.forms textarea {
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 5px;
+    margin: auto;
+    width:80% !important;
+    max-width: 80% !important;
+   
+   }
+
+.pro-btn {
+    margin: 10px;
+    display: flex;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #fff;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+   
+}
+.pro-btn-1 {
+    margin: 10px;
+    display: flex;
+    padding: 1px 3px 0px 18px;
+    font-size: 11px;
+    line-height: 1.5;
+    border: none;
+    width: 90%;
+}
+.pro-btn-1 img {
+    width: 30px;
+}
+
+.pro-btn a {
+    color:white; 
+    font-family:'shabnam';
+    padding-top: 2px;
+}
+.pro-btn img {
+    width: 30px;
+}
+
+/* copyright section end */
+
+
+
+
+
+
+/* Tablet screens (portrait and landscape) */
+@media screen and (max-width: 1024px) {
+    .custom_menu ul {
+        margin: 0px;
+        display: block;
+    }
+
+    .custom_menu li {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .header_section {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .banner_bg_main {
+        height: 400px;
+        background-size: cover;
+    }
+}
+
+
+/* Mobile screens (portrait) */
+@media screen and (max-width: 768px) {
+    .custom_menu li {
+        font-size: 14px;
+        padding: 8px;
+    }
+    .header1 {
+        flex-wrap: wrap; 
+        
+    }
+    .pro-btn  img{
+        background-color: #000;
+        border: 1px;
+        border-radius: 50%;
+        color:#000;
+    }
+   
+    .contain{
+        padding-right: 0;
+        padding-left: 0;
+        margin: auto;
+        display: block !important;
+        order: 2;
+    }
+   
+    .top-banner{
+        display: block;
+        background-color: #000;
+        padding: 20px;
+        line-height: 20px;
+    }
+    .header_section_top {
+        background-color: transparent;
+        clip-path:none;
+        padding: 0;
+    }
+    .row{
+        margin-right: 0;
+        margin: 0;
+    }
+
+    .header_section {
+        padding: 10px;
+    }
+    .search-input{
+        font-size: 14px;
+        padding: 0 5px !important;
+        
+        
+       
+    }
+    
+    .search-input::placeholder{
+        color: #252525;
+        font-size: 11px;
+
+    }
+    .pro-btn {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        margin: 5px 5px 0 0;
+    }
+    .pro-btn a {
+        color:#000;
+        font-size: 14px;
+        margin: auto;
+        padding-top: 0;
+    }
+    .row-in {
+        padding-right: 0;
+        padding-left: 0;
+    
+    }
+   
+   
+    .btn-secondary {
+        padding:5px;
+        background-color: transparent;
+        font-size: 12px;
+    }
+
+    .logo {
+        width:50%;
+        display: flex;
+        order: 1;
+        float: left;
+        justify-content: flex-end;
+        
+    }
+
+    .logo img {
+        width:100px; 
+        height: 30px;
+    }
+    .banner_bg_main  {
+        background-image: none !important;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-color: #f0f0f0;
+        width: 100%;
+        height: 100px;
+    }
+    
+    .main {
+        margin: 5px 5px;
+        width:100%;
+    }
+    .jewellery_section {
+        padding: 0 8px;
+    }
+    .main-menu {
+        display: none;
+    }
+    .banner_taital{
+        display: none;
+    }
+    .login-cat {
+        width:50%; 
+        float: right;
+    }
+    .banner_section {
+        padding-bottom: 0;
+        display: none;
+    }
+    .containers{
+        background-color: #f0f0f0;
+        padding: 0;
+    }
+    .cat-img img{
+        width: 80px;
+        height: 80px;
+    }
+    .cat-img {
+        width: 100px;
+    }
+    .fashion_section_2 {
+        font-size: 11px;
+    }
+    .cat-link{
+        width: 100%;
+        margin-left: 15px;
+    }
+    .banner2 {
+        padding:10px;
+        
+        
+    }
+    .banner2 img {
+        height:200px;
+        
+    }
+    .banner2 p {
+        margin: 5px;
+        text-align: center;
+        color: #000;
+    }
+    .banner2-div {
+        width:auto;
+    }
+    .banner2-text {
+        padding: 5px;
+        text-align: center;
+        width: 70%;
+    }
+    .banner2-text h3 {
+        color: #000;
+    }
+    .banner2-btn {
+        background-color: #f5ba01;
+        color: #000 ;
+    }
+    .electronic_img {
+        height: auto;
+    }
+    .electronic_img img {
+        max-height: 300px;
+    }
+    .about-store {
+        width: 100%;
+        border: none;
+        display: block;
+        margin: auto;
+        background-color: #f0f0f0;
+        color: black;
+        border-radius: 0%;
+    }
+    .about-store li {
+        background-color: white;
+        padding: 5px;
+        margin: 3px;
+        border: 1px;
+        border-radius: 5px;
+    }
+    .cart {
+        width:60%;
+        float: left;
+    }
+    .head-cart {
+        display: flex;
+        padding: 20px;
+        margin-right: auto;
+        background-color: white;
+        
+    }
+    .cart-ul {
+        width: 50%;
+    }
+    .store-name {
+        background-color: transparent;
+    }
+    .tshirt_img  {
+        height: auto;
+    }
+    .tshirt_img img {
+        height: 100px;
+    }
+   
+    .box-shop {
+        width:80px; 
+        height:80px; 
+        margin:2px;
+        padding: 5px;
+        
+    }
+    .box-shop img {
+        height:60px;
+    }
+    
+    .box_main img {
+        height: auto;
+        width: 100%;
+        
+    }
+    .most-sellers {
+        padding: 0;
+        margin: auto;
+        width: 45%;
+    }
+    .box_main {
+        padding: 0;
+        margin: 10px auto;
+    }
+    .heading-banner {
+        display: none;
+    }
+    .banner2-text p {
+        text-align: center;
+    }
+    #shop-div {
+        background-color: white;
+        margin-top: 5px;
+    }
+    .shop-list{
+        background-color: white;
+        width: 95%;
+        margin: auto;
+        border: 1px;
+        border-radius: 8px;
+    }
+    .fashion_section_2 {
+        margin-top: 0;
+    }
+    .subscribe_bt {
+        text-align: center;
+    }
+    .about{
+        background-color:white; 
+        margin:0; 
+        padding:3%; 
+        margin-top: 10px;
+    }
+    .befor-form {
+        background-color: white;
+        margin-top: 10px;
+        padding: 0;
+    }
+}
+
+
+
+
+

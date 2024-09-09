@@ -1,0 +1,30 @@
+{% load static %}
+
+<a class="back-btn" href="#outerContainer"  hx-get="{% url 'product_details' product_pk=product.pk  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+<div class="forms">
+    <form class="inputs" hx-encoding='multipart/form-data' hx-post="{% url 'edit_product' product_pk=product.pk %}" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger='submit' >
+        {% csrf_token %}
+        
+        {% for field in product_form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}
+                    <span style="color: red;">*</span>  <!-- Add asterisk for required fields -->
+                {% endif %}
+            </label>
+            {{ field }}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+        <!-- Quantity information -->
+        
+        <button type="submit">ذخیره  </button>
+    </form>
+    <a href="edit-product" hx-get="{% url 'product_edit' product_pk=product.pk %}" hx-target="#outerContainer" >تغییرات در تعداد , رنگ و سایز کالا</a>
+    
+</div>
+

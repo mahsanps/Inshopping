@@ -1,0 +1,36 @@
+<!-- shop_orders.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ shop.store_name }} - Orders</title>
+</head>
+<body>
+    <h1>Orders for {{ shop.store_name }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Variation</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Variation Price</th>
+                <th>Discount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+                <tr>
+                    <td>{{ item.order.id }}</td>
+                    <td>{{ item.variation.product.name }}</td>
+                    <td>{{ item.variation.size }} - {{ item.variation.color }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total_price }}</td>
+                    <td>{{ item.variation_price }}</td>
+                    <td>{{ item.discount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{% load static %}
+{% block body %} 
+<div class="befor-form">
+<div class="forms" style="height:auto; direction:rtl; text-align:right; margin:0;">
+    <h1>پرداخت</h1>
+    <form class="inputs" action="{% url 'checkout' store_name=store_name %}" method="POST">
+        <p>مجموع پرداخت: {{ total_price }}</p>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="display:flex;">
+            <input type="checkbox" id="terms" name="terms" required style="flex:1;">
+            <label style="flex:20;" for="terms">من تمامی <a style="color:red" href="{% url 'terms&conditions' %}" target="_blank">شرایط و ضوابط</a> تعیین شده در وبسایت این شاپینگ را مطالعه کرده و با آن موافق هستم.</label>
+          </div>
+        <button type="submit">پرداخت</button>
+    </form>
+    {% if error_message %}
+        <div class="error">{{ error_message }}</div>
+    {% endif %}
+</div>
+</div>
+{% endblock %}
+

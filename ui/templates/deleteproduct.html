@@ -1,0 +1,8 @@
+
+  <form id="delete-form-{{ item.productCode.pk }}" action="{% url 'delete_product'  %}" method="post" hx-post="true" >
+    {% csrf_token %}
+    <button type="submit" class="portfolio-lightbox" title="Delete">
+        <i class="bx bx-plus"></i> Delete
+    </button>
+  </form>
+  

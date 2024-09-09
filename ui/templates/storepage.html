@@ -1,0 +1,97 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{% load static %}
+{% block body %} 
+      <!-- fashion section start -->
+      <div class="fashion_section">
+         <div id="main_slider" class="carousel slide" data-ride="carousel">
+            <div id="shop-div" class="carousel-inner">
+               <div class="carousel-item active">
+                  <div class="container" >
+                     
+                     
+                     <div class="containers" >
+                           <div class="head-cart">
+                              <h2 class="store-name" >فروشگاه :{{ store_name }}</h2>
+                              <div class="cart-ul">
+                              <ul> 
+                                 <li class="cart" ><a href="{% url 'cart' store_name=store_name %}">
+                                    <i class="fa fa-shopping-cart" style="color:white; "  aria-hidden="true"></i>
+                                    <span class="padding_10" style="font-family:'shabnam'; font-size:16px;" >سبد خرید</span></a>
+                                 </li>
+                              
+                              </ul> 
+                              </div>
+                           </div>
+                        {% for shop in shop_list %}
+                        
+                       
+                        <div class="about-store" >
+                           
+                          <div >
+                            <ul style="text-align:right; " >
+                              {% if shop.description %}
+                              <li><i class="bi bi-chevron-right"></i> <strong>درباره فروشگاه :</strong> <span>{{shop.description}}</span></li>
+                              {% endif %}
+                              <br>
+                              {% if shop.instagramId %}
+                              <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/instagram-icon.png' %}"> : </strong> <span>{{shop.instagramId}}</span></li>
+                              {% endif %}
+                              {% if shop.email %}
+                              <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/Email_icon.png' %}"> :</strong> <span>{{shop.email}}</span></li>
+                              {% endif %}
+                              {% if shop.contact %}
+                              <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/phone-icon.png' %}"> :</strong> <span>{{shop.contact}}</span></li>
+                              {% endif %}
+                              {% if shop.address %}
+                              <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/location-icon.png' %}"> :</strong> <span>{{shop.address}}</span></li>
+                              {% endif %}
+                           </ul>
+                          
+                          </div>    
+                        </div> 
+                        {% endfor %}
+                        
+                        
+                        <div class="shop-list" >     
+                        <div  class="row"  >
+                           
+                           {% for product in products %}
+                           <div class="most-sellers">
+                             
+                              <li>
+                              <a href="{% url 'singleproductpage' store_name=store_name product_pk=product.pk %}">  
+                              <div class="box_main">
+                                 <div class="tshirt_img"><img  src="{{product.image.url}}"></div>
+                                 <h4 class="shirt_text">{{ product.name }}</h4>
+                                
+                                 <p class="price_text">{{product.price}} <span style="color: #262626;"></span></p>
+                                 
+                                    
+                                    <div >
+                                       {% if not product.id in available_products %}
+                                       <p style="margin:0; text-align:right;">ناموجود</p>
+                                       {% endif %}
+                                    </div>
+                                    
+                                 
+                              </div>
+                              </a>
+                              </li>
+                           </div>
+                        
+                           
+                           {% endfor %}
+                           </ul>
+                        </div>   
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               
+            </div>
+            
+         </div>
+      </div>
+      <!-- fashion section end -->
+     {% endblock %}

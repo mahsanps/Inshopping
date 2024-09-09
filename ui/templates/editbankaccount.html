@@ -1,0 +1,25 @@
+{% load static %}
+<div style="height:auto;">
+    <a class="back-btn" href="#outerContainer"  hx-get="{% url 'mywallet' %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+<div class="forms">
+    <form class="inputs" hx-post="{% url 'editbankaccount' pk=bankaccount.pk %}" hx-swap="outerHTML"  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger='submit' >
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}
+                    <span style="color: red;">*</span>  <!-- Add asterisk for required fields -->
+                {% endif %}
+            </label>
+            {{ field }}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+        
+        <button type="submit">ذخیره تغییرات</button>
+    </form>
+</div>
+</div>

@@ -1,0 +1,10 @@
+<div>
+
+    
+    <form  hx-post="{% url 'productcode' %}" hx-swap="outerHTML"  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger='submit' >
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save</button>
+    </form>
+
+</div>    

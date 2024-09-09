@@ -1,0 +1,96 @@
+{% load static %}
+
+<div class="forms">
+    <form class="inputs" hx-encoding="multipart/form-data" hx-post="{% url 'products' %}" hx-swap="innerHTML" hx-target=".forms" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger="submit">
+        <a class="back-btn" href="#outerContainer"  hx-get="{% url 'productssection'  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+
+        {% csrf_token %}
+        <div>
+            {{ form.name.errors }}
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }} {% if form.name.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.name }}
+        </div>
+        <div>
+            {{ form.productCode.errors }}
+            <label for="{{ form.productCode.id_for_label }}">{{ form.productCode.label }} {% if form.productCode.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.productCode }}
+        </div>
+        <div>
+            {{ form.description.errors }}
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }} {% if form.description.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.description }}
+        </div>
+        <div>
+            {{ form.image.errors }}
+            <label for="{{ form.image.id_for_label }}">{{ form.image.label }} {% if form.image.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.image }}
+        </div>
+        <div>
+            {{ form.material.errors }}
+            <label for="{{ form.material.id_for_label }}">{{ form.material.label }} {% if form.material.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.material }}
+        </div>
+        <div>
+            {{ form.madeIn.errors }}
+            <label for="{{ form.madeIn.id_for_label }}">{{ form.madeIn.label }} {% if form.madeIn.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.madeIn }}
+        </div>
+        <div>
+            {{ form.price.errors }}
+            <label for="{{ form.price.id_for_label }}">{{ form.price.label }} {% if form.price.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.price }}
+        </div>
+        <div>
+            {{ form.isactive.errors }}
+            <label for="{{ form.isactive.id_for_label }}">{{ form.isactive.label }} {% if form.isactive.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            {{ form.isactive }}
+        </div>
+        <div>
+            {{ form.category.errors }}
+            <label for="{{ form.category.id_for_label }}">{{ form.category.label }} {% if form.category.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            <br>
+            {{ form.category }}
+        </div>
+        <div>
+            {{ form.subcategory.errors }}
+            <label for="{{ form.subcategory.id_for_label }}">زیرمجموعه {% if form.subcategory.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            <br>
+            <select id="id_subcategory" name="subcategory" class="form-control">
+                <option value="">انتخاب زیرمجموعه</option>
+                <!-- Options will be dynamically loaded here -->
+            </select>
+        </div>
+        <div>
+            <label for="id_images">تصاویر دیگر</label>
+            <input type="file" name="images" id="id_images" multiple>
+        </div>
+        <button type="submit">ذخیره</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#id_category').select2();
+        $('#id_subcategory').select2();
+        
+        $('#id_category').change(function() {
+            var category_id = $(this).val();
+            $.ajax({
+                url: "{% url 'loadsubcategories' %}",
+                data: {
+                    'category_id': category_id
+                },
+                success: function(data) {
+                    var subcategorySelect = $('#id_subcategory');
+                    subcategorySelect.empty();
+                    subcategorySelect.append('<option value="">انتخاب زیرمجموعه</option>');
+                    $.each(data.subcategories, function(key, value) {
+                        subcategorySelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    subcategorySelect.select2();
+                }
+            });
+        });
+    });
+</script>
+

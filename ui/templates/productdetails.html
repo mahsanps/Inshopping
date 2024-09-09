@@ -1,0 +1,70 @@
+{% load static %}
+
+<a class="back-btn" href="#outerContainer"  hx-get="{% url 'products_list'  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+<section  class="about" style="height:auto;">
+ 
+    <div class="container" >
+      
+      <div class="row">
+        <ul>
+            
+              <div class="col-lg-4" data-aos="fade-right">
+                <img src="{{product_details.images.url}}" class="img-fluid" alt="">
+              </div>
+              <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+                    <h3>{{product_details.name}} </h3>
+                    <h3>{{product_details.productCode}} </h3>
+                    <p class="fst-italic" style="border:1px solid gray; border-radius:5px; padding:10px;">
+                      {{product_details.description}}
+                    </p>
+                  <div class="row">
+                  <div class="col-lg-6">
+                  <ul>
+                    
+                  
+                    <li><i class="bi bi-chevron-right"></i> <strong>جنس:</strong> <span>{{product_details.material}}</span></li>
+                    <li><i class="bi bi-chevron-right"></i> <strong>تولید:</strong> <span>{{product_details.madeIn}}</span></li>
+                    <li><i class="bi bi-chevron-right"></i> <strong>قیمت:</strong> <span>{{product_details.price}}</span></li>
+                    <li><i class="bi bi-chevron-right"></i> <strong>دسته بندی:</strong> <span>{{product_details.category}}</span></li>
+                    <li><i class="bi bi-chevron-right"></i> <strong>زیرمجموعه :</strong> <span>{{product_details.subcategory}}</span></li>
+                    
+                  </ul>
+                  
+                    <p> موجودی:</p>
+                    <table  style="border:1px solid gray; margin:10px; width: 300px; text-align: center; ">
+                        <tr style="border:1px solid gray; background-color:#040b14; color:white;"> 
+                             <th style="border:1px solid gray;">سایز</th> 
+                             <th style="border:1px solid gray;">رنگ</th> 
+                             <th style="border:1px solid gray;">تعداد</th>
+                        </tr> 
+                        {% for quantity in product_variation %}  
+
+                        <tr style="border:1px solid gray;">
+                            <td style="border:1px solid gray;">{{quantity.size}}</td>
+                            <td style="border:1px solid gray;">{{quantity.color}}</td>
+                            <td style="border:1px solid gray;">{{quantity.quantity}}</td>
+                        </tr>
+                           
+                        {% endfor %}
+
+                      </table>    
+                    
+                  
+                
+                  <a  hx-get="{% url 'edit_product' product_pk=product_details.pk %}" hx-target="#outerContainer" >
+                    <div class="btn-style" ><button>ویرایش</button></div> 
+                  </a> 
+                  
+                </div>
+               
+              </div>
+              
+             
+          </ul>  
+           
+          </div>
+        </div>
+     
+        
+    </div>
+</section>           

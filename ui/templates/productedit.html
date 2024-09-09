@@ -1,0 +1,32 @@
+{% load static %}
+
+<a class="back-btn" href="#outerContainer"  hx-get="{% url 'edit_product' product_pk=product.pk  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+<div class="forms" style="height:auto;">
+    <legend>انبار کالا</legend>
+    {% for form in variation_forms %}
+    <div  style="border:solid gray 1px; display:flex; ">
+        
+        <form style="display:flex !important;" class="inputs-form" hx-encoding='multipart/form-data' hx-target="#outerContainer" hx-post="{% url 'product_edit' product_pk=product.pk %}" hx-swap="innerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger='submit' >
+        {% csrf_token %}
+        
+        
+         {{ form.as_p }}
+         <input  type="hidden" name="variation_id" value="{{ form.instance.pk }}">
+          <button type="submit" name="action" value="save">ذخیره</button>
+          <button type="submit" name="action" value="delete">حذف</button>
+        
+       </form>
+    </div>
+    {% endfor %}
+    <div >
+        <a href="#outerContainer" hx-get="{% url 'products_quantity' product_pk=product.pk   %}" hx-target="#outerContainer" > اضافه کردن محصول </a>
+        
+    </div>  
+    <a href="#outerContainer"  hx-get="{% url 'products_list'  %}" hx-target="#outerContainer" >
+        <div class="btn-style" ><button>بازگشت به صفحه محصولات</button></div>
+    </a>
+    
+</div>
+
+
+

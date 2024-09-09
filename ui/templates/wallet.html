@@ -1,0 +1,35 @@
+{% load i18n %}
+
+<section id="wallet" class="about" >
+      
+    <div id="outerContainer" class="container" >
+      
+      <div class="section-title">
+        
+            <h2>حساب بانکی من</h2>
+          
+          
+        {% if bankaccount == None or bankaccount|length == 0 or bankaccount == "" %}
+        <a hx-get="{% url 'bankaccount' %}" hx-target="#outerContainer" >
+            <div class="btn-style" ><button>{% trans 'Create Your Bank Account' %}</button></div></a> 
+            {% endif %}
+            {% for item in bankaccount %}
+            <ul>
+                <li>{% trans 'name' %}: {{item.name}}</li>
+                <li>{% trans 'Bank Name' %}: {{item.bankName}}</li>
+                <li>{% trans 'Cart Number' %}: {{item.cartNumber}}</li>
+                <li>{% trans 'Account Number' %}: {{item.accountNumber}}</li>
+            </ul>
+            <a hx-get="{% url 'editbankaccount' pk=item.pk %}" hx-target="#outerContainer" >
+                <div class="btn-style" ><button>{% trans 'Edit' %}</button></div></a> 
+            {%endfor%}
+            <br>
+            <br>
+            <div>
+                <h2>{% trans 'My Wallet' %}</h2>
+                <div> <h4>{% trans 'My Balance' %}</h4></div>
+                <strong> {{ total_price }}</strong>
+            </div>    
+      </div>
+    </div>
+</section>        

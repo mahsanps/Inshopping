@@ -1,0 +1,49 @@
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<!-- Coding by CodingLab | www.codinglabweb.com-->
+    <html lang="fa">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Signup </title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <link href="{% static 'asset/vendor/scss/reboot.css' %}" rel="stylesheet">        
+        <!-- Boxicons CSS -->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+                        
+    </head>
+    <body style="direction:rtl">
+        
+        <section class="container forms"  style="height:100vh;">
+           
+            <div class="form login">
+                <div class="form-content">
+                    <header>عضویت</header>
+                    <form class="signinputs" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                         <div class="field button-field">
+                            <button type="submit" >ثبت نام</button>
+                        </div>
+                    </form>
+
+                    <div class="form-link">
+                        <span>حساب کاربری دارید؟ <a href="{% url "signin" %}">ورود</a></span>
+                    </div>
+                </div>
+
+               
+
+            </div>
+        </section>
+
+        <!-- JavaScript -->
+        <script src="{% static 'assets/js/script.js' %}"></script>
+    </body>
+</html>
+{% endblock %}

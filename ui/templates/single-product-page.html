@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block body %}
+<head>
+    <style>
+        .btn-disabled {
+            width: 100%;
+            background: #30302e;
+            font-weight: normal;
+            color: white;
+        }
+        .btn-disabled:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+      
+        /* Default styling for desktop */
+        .desktop-thumbnails {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 100px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .thumbnail:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Hide the mobile swiper and thumbnails by default */
+        .mobile-swiper,
+        .mobile-thumbnails {
+            display: none;
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .desktop-thumbnails {
+                display: none; /* Hide thumbnails on mobile */
+            }
+        
+            .mobile-swiper,
+            .mobile-thumbnails {
+                display: block; /* Show swiper and thumbnails on mobile */
+                width: 100%;
+                overflow-x: auto;
+            }
+        
+            .mobile-thumbnails .swiper-slide {
+                width: 80px; /* Adjust thumbnail width */
+            }
+        
+            .mobile-thumbnails .thumbnail {
+                width: 100%;
+                cursor: pointer;
+                border: 2px solid transparent; /* Border for active state */
+                transition: border-color 0.3s;
+            }
+        
+            .mobile-thumbnails .swiper-slide-active .thumbnail {
+                border-color: #007bff; /* Active thumbnail border color */
+            }
+        }
+        
+
+      
+
+
+  
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/singlepage.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+   
+</head>
+<div class="scontainer py-4 my-4 mx-auto d-flex flex-column">
+    
+    <div class="container-body mt-4">
+        <div class="before-row">
+        <div class="row r3">
+            <div class="col-md-5 p-0 klo">
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                
+                <ul style="text-align:right;">
+                    <li><h1 style="font-size:30px;" >{{ product_details.name }}</h1></li>
+                   
+                   <br>
+                    <li><h4 style="font-weight:600; color:#41011a; border:1px solid #41011a; padding: 5px; border-radius: 10px;">قیمت :  {{ product_details.price }}</h4></li>
+                    <br>
+                    {% if product_details.material %}
+                    <li><h4>جنس : {{product_details.material}}</h4></li>
+                    {% endif %}
+                    {% if product_details.madeIn %}
+                    <li><h4>تولید : {{product_details.madeIn}}</h4></li>
+                    {%endif%}
+                   
+                    
+                    
+                    {% if sizes %}
+                    <li>
+                        <select id="size-select" name="size" onchange="checkForm()">
+                            <option value="">انتخاب سایز</option>
+                            {% for size in sizes %}
+                                <option value="{{ size }}">{{ size }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                    {% endif %}
+                    <br>
+                    {% if colors %}
+                    <li>
+                        <select id="color-select" name="color" onchange="checkForm()">
+                            <option value="">انتخاب رنگ</option>
+                            {% for color in colors %}
+                                <option value="{{ color }}">{{ color }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                    {% endif %}
+                
+                    <br>
+                   
+                   
+                    {% if product_details.description %}
+                    <h4 >توضیحات : </h4>
+                    <div style='border:solid 1px lightgray; padding:2%; border-radius:10px;'>
+                        <p>{{ product_details.description }}</p>
+                    </div>
+                    {%endif%}
+                    <br>
+                    <li style="background-color: #f5ba01;  padding: 5px; border: 1px; border-radius: 10px;"><h4 >فروشگاه: <a style="color: black !important;" href="{% url 'storepage' store_name=product_details.shop.store_name %}" >{{ product_details.shop.store_name }}</a></h4></li>
+                </ul>
+                
+                <!-- Error message div for out of stock -->
+               
+                <br><br>
+                <form method="post" id="add-to-cart-form" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger='submit'>
+                    {% csrf_token %}
+                    <input type="hidden" name="size" id="size-input">
+                    <input type="hidden" name="color" id="color-input">
+                    <div style="display:flex">
+                        <input type="number" name="quantity" id="quantity-input" placeholder="0" min="1" style="margin-right:5px; max-width:50px;" oninput="checkForm()">
+                        <input type="submit" class="btn-disabled" value="افزودن" id="add-to-cart-button" disabled style="display: block;">
+                        <input type="button" class="btn-disabled" value="ناموجود" id="out-of-stock-button" disabled style="display: none;">
+                    </div>
+                </form>
+                <br>
+                <div id="error-message" class="alert alert-danger" style="display:none;">متاسفانه تعداد کالای مورد نظر در حال حاضر در انبار فروشگاه موجود نمی باشد.</div>
+                
+            </div>
+            <div class="col-md-7" style="text-align:center;">
+                <!-- Main Image -->
+               <!-- Main Image -->
+<div class="main-image-container" style="max-height: 500px;">
+    <img id="main-image" src="{{ product_details.image.url }}" class="main-image">
+</div>
+
+<!-- Thumbnail Images for Desktop -->
+<div class="thumbnail-container desktop-thumbnails">
+    <div class="swiper-slide" style="width:100px !important;">
+        <img src="{{ product_details.image.url }}" data-large-src="{{ product_details.image.url }}" class="thumbnail">
+    </div>
+    {% for image in product_details.product_images.all %}
+    <div class="swiper-slide" style="width:100px !important;">
+        <img src="{{ image.image.url }}" data-large-src="{{ image.image.url }}" class="thumbnail">
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Swiper Container for Mobile -->
+<div class="swiper-container mobile-swiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="{{ product_details.image.url }}" loading="lazy">
+        </div>
+        {% for image in product_details.product_images.all %}
+        <div class="swiper-slide">
+            <img src="{{ image.image.url }}" loading="lazy">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Thumbnail Slider Container for Mobile -->
+<div class="swiper-container mobile-thumbnails">
+    <div class="swiper-wrapper" >
+        <div class="swiper-slide" >
+            <img src="{{ product_details.image.url }}" class="thumbnail" loading="lazy">
+        </div>
+        {% for image in product_details.product_images.all %}
+        <div class="swiper-slide">
+            <img src="{{ image.image.url }}" class="thumbnail" loading="lazy">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="footer d-flex flex-column mt-5">
+    <div class="row r4">
+    </div>
+</div>
+
+
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+
+<script>
+    // Parse the product variations data
+    const productVariations = JSON.parse('{{ product_variations|escapejs }}');
+
+    document.getElementById('size-select')?.addEventListener('change', function() {
+        const size = this.value;
+        const storeName = '{{ store_name }}'; // Add store_name context variable
+        const product_pk = '{{ product_details.pk }}';
+        const url = "{% url 'available_colors' store_name=store_name product_pk=product_details.pk %}?size=" + size;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const colorSelect = document.getElementById('color-select');
+                colorSelect.innerHTML = '<option value="">Select Color</option>';
+
+                data.forEach(color => {
+                    const option = document.createElement('option');
+                    option.value = color.color;
+                    option.textContent = color.color;
+                    colorSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching colors:', error);
+            });
+
+        checkForm();
+    });
+
+    document.getElementById('color-select')?.addEventListener('change', checkForm);
+
+    document.querySelector('#add-to-cart-form').addEventListener('submit', function(event) {
+        const color = document.getElementById('color-select') ? document.getElementById('color-select').value : '';
+        const size = document.getElementById('size-select') ? document.getElementById('size-select').value : '';
+        document.getElementById('color-input').value = color;
+        document.getElementById('size-input').value = size;
+    });
+
+    function checkForm() {
+        const quantityInput = document.getElementById("quantity-input").value;
+        const sizeSelect = document.getElementById("size-select") ? document.getElementById("size-select").value : "";
+        const colorSelect = document.getElementById("color-select") ? document.getElementById("color-select").value : "";
+        const addToCartButton = document.getElementById("add-to-cart-button");
+        const outOfStockButton = document.getElementById("out-of-stock-button");
+        const errorMessage = document.getElementById("error-message");
+
+        let isQuantityValid = false;
+        let variationAvailable = false;
+
+        // Determine if size and/or color are required
+        const isSizeValid = document.getElementById("size-select") ? sizeSelect !== "" : true;
+        const isColorValid = document.getElementById("color-select") ? colorSelect !== "" : true;
+
+        // Check availability based on size and/or color
+        if (isSizeValid && isColorValid) {
+            const variation = productVariations.find(v => 
+                (v.size === sizeSelect || !v.size) && 
+                (v['color__color'] === colorSelect || !v['color__color'])
+            );
+            if (variation) {
+                isQuantityValid = quantityInput >= 1 && quantityInput <= variation.quantity;
+                variationAvailable = true;
+            }
+        }
+
+        // Determine which button to show and what text to display
+        if (quantityInput === "" || (!isSizeValid || !isColorValid)) {
+            // Case: No size, color, or quantity selected
+            addToCartButton.style.display = "block";
+            addToCartButton.disabled = true;
+            addToCartButton.value = "افزودن";  // Default disabled text
+            outOfStockButton.style.display = "none";
+            errorMessage.style.display = "none";
+        } else if (variationAvailable && isQuantityValid) {
+            // Case: Valid selection and quantity available
+            addToCartButton.style.display = "block";
+            addToCartButton.disabled = false;
+            addToCartButton.value = "افزودن";
+            outOfStockButton.style.display = "none";
+            errorMessage.style.display = "none";
+        } else {
+            // Case: Valid selection but quantity not available
+            addToCartButton.style.display = "none";
+            outOfStockButton.style.display = "block";
+            errorMessage.style.display = "block";
+        }
+    }
+
+    // Initial check to ensure the button is disabled if the page is reloaded without valid inputs
+    checkForm();
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to check if the device is mobile
+        function isMobileDevice() {
+            return window.innerWidth <= 768 || 'ontouchstart' in window;
+        }
+    
+        // Initialize Swiper only on mobile devices
+        if (isMobileDevice()) {
+            // Wait until all images are loaded to initialize Swiper
+            window.addEventListener('load', function () {
+                // Initialize the thumbnail Swiper without looping
+                const thumbnailSwiper = new Swiper('.mobile-thumbnails', {
+                    loop: false, // Disable looping for the thumbnails
+                    slidesPerView: 'auto', // Display multiple thumbnails
+                    spaceBetween: 10, // Spacing between thumbnails
+                    centeredSlides: false, // Center the thumbnails
+                    slideToClickedSlide: true, // Allow clicking to select thumbnail
+                });
+    
+                // Initialize the main Swiper and link it with the thumbnail swiper
+                const mainSwiper = new Swiper('.mobile-swiper', {
+                    loop: true, // Enables infinite loop mode for the main slider
+                    slidesPerView: 1, // Display one slide at a time
+                    grabCursor: true, // Change cursor to indicate sliding is possible
+                    effect: 'slide', // Default effect
+                    thumbs: {
+                        swiper: thumbnailSwiper, // Link to the thumbnail swiper
+                    },
+                });
+    
+                // Synchronize the main Swiper and thumbnail Swiper
+                thumbnailSwiper.on('click', function () {
+                    const clickedIndex = thumbnailSwiper.clickedIndex; // Get the clicked index
+                    mainSwiper.slideToLoop(clickedIndex); // Slide to the corresponding image
+                });
+    
+                // Update the main image when the slide changes
+                mainSwiper.on('slideChange', function () {
+                    const activeSlide = mainSwiper.slides[mainSwiper.activeIndex];
+                    const newImageSrc = activeSlide.querySelector('img').getAttribute('src');
+                    document.getElementById('main-image').src = newImageSrc;
+                });
+            });
+        } else {
+            // Desktop: Click event for thumbnails
+            const thumbnails = document.querySelectorAll('.desktop-thumbnails .thumbnail');
+            const mainImage = document.getElementById('main-image');
+    
+            thumbnails.forEach(function (thumbnail) {
+                thumbnail.addEventListener('click', function () {
+                    const newImageSrc = this.getAttribute('data-large-src');
+                    mainImage.src = newImageSrc;
+    
+                    // Update active class for clicked thumbnail
+                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+    });
+    
+    
+    
+    
+    
+</script>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% load static %}
+
+
+<form class="inputs" id="addmore" hx-encoding='multipart/form-data' hx-post="{% url 'products_quantity' product_pk=product.pk %}" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a class="back-btn" href="#outerContainer"  hx-get="{% url 'edit_product' product_pk=product.pk  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+  <div class="forms"  style="height:auto;">
+  {% csrf_token %}
+      <input type="hidden" value="" name="addmore" id="inputaddmoreId">
+      {{ form.product }}
+      <label for="id_size">سایز:</label>
+      {{ form.size }}
+      
+      <label for="id_colors">رنگ:</label>
+      <select name="color" id="id_colors" style="width:100%;  overflow: auto; padding: 10px; box-sizing: border-box;">
+          {% for color in color %}
+              <option value="{{ color.id }}">{{ color.color }}</option>
+          {% endfor %}
+      </select>
+      
+      <label for="id_quantity">تعداد کل: {% if form.quantity.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+      {{ form.quantity }}
+
+      <button type="submit" id="continue"  >ادامه</button>
+      <p>در صورتی که از این کالا سایز و رنگ های دیگر دارید بر روی دکمه بیشتر کلیک کنید.</p>
+      <button type="button" role="button" onclick="submit_form()"> بیشتر</button>
+      </div>   
+  </form>
+  
+  <div id="message"></div> <!-- Div to display the message -->
+
+
+
+<script>
+let messageShown = false;
+
+function submit_form() {
+  if (!messageShown) {
+      document.getElementById("inputaddmoreId").value = "True";
+      
+  }
+  htmx.trigger(htmx.find("#addmore"), "submit");
+
+}
+</script>

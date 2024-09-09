@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facebook Login Example</title>
+</head>
+<body>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '983978989888622', // Replace 'YOUR_APP_ID' with your actual app ID
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v12.0'
+            });
+
+            FB.AppEvents.logPageView();   
+
+            // Check if user is already logged in
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            }); 
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <fb:login-button 
+        scope="public_profile,email,instagram_basic,pages_show_list" 
+        onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <script>
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        function statusChangeCallback(response) {
+            if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                console.log('Logged in');
+                getUserInfo();
+            } else {
+                // The person is not logged into your app or we are unable to tell.
+                console.log('Please log into this app.');
+            }
+        }
+
+        function getUserInfo() {
+            FB.api('/me', {fields: 'name,email'}, function(response) {
+                console.log('User Info: ' + JSON.stringify(response));
+            });
+
+            FB.api('/me/accounts', function(response) {
+                console.log('User Pages: ' + JSON.stringify(response));
+            });
+
+            FB.api('/me?fields=accounts{instagram_business_account}', function(response) {
+                console.log('Instagram Business Account: ' + JSON.stringify(response));
+            });
+        }
+    </script>
+</body>
+</html>

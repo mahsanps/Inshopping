@@ -1,0 +1,10 @@
+
+<div>
+    
+    <form hx-encoding='multipart/form-data'  hx-post="{% url 'product_images' %}" hx-swap="outerHTML"  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger='submit' >
+      {% csrf_token %}
+      {{ forms.image }}
+      <button type="submit">Save</button>
+    </form>
+
+</div>  

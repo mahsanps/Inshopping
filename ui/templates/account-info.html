@@ -1,0 +1,107 @@
+ <!-- ======= About Section ======= -->
+ {% load static %}
+ {% load i18n %}
+ <section  class="about"  style="padding:20px;">
+  
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div style="text-align:center; margin-top:20px;" class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+  {% if account_info.exists %}
+    <div class="section-title" style="border:1px solid #44334460; border-radius:5px; margin:10px; padding:5%;">
+     
+        <h2>اطلاعات کاربر</h2>
+        <ul id="outerContainer">
+            {% for info in account_info %}
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul>
+                            <li><strong>نام:</strong> <span>{{ info.firstname }}</span></li>
+                            <li><strong>نام خانوادگی:</strong> <span>{{ info.lastname }}</span></li>
+                            <li><strong>تلفن تماس:</strong> <span>{{ info.phone }}</span></li>
+                            <li><strong>نام کاربری:</strong> <span>{{ info.user.username }}</span></li>
+                            <li><strong> ایمیل:</strong> <span>{{ info.user.email }}</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <a hx-get="{% url 'editaccountinfo' pk=info.pk %}" hx-target="#outerContainer">
+                            <div style="margin:5%;" class="btn-style">
+                                <button>ویرایش</button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left" style="margin-bottom:20px;">
+        <p>جهت تکمیل اطلاعات کاربری کلیک کنید</p>
+        <a hx-get="{% url 'accountinfo' %}" hx-target="#outerContainer">
+            <div class="btn-style"><button>تکمیل اطلاعات کاربری</button></div>
+        </a>
+    </div>
+{% endif %}
+
+    
+
+      {% if shop_instance %}
+      <div class="section-title" style="border:1px solid #44334460; border-radius:5px; margin:10px; padding:5%;">
+        <h2> فروشگاه</h2>
+      
+     
+    
+            <ul id="outerContainer">
+              {% for shop in shop_instance %}
+              <div class="row">
+                {% if shop.image %}
+                <div class="col-lg-4" data-aos="fade-right">
+                  <img src="{{shop.image.url}}" style="width:200px; height:200px;" alt="">
+                </div> 
+                {% endif%}
+              <h3>{{shop.store_name}}</h3>
+              <p class="fst-italic">
+                {{shop.description}}
+              </p>
+              <div class="row">
+                <div class="col-lg-6">
+                  <ul>
+                    <li> <strong>اینستاگرام:</strong> <span>{{shop.instagramId}}</span></li>
+                    <li> <strong>ایمیل:</strong> <span>{{shop.email}}</span></li>
+                    <li><strong>تلفن تماس:</strong> <span>{{shop.contact}}</span></li>
+                    <li><strong>آدرس:</strong> <span>{{shop.address}}</span></li>
+                    
+                  </ul>
+                
+                </div>   
+                <div >
+                  <a hx-get="{% url 'editshop' pk=shop.pk %}" hx-target="#outerContainer" >
+                  <div style="margin:5%;" class="btn-style" ><button>ویرایش</button></div>
+                  </a>
+                </div>  
+              </div> 
+              {% endfor %}
+              
+            </ul> 
+            
+            {% endif %}
+           {% if shop_instance == None or shop_instance|length == 0 or shop_instance == "" %}
+            <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+              <p>در صورت تمایل به داشتن فروشگاه آنلاین خود بر روی دکمه زیر کلیک کنید و فرم مربوطه را پر کنید.</p>
+              <a href="{% url 'create_shop' %}"  >
+              <div class="btn-style" ><button>فروشگاه خود را بسازید</button></div>
+              </a>
+            </div>  
+
+            {% endif %} 
+            
+           
+    </div>
+ 
+</section><!-- End About Section -->
+

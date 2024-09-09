@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block body %}
+
+<div class='container' style="background-color:white; margin-top:10px; height:auto; text-align:center; padding:5%;">
+    <h1 style="background-color:#0fbf6d; padding:10px;" >پرداخت با موفقیت انجام شد</h1>
+    <br>
+    <h4>با تشکر از خرید شما</h4>
+    <br>
+    <h5>شماره پرداخت شما: {{ ref_id }}</h5>
+    <br>
+    <h4><a style="color:#2aafd4" href="{% url 'storepage' store_name=store_name %}">بازگشت به فروشگاه</a></h4>
+</div>
+{%endblock%}
