@@ -33,3 +33,6 @@ class ProductsForm(forms.ModelForm):
         self.fields['price'].required = True 
         self.fields['category'].required = True 
         self.fields['subcategory'].required = True  
+        
+        
+        self.fields['price'].widget.attrs.update({'placeholder': '1,000,000 تومان'})

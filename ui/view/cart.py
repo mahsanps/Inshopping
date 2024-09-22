@@ -15,6 +15,7 @@ from inshopping import settings
 from django.contrib import messages
 from urllib.parse import quote
 
+
 user = get_user_model()
 
 
@@ -121,6 +122,9 @@ class CheckoutView(BaseView):
         except AccountInfo.DoesNotExist:
             account_info = None
 
+        shop = Shop.objects.filter(store_name=store_name).first()
+        delivery_cost = shop.delivery_cost if shop else 0 
+
         for cart_item in store_cart_cookie.get("cart_items", []):
             if cart_item.get("variation_id"):
                 temp_variation = ProductVariation.objects.filter(pk=cart_item.get("variation_id")).first()
@@ -151,7 +155,7 @@ class CheckoutView(BaseView):
                     size=None,
                 ))
 
-        total_price = sum(item.price * item.quantity for item in store_cart_items)
+        total_price = sum(item.price * item.quantity for item in store_cart_items)+ delivery_cost
         form = CheckoutForm()
 
         if not request.user.is_authenticated:
@@ -169,6 +173,7 @@ class CheckoutView(BaseView):
             'form': form,
             'total_price': total_price,
             'store_name': store_name,
+             'delivery_cost':delivery_cost,
             'error_message': None  # Add this line
         })
 
@@ -183,10 +188,13 @@ class CheckoutView(BaseView):
             cart_cookie_dict = json.loads(cart_cookie)
             store_cart_cookie = cart_cookie_dict.get(store_name, {})
             store_cart_items = store_cart_cookie.get("cart_items", [])
+            
+            shop = Shop.objects.filter(store_name=store_name).first()
+            delivery_cost = shop.delivery_cost if shop else 0 
 
             total_price = sum(
                 item.get("price") * item.get("quantity") for item in store_cart_cookie.get("cart_items", [])
-            )
+            ) + delivery_cost 
             total_discount = sum(
                 item.get("discount", 0.0) * item.get("quantity") for item in store_cart_cookie.get("cart_items", [])
             )
@@ -226,6 +234,7 @@ class CheckoutView(BaseView):
                 delivery_address_city=form.cleaned_data.get('delivery_address_city', ''),
                 delivery_address_state=form.cleaned_data.get('delivery_address_state', ''),
                 delivery_address_postcode=form.cleaned_data.get('delivery_address_postcode', ''),
+                shop=shop,
                 
             )
 
@@ -259,7 +268,7 @@ class CheckoutView(BaseView):
             callback_url = request.build_absolute_uri(f'/callback/{quote(store_name)}/')
             req_data = {
                 "merchant_id": settings.ZARINPAL_MERCHANT_ID,
-                "amount": total_price,
+                "amount": total_price*10,
                 "callback_url": callback_url,
                 "description": "Order #{}".format(order.id),
                 "metadata": {"email": request.user.email}
@@ -323,7 +332,8 @@ class CheckoutView(BaseView):
                 'total_price': total_price,
                 'store_name': store_name,
                 'categories': categories,
-                'error_message': None  # Add this line
+                'error_message': None , # Add this line
+                'delivery_cost':delivery_cost
             })
 
 

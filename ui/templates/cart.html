@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load static %}
 {% block body %}
+{% load custom_filters %}
 
 <div class='container' style="background-color:white; margin-top:10px; height:auto; text-align:right; padding:5%;">
   <h1>سبد خرید</h1>
@@ -18,7 +19,7 @@
               <div>
               <p>{{ item.name }}</p>
               <p>تعداد :{{item.quantity}}</p>
-              <p>قیمت: {{ item.price }}</p>
+              <p>قیمت: {{ item.price|custom_price_format  }} تومان</p>
               <p>رنگ: {{ item.color|default:'N/A' }}</p>
               <p>سایز: {{ item.size|default:'N/A' }}</p>
               </a>
@@ -43,8 +44,8 @@
         {% endfor %}
       </ul>    
   </div>
-  <p>مجموع قیمت: {{ total_price }}</p>
-  <a style="margin:5px;" href={% url 'storepage' store_name=store_name %}>بازگشت به فروشگاه</a>
+  <p>مجموع قیمت: {{ total_price|custom_price_format  }} تومان</p>
+  <a  style="margin:5px; color:#4f73d6;" href={% url 'storepage' store_name=store_name %}>بازگشت به فروشگاه</a>
   <div class="inputs">
   <button >
   <a style="color:white;" href="{% url 'checkout' store_name=store_name %}">ادامه پرداخت</a>

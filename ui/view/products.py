@@ -1,7 +1,7 @@
 # views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
-from store.models import Product, ProductVariation, ProductImage, SubCategory, Category
+from store.models import Product, ProductVariation, ProductImage, SubCategory, Category, Color
 from ui.forms.products import ProductsForm
 from ui.forms.deleteproduct import DeleteProductForm
 from utils.views import BaseView
@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from dal import autocomplete
 from django.urls import reverse
+from constants import COLOR_MAP 
 
 
 User = get_user_model()
@@ -86,7 +87,73 @@ class SubcategoryProducts(BaseView):
         subcategory=SubCategory.objects.get(subname=subname)
         subcategory_products= Product.objects.filter(subcategory=subcategory)
         
-        return render(request, 'subcategory.html', {'subname':subname,'categories':categories,'subcategory_products':subcategory_products,'subcategory':subcategory})    
+        colors = Color.objects.exclude(color__isnull=True).exclude(color="")
+
+        color_data = []
+        for color in colors:
+            color_name = color.color  # Persian color name from the database
+            color_code = COLOR_MAP.get(color_name, '#ffffff')  # Default to white if no match
+            color_data.append({'name': color_name, 'code': color_code})
+
+        # Fetch available sizes from products
+        sizes = subcategory_products.values_list('variations__size', flat=True).exclude(variations__size__isnull=True).exclude(variations__size="").distinct()
+
+        print("Available sizes:", sizes)
+
+       
+
+        # Get filter parameters from the request
+        selected_color = request.GET.get("color")
+        selected_size = request.GET.get("size")
+        print("Selected Size:", selected_size)
+        price_min = request.GET.get("price_min")
+        price_max = request.GET.get("price_max")
+        print("Price Min:", price_min)
+        print("Price Max:", price_max)
+
+        
+
+        # Debug prints for filters (remove after debugging)
+        
+
+        # Apply color filter
+        if selected_color and selected_color != "None" and selected_color != "":
+    # Apply color filter only if a valid color is selected
+           subcategory_products = subcategory_products.filter(variations__color__color=selected_color)
+       
+
+        # Apply size filter, only if selected_size is valid (not None or empty string)
+        if selected_size and selected_size != "":
+          
+           subcategory_products = subcategory_products.filter(variations__size=selected_size)
+     
+
+        # Apply price filters
+        if price_min:
+            try:
+                price_min = int(price_min)
+                subcategory_products = subcategory_products.filter(price__gte=price_min)
+            except ValueError:
+                price_min = None
+
+        if price_max:
+            try:
+                price_max = int(price_max)
+                subcategory_products = subcategory_products.filter(price__lte=price_max)
+            except ValueError:
+                price_max = None
+                # Apply subcategory filter
+        
+        
+        return render(request, 'subcategory.html', {'subname':subname,'categories':categories,             
+            'colors': color_data,
+            'sizes': sizes,
+            'selected_color': selected_color,
+            'selected_size': selected_size,
+            'price_min': price_min,
+            'price_max': price_max,
+            'subcategory_products':subcategory_products,
+            'subcategory':subcategory})    
         
 class ProductDetails(BaseView):
     def get(self, request, *args, **kwargs):

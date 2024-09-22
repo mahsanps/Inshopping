@@ -4,7 +4,7 @@ from .views import set_language
 from ui.view.auth import SignInView, LogOutView, SignUpView, accountInfoView, EditAccountInfo
 from ui.view.profile import ProfileView, AboutUs, ProductsSection, Contact
 from ui.view.shop import CreateShop, EditShop
-from ui.view.storepage import StorePage
+from ui.view.storepage import StorePage, aboutShop
 from ui.view.products import ProductsView, CategoryAutocomplete, load_subcategories, ProductsListView, ProductDetails, EditProductView, DeleteProduct, SubcategoryProducts
 from ui.view.category import CategoryPageView
 from ui.view.productQuantity import ProductQuantityView, EditProductVariation
@@ -60,6 +60,8 @@ urlpatterns = [
     path('wallet/', WalletView.as_view(), name='mywallet'),
     path('terms&conditions/', views.Terms_Conditions, name='terms&conditions'),
     path('about/', views.about, name='about'),
+    path('blog/', views.blog, name='blog'),
+    path('guid/', views.guid, name='guid'),
     path('contactus/', contact_view, name='contactus'),
     path('callback/<str:store_name>/', zarinpal_callback, name='zarinpal_callback'),  
     path('success/', success_view, name='success'),
@@ -75,11 +77,13 @@ urlpatterns = [
 
     # Store-specific URLs
     path('<str:store_name>/', StorePage.as_view(), name='storepage'),
+    path('<str:store_name>/aboutshop/', aboutShop.as_view(), name='about-shop'),
     path('<str:store_name>/cart/', CartView.as_view(), name='cart'),
     path('<str:store_name>/checkout/', CheckoutView.as_view(), name='checkout'),
     path('<str:store_name>/update_cart_item/<str:variation_pk>/', UpdateCartItemView.as_view(), name='update_cart_item'),
     path('<str:store_name>/delete_cart_item/<str:variation_pk>/', DeleteCartItemView.as_view(), name='delete_cart_item'),
     path('<str:store_name>/availablecolor/<int:product_pk>/', AvailableColorsView.as_view(), name='available_colors'),
     path('<str:store_name>/<str:product_pk>/', SingleProductPage.as_view(), name='singleproductpage'),
+    
     path('initiate-payment/<int:order_id>/', initiate_payment, name='initiate_payment'),  # Add this line for payment initiation
 ]

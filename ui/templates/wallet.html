@@ -1,5 +1,5 @@
 {% load i18n %}
-
+{% load custom_filters %}
 <section id="wallet" class="about" >
       
     <div id="outerContainer" class="container" >
@@ -28,7 +28,7 @@
             <div>
                 <h2>{% trans 'My Wallet' %}</h2>
                 <div> <h4>{% trans 'My Balance' %}</h4></div>
-                <strong> {{ total_price }}</strong>
+                <strong> {{ total_price|custom_price_format  }} تومان</strong>
             </div>    
       </div>
     </div>

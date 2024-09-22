@@ -10,6 +10,9 @@ from .choices import OrderStatusChoices, ProductVariationTypeChoices
 from django.contrib.auth import get_user_model
 from django_jalali.db import models as jmodels
 from django.utils.translation import gettext_lazy as _
+from django.utils.timezone import make_aware
+import jdatetime
+
 # Create your models here.
 
 User = get_user_model()
@@ -59,13 +62,19 @@ class Shop(BaseModel):
     account=models.ForeignKey(User,on_delete=models.CASCADE,  verbose_name=_("account")) 
     description=models.TextField(blank=True,verbose_name=_("Description"))
     instagramId=models.CharField(max_length=400, verbose_name=_("InstagramId"))
-    email=models.EmailField(blank=True, verbose_name=_("Email"))
+    email=models.EmailField( verbose_name=_("Email"))
     contact=models.CharField(blank=True,max_length=20, verbose_name=_("Contact"))
     address=models.CharField(blank=True, max_length=400, verbose_name=_("Address"))
     image=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("Image"))
+    delivery_cost=models.IntegerField(default=0,verbose_name=_("delivery-cost"))
+    banner_image1=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image1"))
+    banner_image2=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image2"))
+    banner_image3=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image3"))
     
     def __str__(self):
         return f'{self.store_name}' 
+    
+   
       
  
 class Color(models.Model):
@@ -88,6 +97,7 @@ class Product(BaseModel):
     category=models.ForeignKey(Category, on_delete=models.CASCADE,  verbose_name=_("Category"))
     subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, default="", verbose_name=_("subcategory"))
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
+    
     
 
    
@@ -120,7 +130,7 @@ class BankAccount(BaseModel):
 
 
 class Order(BaseModel):
-    created_at = jmodels.jDateTimeField(auto_now_add=True)
+    created_at = jmodels.jDateTimeField()
     account = models.ForeignKey(Account, on_delete=models.DO_NOTHING, db_constraint=False, null=False, blank=True,  verbose_name=_("account"))
     is_paid = models.BooleanField(default=False)
     total_price = models.FloatField( verbose_name=_("totalPrice"))
@@ -136,8 +146,35 @@ class Order(BaseModel):
     email = models.EmailField(blank=True, null=True)
     payment_authority = models.CharField(max_length=50, blank=True, null=True)
     payment_status = models.BooleanField(default=False)
+    shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
     
-    
+    def save(self, *args, **kwargs):
+        # Manually set `created_at` with a timezone-aware Jalali datetime if it's not set
+        if not self.created_at:
+            # Get current Jalali date and convert to Gregorian
+            jalali_now = jdatetime.datetime.now()
+            gregorian_now = jalali_now.togregorian()
+            
+            # Convert it to a timezone-aware datetime
+            self.created_at = make_aware(gregorian_now)
+        
+        # Check if the order is being marked as paid
+        if self.pk:
+            try:
+                old_order = Order.objects.get(pk=self.pk)
+                if not old_order.is_paid and self.is_paid:
+                    # If the order was not paid before but is now being marked as paid
+                    if hasattr(self, 'items'):
+                        for item in self.items.all():
+                            if item.variation:
+                                new_quantity = item.variation.quantity - item.quantity
+                                item.variation.quantity = max(new_quantity, 0)  # Ensure quantity doesn't go below zero
+                                item.variation.save(update_fields=["quantity"])
+            except Order.DoesNotExist:
+                pass  # Handle error if needed
+
+        super().save(*args, **kwargs)
+
     
     
     def full_delivery_address(self):
@@ -162,13 +199,12 @@ class OrderItem(BaseModel):
     quantity=models.IntegerField(default=1,  verbose_name=_("quantity"))
     
     def save(self, *args, **kwargs):
+        # Check if there is a variation and if the variation has enough quantity
         if self.variation and self.variation.quantity - self.quantity < 0:
             raise Exception("There is not enough item available to submit this order")
-        super().save(*args, **kwargs)
-        if self.variation:
-            self.variation.quantity = 0 if self.variation.quantity - self.quantity <= 0 else self.variation.quantity - self.quantity
-            self.variation.save(update_fields=["quantity"])
 
+        # Call the original save method to save the order item first
+        super().save(*args, **kwargs)
     
 class OrderDelivery(BaseModel):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="delivery")

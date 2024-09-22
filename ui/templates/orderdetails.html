@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load static %}
 {% load jformat %}
+{% load custom_filters %}
 
 <a class="back-btn" href="#"  hx-get="{% url 'orders' %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
 <section   style="min-height:100vh;">
@@ -12,18 +13,18 @@
             {% for item in order_items %}
             <img style="width:100px; height:100px;" src="{{item.variation.product.image.url}}">
             <li>{{ item.variation.product.name }}</li>
-            <li>{% trans "Price" %}: {{ item.variation_price }}</li>
+            <li>{% trans "Price" %}: {{ item.variation_price|custom_price_format  }} تومان</li>
             <li>{% trans "Color" %}: {{ item.variation.color }}</li>
             <li>{% trans "size" %}: {{ item.variation.size }}</li>
             <li>{% trans "quantity" %}: {{ item.quantity }}</li>
-            <li>{% trans "finalPrice" %}:{{ item.total_price }}</li>
+            <li>{% trans "finalPrice" %}:{{ item.total_price|custom_price_format   }} تومان</li>
             <li>{% trans "Discount" %}: {{ item.discount }}</p>
             <li>{% trans "shop" %}: <a href="{% url 'storepage' store_name=item.variation.product.shop.store_name   %}" >{{ item.variation.product.shop.store_name }}</a></li>
             
                  
             {% endfor %}
             <p> تاریخ خرید : {{order.created_at|jformat:"%Y/%m/%d" }}</p>
-            <p>{% trans "totalPrice" %}: {{order.total_price}}</p>
+            <p>{% trans "totalPrice" %}: {{order.total_price|custom_price_format  }} تومان</p>
             
             </ul> 
     </div>    

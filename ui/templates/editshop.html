@@ -1,7 +1,8 @@
 {% load static %}
 <a class="back-btn" href="#outerContainer"  hx-get="{% url 'account-info' %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
 <div class="forms">
-    <form class="inputs" hx-post="{% url 'editshop' pk=shop_instance.pk %}" hx-swap="outerHTML"  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger='submit' >
+   
+        <form class="inputs" action="{% url 'editshop' pk=shop_instance.pk %}" method="post" enctype="multipart/form-data" >
         {% csrf_token %}
         {% for field in form %}
         <div class="form-group">
@@ -17,6 +18,7 @@
             {% endif %}
         </div>
     {% endfor %}
+    <p>توجه : هزینه ارسال یکبار برای تمام محصولات شما اعمال می شود.(هزینه به تومان)</p>
         <button type="submit">ذخیره تغییرات</button>
     </form>
 </div>

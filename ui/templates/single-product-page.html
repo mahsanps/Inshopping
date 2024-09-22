@@ -2,6 +2,8 @@
 {% load i18n %}
 {% load static %}
 {% block body %}
+{% load custom_filters %}
+
 <head>
     <style>
         .btn-disabled {
@@ -94,7 +96,7 @@
                     <li><h1 style="font-size:30px;" >{{ product_details.name }}</h1></li>
                    
                    <br>
-                    <li><h4 style="font-weight:600; color:#41011a; border:1px solid #41011a; padding: 5px; border-radius: 10px;">قیمت :  {{ product_details.price }}</h4></li>
+                    <li><h4 style="font-weight:600; color:#41011a; border:1px solid #41011a; padding: 5px; border-radius: 10px;">قیمت :  {{ product_details.price|custom_price_format  }} تومان</h4></li>
                     <br>
                     {% if product_details.material %}
                     <li><h4>جنس : {{product_details.material}}</h4></li>

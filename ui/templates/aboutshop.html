@@ -1,0 +1,64 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{% load static %}
+{% block body %} 
+{% load custom_filters %}
+
+
+<div id="shop-div" style="background-color:white;" >
+  <div class="head-cart">
+    <div class="cart-ul">
+       <ul> 
+          {% if shop_instance%}
+          <li class="cart" ><a href="{% url 'about-shop' store_name=store_name %}">
+             
+             <span class="btn-shop"> درباره فروشگاه</span></a>
+          </li>
+           {% endif %}
+       </ul> 
+       </div>
+       <a  class="store-name"  href="{% url 'storepage' store_name=store_name %}" >
+    <h2> {{ store_name }}</h2>
+       </a>
+    <div class="cart-ul">
+    <ul> 
+       <li class="cart" ><a href="{% url 'cart' store_name=store_name %}">
+          <i class="fa fa-shopping-cart" style="color:white; "  aria-hidden="true"></i>
+          <span class="btn-shop"  >سبد خرید</span></a>
+       </li>
+    
+    </ul> 
+    </div>
+ </div>
+                          
+    {% for shop in shop_list %}
+    
+   
+    <div class="about-store" >
+       
+      <div >
+        <ul style="text-align:right; " >
+          {% if shop.description %}
+          <li  ><i class="bi bi-chevron-right"></i> درباره فروشگاه :<span>{{shop.description}}</span></li>
+          {% endif %}
+          <br>
+          <li  ><i class="bi bi-chevron-right"></i>  چگونه ما را پیدا کنید :</li>
+          {% if shop.instagramId %}
+          <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/instagram-icon.png' %}"> : </strong> <span>{{shop.instagramId}}</span></li>
+          {% endif %}
+          {% if shop.email %}
+          <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/Email_icon.png' %}"> :</strong> <span>{{shop.email}}</span></li>
+          {% endif %}
+          
+          {% if shop.address %}
+          <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/location-icon.png' %}"> :</strong> <span>{{shop.address}}</span></li>
+          {% endif %}
+       </ul>
+      
+      </div>    
+    </div> 
+    {% endfor %}
+    
+</div>
+
+{% endblock %}

@@ -37,8 +37,9 @@
         </div>
         <div>
             {{ form.price.errors }}
-            <label for="{{ form.price.id_for_label }}">{{ form.price.label }} {% if form.price.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            <label for="{{ form.price.id_for_label }}">{{ form.price.label }} {% if form.price.field.required %}<span style="color: red;">* (تومان)</span>{% endif %}</label>
             {{ form.price }}
+            
         </div>
         <div>
             {{ form.isactive.errors }}

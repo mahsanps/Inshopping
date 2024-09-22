@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'dal_select2',
     "django_htmx",
     'django_jalali',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -164,7 +165,8 @@ LANGUAGES = [
     ('fa', 'Persian'),
 ]
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'  # or another timezone relevant to your region
+
 
 USE_I18N = True
 USE_L10N = True
@@ -202,7 +204,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'info@inshopping.ir'
 EMAIL_HOST_PASSWORD = 'Msn_912388_In'  
-DEFAULT_FROM_EMAIL = 'info@inshopping.ir'
+DEFAULT_FROM_EMAIL = 'Inshopping <info@inshopping.ir>'
  
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

@@ -2,11 +2,14 @@
 {% load i18n %}
 {% load static %}
 {% block body %} 
+{% load custom_filters %}
+
 <div class="befor-form">
 <div class="forms" style="height:auto; direction:rtl; text-align:right; margin:0;">
     <h1>پرداخت</h1>
     <form class="inputs" action="{% url 'checkout' store_name=store_name %}" method="POST">
-        <p>مجموع پرداخت: {{ total_price }}</p>
+        <p >هزینه ارسال :{{delivery_cost|custom_price_format }} تومان</p>
+        <p class="cost_fields">مجموع پرداخت: {{ total_price|custom_price_format  }} تومان</p>
         {% csrf_token %}
         {{ form.as_p }}
         <div style="display:flex;">

@@ -50,7 +50,7 @@ class EditShop(BaseView):
 
     def post(self, request,pk, *args, **kwargs):
         shop_instance = get_object_or_404(Shop, pk=pk)
-        form = ShopForm(request.POST, instance=shop_instance)
+        form = ShopForm(request.POST,  request.FILES, instance=shop_instance)
         if form.is_valid():
             form.save()
             return redirect('account-info')

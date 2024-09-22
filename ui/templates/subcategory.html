@@ -1,14 +1,84 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
+{% load custom_filters %}
 <!-- fashion section start -->
 <div class="fashion_section">
    <div id="main_slider" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner" style="background-color: white; margin-top:10px; padding-top:10px; min-height:550px;">
+      <div class="subcat-div" >
          <div class="carousel-item active">
-            <div class="container">
-               <h3 style="background-color:#f5ba01; color:black; margin:auto; width:90%; padding:10px; text-align:center; border:1px; border-radius:8px;">{{ subname }}</h3>
-               <div class="fashion_section_2">
+            
+               <h3 style="background-color:#f0f0f0; color:black; margin:auto; width:98%; padding:10px; text-align:center; border:1px; border-radius:8px;">{{ subname }}</h3>
+               <div class="befor-filter">
+                  <button style="padding: 4px 6px; background-color:white; color:black; border:none;" 
+                  class="btn btn-primary d-block d-md-none" 
+                  type="button" 
+                  data-toggle="collapse" 
+                  data-target="#filter-section"
+                  aria-expanded="false"
+                  aria-controls="filter-section"
+                  aria-label="Toggle filters">
+                     <img style="width:24px;" src="{% static 'images/filter.png' %}" >فیلتر
+                 </button>
+               </div>
+               <div class="fashion_section_2" style="display:flex;">
+                  
+  <!-- Filter Section -->
+  <div id="filter-section" class="collapse d-md-block">
+   <form method="get" class="product-filters">
+       <!-- Hidden Fields to Retain Query Parameters -->
+       <input type="hidden" name="color" value="{{ selected_color }}">
+       <input type="hidden" name="size" value="{{ selected_size }}">
+       <input type="hidden" name="price_min" value="{{ price_min }}">
+       <input type="hidden" name="price_max" value="{{ price_max }}">
+     
+
+       <!-- Color Filter (Buttons) -->
+       <div class="filter-group">
+           <h4>رنگ مورد نظر</h4>
+           <div class="filter-options">
+               {% for color in colors %}
+               <button type="submit" name="color" value="{{ color.name }}" 
+                       class="color-icon {% if color.name == selected_color %}active{% endif %}" 
+                       style="background-color: {{ color.code }};">
+               </button>
+               {% endfor %}
+           </div>
+       </div>
+
+       <!-- Size Filter (Dropdown) -->
+       <div class="filter-group">
+           <h4>سایز مورد نظر</h4>
+           <select name="size" onchange="this.form.submit()">
+               <option value="">انتخاب سایز</option>
+               {% for size in sizes %}
+               <option value="{{ size }}" {% if size == selected_size %}selected{% endif %}>
+                   {{ size }}
+               </option>
+               {% endfor %}
+           </select>
+       </div>
+
+       <!-- Price Filter (Inputs) -->
+       <div class="filter-group">
+           <h4>قیمت مورد نظر</h4>
+           <div class="filter-options">
+               <input type="number" name="price_min" value="{{ price_min }}" placeholder="حداقل ">
+               <input type="number" name="price_max" value="{{ price_max }}" placeholder="حداکثر ">
+               <button type="submit">فیلتر</button>
+           </div>
+       </div>
+
+       <!-- Subcategory Filter (Dropdown) -->
+       
+
+       <!-- Clear Filters -->
+       <div class="filter-group">
+           <a href="?">حذف فیلتر</a>
+       </div>
+   </form>
+</div>
+<div class="container">
                   <div class="row">
                      {% for product in subcategory_products %}
                      <div class="most-sellers">
@@ -17,7 +87,7 @@
                               
                               <div class="tshirt_img"><img  src="{{ product.image.url }}" alt="{{ product.name }}"></div>
                               <h4 class="shirt_text">{{ product.name }}</h4>
-                              <p class="price_text"> <span >{{product.price}}</span></p>
+                              <p class="price_text"> <span >{{product.price|custom_price_format  }} تومان</span></p>
                            </a>
                         </div>
                      </div>

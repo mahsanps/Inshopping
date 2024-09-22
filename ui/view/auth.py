@@ -49,7 +49,7 @@ class SignInView(BaseView):
                 login(request, user)
                 return redirect("/")
             else:
-                form.add_error(None, "Invalid credentials. Please try again.")
+                form.add_error(None, "شناسه نامعتبر است. لطفا دوباره سعی کنید")
         return render(request, self.template_name, {"form": form})
 
 

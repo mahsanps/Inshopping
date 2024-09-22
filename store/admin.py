@@ -61,7 +61,13 @@ class OrderDeliveryInline(admin.TabularInline):
     extra = 0
         
 class OrderAdmin(admin.ModelAdmin):
+    list_display = ['account', 'is_paid', 'total_price','created_at', 'shop']  # Include 'shop' in the list display
     inlines = [OrderItemInline, OrderDeliveryInline]
+    fields = ['account', 'is_paid', 'total_price', 'total_discount', 'shop', 'delivery_address_unit_number', 
+              'delivery_address_street_name', 'delivery_address_suburb', 'delivery_address_city', 
+              'delivery_address_state','delivery_address_postcode', 
+               'payment_authority', 'payment_status']  # Specify fields for the form
+
     
 
 # Register models with the admin site

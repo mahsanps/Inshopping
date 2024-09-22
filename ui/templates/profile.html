@@ -21,7 +21,143 @@
   <link href="{% static 'vendor/select2/dist/css/select2.css' %}" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="{% static 'admin/js/vendor/select2/select2.full.min.js' %}"></script>
+
+
   <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function initializeCharts() {
+      console.log('Initializing charts');  // Debugging log to check when this function is called
+
+      // Daily Sales Chart
+      var dailySales = {{ daily_sales }};
+      var dailyCtx = document.getElementById('dailySalesChart');
+      if (dailyCtx) {
+        console.log('Daily Sales Chart found and initialized');  // Debugging log for daily chart
+        dailyCtx = dailyCtx.getContext('2d');
+        new Chart(dailyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Daily Sales'],
+            datasets: [{
+              label: 'Total Sales (Daily)',
+              data: [dailySales],
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Weekly Sales Chart
+      var weeklySales = {{ weekly_sales }};
+      var weeklyCtx = document.getElementById('weeklySalesChart');
+      if (weeklyCtx) {
+        console.log('Weekly Sales Chart found and initialized');  // Debugging log for weekly chart
+        weeklyCtx = weeklyCtx.getContext('2d');
+        new Chart(weeklyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Weekly Sales'],
+            datasets: [{
+              label: 'Total Sales (Weekly)',
+              data: [weeklySales],
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Monthly Sales Chart
+      var monthlySales = {{ monthly_sales }};
+      var monthlyCtx = document.getElementById('monthlySalesChart');
+      if (monthlyCtx) {
+        console.log('Monthly Sales Chart found and initialized');  // Debugging log for monthly chart
+        monthlyCtx = monthlyCtx.getContext('2d');
+        new Chart(monthlyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Monthly Sales'],
+            datasets: [{
+              label: 'Total Sales (Monthly)',
+              data: [monthlySales],
+              backgroundColor: 'rgba(255, 206, 86, 0.2)',
+              borderColor: 'rgba(255, 206, 86, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Last 7 Days Sales Chart
+      var last7DaysLabels = JSON.parse('{{ last_7_days_labels|safe }}');
+      var last7DaysData = JSON.parse('{{ last_7_days_sales|safe }}');
+      var last7DaysCtx = document.getElementById('last7DaysSalesChart');
+      if (last7DaysCtx) {
+        console.log('Last 7 Days Sales Chart found and initialized');  // Debugging log for 7 days chart
+        last7DaysCtx = last7DaysCtx.getContext('2d');
+        new Chart(last7DaysCtx, {
+          type: 'line',
+          data: {
+            labels: last7DaysLabels,
+            datasets: [{
+              label: 'Sales (Last 7 Days)',
+              data: last7DaysData,
+              fill: false,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              tension: 0.1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // Call initializeCharts after the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOMContentLoaded event fired');  // Debugging log to ensure event fires
+      initializeCharts();
+    });
+
+    // Re-initialize charts when HTMX swaps content
+    document.addEventListener('htmx:afterSwap', function() {
+      console.log('htmx:afterSwap event fired');  // Debugging log to check when HTMX reloads
+      initializeCharts();
+    });
+  </script>
+
+
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -120,7 +256,7 @@
   <script src="{% static 'asset/vendor/typed.js/typed.umd.js' %}"></script>
   <script src="{% static 'asset/vendor/waypoints/noframework.waypoints.js' %}"></script>
   <script src="{% static 'asset/vendor/php-email-form/validate.js' %}"></script>
-  
+
 
 
 

@@ -1,4 +1,3 @@
----------------------------------------------------------- import Files ---------------------------------------------------------------------*/
 
 @import url(animate.min.css);
 @import url(normalize.css);
@@ -12,7 +11,6 @@
 @import url(jquery-ui.css);
 @import url(nice-select.css);
 
-/*--------------------------------------------------------------------- skeleton ---------------------------------------------------------------------*/
 
 @font-face {
     font-family:'Shabnam';
@@ -21,8 +19,14 @@
          url('/static/fonts/Shabnam.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-}
+  }
 
+  body {
+    color: #666666;
+    overflow-x: hidden;
+    font-family: "shabnam", sans-serif;
+    direction:rtl;
+}
 
 * {
     box-sizing: border-box !important;
@@ -34,18 +38,9 @@ html {
     overflow-x: hidden;
 }
 
-body {
-    color: #666666;
-    font-size: 14px;
-    line-height: 1.80857;
-    font-weight: normal;
-    overflow-x: hidden;
-    font-family: 'Shabnam', sans-serif;
-    direction:rtl;
-}
+
 
 a {
-    font-family: 'Shabnam', sans-serif;
     color: #1f1f1f;
     text-decoration: none !important;
     outline: none !important;
@@ -70,7 +65,7 @@ h6 {
     line-height: normal;
     color: #111111;
     margin: 0;
-    font-family: 'Shabnam', sans-serif;
+   
 }
 
 h1 {
@@ -133,7 +128,7 @@ p {
     font-weight: 400;
     font-size: 15px;
     line-height: 24px;
-    font-family: 'Shabnam', sans-serif;
+   
 }
 
 a {
@@ -175,13 +170,9 @@ img {
     font-size: 16px;
 }
 .store-name {
-    background-color: #f5ba01;  
-    padding: 5px; 
-    width: 55%;
-    border: 1px; 
-    border-radius: 5px;
+    width: 100%;
     color: black;
-    text-align:right;
+    text-align:center;
 }
 
 .lead {
@@ -213,7 +204,12 @@ img {
     display:flex;
     position:relative;
     flex-wrap: nowrap;
+    background-color: #393939;
+    height: 60px;
 }
+
+
+
 
 .logo img {
     width:150px; 
@@ -260,7 +256,7 @@ button {
     background-image: url(../images/main.png) !important;
     background-size: 100%;
     background-repeat: no-repeat;
-    height:600px;
+    height:400px;
     
 }
 
@@ -276,7 +272,6 @@ button {
 .header_section_top {
     width: 100%;
     float: left;
-    background-color: #050505ba;
     clip-path: polygon(0 0, 100% 0, 96% 100%, 3% 100%);
     height: auto;
     padding: 10px 0px;
@@ -291,9 +286,14 @@ button {
     order:1; 
    
 }
+.btn-shop {
+    font-size:16px; 
+    text-align:center;
+    color:white;
+}
 
 .custom_menu {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     text-align: right;
     display: flex;
@@ -310,23 +310,27 @@ button {
 }
 
 .custom_menu li {
-    font-size: 18px;
-    color: #f1f1f1;
+    font-size: 16px;
     text-align: center;
     display: inline;
     padding: 6px 10px 0px 10px;
 }
 
-.custom_menu li a {
-    color: #f1f1f1;
-}
+
 
 .custom_menu li a:hover {
     color: #DFCCB7;
 }
 
 
-
+.custom-banner {
+    width:50%;
+    
+    padding: 8px 30px;
+    border-radius: 8px;
+    text-align:center;
+    font-size:18px;
+}
 /* header top section end */
 
 
@@ -379,15 +383,16 @@ button {
 }
 
 .about-store {
-    width:50%; 
     display:block; 
-    color:#f0e9e9;  
     border: 1px; 
-    background-color: #0009; 
     border-radius:5px; 
-    padding:10px;
+    padding:5%;
     margin-right: 10%;
+    min-height: 50vh;
+    
 }
+
+
 /* opennav bar start */
 
 .sidenav {
@@ -458,7 +463,7 @@ button {
 
 .btn-secondary {
     background-color: whitesmoke;
-    border-color: #30302e;
+    border:1px solid #b0b0b0;
     font-size: 14px;
     color:#000;
     margin-right: 5px;
@@ -484,7 +489,7 @@ button {
     margin: 0 auto 0 0;
     display: inline-block;
     order: 2;
-    width: 50%;
+    width: 100%;
 }
 
 .banner2 {
@@ -502,7 +507,11 @@ button {
     border-radius: 20%;
 }
 .head-cart {
-    margin-right: 10%;
+    display: flex;
+    background-color: #f0f0f0;
+    padding: 8px 20px;
+    border: 1px;
+    border-radius: 8px;
 }
 .banner2-text {
     float:right; 
@@ -532,9 +541,10 @@ button {
 .cart {
     background-color:#30302e; 
     padding:5px 8px; 
-    width:100px; 
+    width:120px; 
     border-radius:5px; 
     margin:5px; 
+    text-align: center;
 }
 
 /* Bootstrap 4 text input with search icon */
@@ -592,7 +602,7 @@ button {
 }
 
 .search-input {
-    width: 100%;
+    width: 70%;
     border:1px;
     border-radius: 0 5px 5px 0;
    
@@ -612,13 +622,14 @@ button {
     border-radius: 5px;
     margin-right: 20px;
 }
-.containers {
-    padding-top:10% ;
-   
+
+.bannershop {
+    text-align: center;
+    height: 450px;
 }
 .shop-list {
-   
-    margin-top: 10%;
+   display: flex;
+   padding: 2%;
 }
 
 .nav-link {
@@ -865,6 +876,167 @@ a:hover {
     font-size: 30px;
     color: #ffffff;
 }
+#filter-section {
+    width: 10%;
+}
+/* General Filter Styling */
+.product-filters {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    direction: rtl;
+    text-align: right;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px;
+    border-radius: 8px;
+}
+
+
+/* Styling each filter group */
+.filter-group {
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+/* Filter Titles */
+.filter-group h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Styling for the color filter buttons */
+.color-icon {
+    width: 5px;
+    height: 5px;
+    border-radius: 50% !important;  /* Make the buttons circular */
+    border: 2px solid #ddd;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease;
+    background-color: transparent;  /* The actual background is set inline in the template */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;  /* Size for the Unicode circle */
+}
+
+.color-icon:hover {
+    transform: scale(1.1);  /* Scale up slightly on hover */
+    border: 2px solid #000;
+}
+
+.color-icon.active {
+    border: 2px solid #007bff;  /* Highlight the selected color */
+}
+
+.color-icon:focus {
+    outline: none;
+    border: 2px solid #007bff;  /* Focus styling for keyboard users */
+}
+
+/* Button Filters */
+.filter-options button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 5px 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-options button:hover {
+    background-color: #ddd;
+}
+
+.filter-options button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Dropdown Filter */
+.filter-options select {
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+/* Input Filters */
+.filter-options input {
+    width: 50px;
+    font-size: 11px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.filter-group select {
+    width: 100px;
+    font-size: 11px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Apply Filter Button */
+.filter-options button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    border: 1px solid #28a745;
+    cursor: pointer;
+    padding: 8px 5px;
+    border-radius: 4px;
+    margin: 5px;
+    font-size: 14px;
+}
+
+.filter-options button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Clear Filters Link */
+.filter-group a {
+    padding: 10px 5px;
+    background-color: #dc3545;
+    font-size: 14px;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.filter-group a:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-filters {
+        flex-direction: column;
+    }
+    
+    .filter-options button, .filter-options select, .filter-options input {
+        
+        margin-bottom: 10px;
+    }
+
+    .filter-group a {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
 .cat-link{
     margin: auto;
     text-align:center;
@@ -900,6 +1072,12 @@ a:hover {
     padding:5%; 
     direction: rtl; 
     text-align: right;
+}
+.search-result {
+    padding:2%; 
+    background-color:white; 
+    text-align:right; 
+    direction:rtl;
 }
 
 
@@ -1109,6 +1287,7 @@ input.mail_bt::placeholder {
     font-size: 16px;
     color: #f1f1f1;
     padding: 20px 10px 0px 10px;
+  
 }
 
 .footer_menu li a {
@@ -1131,10 +1310,19 @@ input.mail_bt::placeholder {
     font-size: 16px;
     color: #ffffff;
     padding: 30px 30px 30px 30px;
+   
 }
 
 .location_main a {
     color: #ffffff;
+  
+}
+
+.subcat-div {
+    background-color: white; 
+    margin-top:10px;
+    padding-top:10px; 
+    min-height:550px;
 }
 
 .location_main a:hover {
@@ -1184,6 +1372,14 @@ input.mail_bt::placeholder {
  
 
 }
+.cost_fields {
+    border: 1px ;
+    background-color: #1f1f1f;
+    color: white;
+    border-radius: 8px;
+    padding: 5px;
+    width:70%;
+}
 
 .forms textarea {
     border: 1px solid white;
@@ -1220,9 +1416,8 @@ input.mail_bt::placeholder {
 }
 
 .pro-btn a {
-    color:white; 
-    font-family:'shabnam';
     padding-top: 2px;
+    color: white;
 }
 .pro-btn img {
     width: 30px;
@@ -1261,20 +1456,23 @@ input.mail_bt::placeholder {
 
 /* Mobile screens (portrait) */
 @media screen and (max-width: 768px) {
+    #filter-section {
+        width: 50%;
+       
+    }
     .custom_menu li {
         font-size: 14px;
         padding: 8px;
     }
+    .custom_menu {
+        text-align: center;
+    }
     .header1 {
         flex-wrap: wrap; 
+        height: 50px;
         
     }
-    .pro-btn  img{
-        background-color: #000;
-        border: 1px;
-        border-radius: 50%;
-        color:#000;
-    }
+    
    
     .contain{
         padding-right: 0;
@@ -1306,7 +1504,7 @@ input.mail_bt::placeholder {
     .search-input{
         font-size: 14px;
         padding: 0 5px !important;
-        
+        width: 85%;
         
        
     }
@@ -1323,7 +1521,7 @@ input.mail_bt::placeholder {
         margin: 5px 5px 0 0;
     }
     .pro-btn a {
-        color:#000;
+        color:white;
         font-size: 14px;
         margin: auto;
         padding-top: 0;
@@ -1365,8 +1563,11 @@ input.mail_bt::placeholder {
     }
     
     .main {
-        margin: 5px 5px;
+        margin: auto;
         width:100%;
+        text-align: center;
+        background-color: #f0f0f0;
+      
     }
     .jewellery_section {
         padding: 0 8px;
@@ -1386,7 +1587,6 @@ input.mail_bt::placeholder {
         display: none;
     }
     .containers{
-        background-color: #f0f0f0;
         padding: 0;
     }
     .cat-img img{
@@ -1455,21 +1655,32 @@ input.mail_bt::placeholder {
         border-radius: 5px;
     }
     .cart {
-        width:60%;
+        width:100px;
         float: left;
     }
     .head-cart {
         display: flex;
-        padding: 20px;
+        padding: 5px;
         margin-right: auto;
-        background-color: white;
+       
         
+    }
+    .custom-banner {
+        width: 98%;
+       
+    }
+    .bannershop {
+        height: 200px;
     }
     .cart-ul {
         width: 50%;
     }
     .store-name {
         background-color: transparent;
+        font-size: 18px !important;
+    }
+    .store-name h2 {
+        font-size: 18px !important;
     }
     .tshirt_img  {
         height: auto;
@@ -1511,7 +1722,7 @@ input.mail_bt::placeholder {
     }
     #shop-div {
         background-color: white;
-        margin-top: 5px;
+        margin-top: 10%;
     }
     .shop-list{
         background-color: white;
@@ -1530,12 +1741,29 @@ input.mail_bt::placeholder {
         background-color:white; 
         margin:0; 
         padding:3%; 
-        margin-top: 10px;
+        margin-top: 10%;
+    }
+    .btn-shop {
+        font-size:12px; 
+    }
+    .about img {
+        display: none;
     }
     .befor-form {
         background-color: white;
-        margin-top: 10px;
+        margin-top: 10%;
         padding: 0;
+    }
+    .subcat-div {
+      
+        margin-top:10%;
+    }
+    .befor-filter {
+        border-bottom: 1px solid gray;
+        width: 100%;
+    }
+    .search-result {
+        margin-top: 10%;
     }
 }
 

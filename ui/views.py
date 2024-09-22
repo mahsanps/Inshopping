@@ -35,6 +35,12 @@ def Contact(request):
 def about(request):
     return render(request, 'about.html')
 
+def blog(request):
+    return render(request, 'blog.html')
+
+def guid(request):
+    return render(request, 'guid.html')
+
 
 def set_language(request):
     if request.method == 'POST':
