@@ -13,6 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import make_aware
 import jdatetime
 
+from django.utils.timezone import now, timedelta
 # Create your models here.
 
 User = get_user_model()
@@ -42,7 +43,6 @@ class AccountInfo(BaseModel):
     phone= models.CharField(max_length=300, verbose_name=_("phone"))
     
 
-      
         
 class Category(BaseModel):
     name=models.CharField(max_length=100, verbose_name=_("Category"))
@@ -74,8 +74,32 @@ class Shop(BaseModel):
     def __str__(self):
         return f'{self.store_name}' 
     
-   
-      
+class ShopAuth(BaseModel):
+    shop = models.OneToOneField(Shop, on_delete=models.CASCADE, related_name="shop_auth")
+    # Instagram User ID
+    instagram_user_id = models.CharField(max_length=255, unique=True)
+    
+    # Access token for making API requests on behalf of the user
+    access_token = models.TextField()
+    
+    # Expiry date of the access token
+    token_expiry = models.DateTimeField(default=now() + timedelta(days=60))  # Adjust if you know the exact expiry period
+    
+    # Date when the user last authenticated/authorized the app
+    last_authenticated = models.DateTimeField(auto_now=True)
+    
+    # Optional fields for other metadata
+    username = models.CharField(max_length=255, blank=True, null=True)
+    profile_picture_url = models.URLField(blank=True, null=True)
+    
+    def is_token_valid(self):
+        """
+        Check if the access token is still valid.
+        """
+        return now() < self.token_expiry
+
+    def __str__(self):
+        return f'Instagram Account of {self.shop.account.username} (ID: {self.instagram_user_id})'      
  
 class Color(models.Model):
     color = models.CharField(max_length=400,default="", verbose_name=_("color"))

@@ -210,3 +210,12 @@ DEFAULT_FROM_EMAIL = 'Inshopping <info@inshopping.ir>'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+# Instagram API settings
+INSTAGRAM_CLIENT_ID = 'your-client-id'
+INSTAGRAM_CLIENT_SECRET = 'your-client-secret'
+INSTAGRAM_REDIRECT_URI = 'https://yourdomain.com/instagram/callback/'
+
