@@ -1760,3 +1760,6 @@ msgstr " جمع تراکنش ها"
 
 #~ msgid "Cancel"
 #~ msgstr "خیر"
+
+#~ msgid "cancel"
+#~ msgstr "خیر"

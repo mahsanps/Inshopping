@@ -9,7 +9,7 @@ from utils.views import BaseView
 class ProductQuantityView(BaseView):
     def get(self, request, product_pk, *args, **kwargs,):
         product = get_object_or_404(Product, pk=product_pk)
-        print(product.pk)
+    
         color = Color.objects.all()
         initial = {"product_id": product.pk}
         form = ProductsQuantityForm(initial=initial)
@@ -17,7 +17,7 @@ class ProductQuantityView(BaseView):
 
     def post(self, request, product_pk, *args, **kwargs):
         product = get_object_or_404(Product, pk=product_pk)
-        print(f"POST request for product_pk: {product_pk}") 
+       
         
         color = Color.objects.all()
         data = request.POST

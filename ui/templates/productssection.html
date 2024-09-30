@@ -13,7 +13,7 @@
       </br>
       </br>
       
-      <a hx-get="{% url 'products_list' %}" hx-target="#outerContainer" >
+      <a hx-get="{% url 'products_list' %}" hx-target="#outerContainer"  hx-push-url="true">
         <div class="btn-style" ><button>{% trans 'List Of Your Products' %}</button></div> 
       </a> 
       

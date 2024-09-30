@@ -1,3 +1,4 @@
+from __future__ import annotations
 from django.db import models
 from utils.models import BaseModel
 import uuid
@@ -12,6 +13,8 @@ from django_jalali.db import models as jmodels
 from django.utils.translation import gettext_lazy as _
 from django.utils.timezone import make_aware
 import jdatetime
+from store.utils import post_to_instagram
+from django.conf import settings
 
 from django.utils.timezone import now, timedelta
 # Create your models here.
@@ -71,6 +74,8 @@ class Shop(BaseModel):
     banner_image2=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image2"))
     banner_image3=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image3"))
     
+    shop_auth: ShopAuth
+    
     def __str__(self):
         return f'{self.store_name}' 
     
@@ -121,9 +126,18 @@ class Product(BaseModel):
     category=models.ForeignKey(Category, on_delete=models.CASCADE,  verbose_name=_("Category"))
     subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, default="", verbose_name=_("subcategory"))
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
+    instagram_post = models.BooleanField(default=False, verbose_name=_("Post to Instagram"))
+    instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
     
-    
-
+    def publish_to_instagram(self):
+        instagram_user_id = self.shop.shop_auth.instagram_user_id
+        access_token = self.shop.shop_auth.access_token
+        caption = self.description
+        image_url = self.image.url if not settings.IS_LOCAL else "https://th.bing.com/th?id=OIP.eKE8nrMRCK3bdvd62kWJ_wHaEK&w=333&h=187&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
+        instagram_post_id = post_to_instagram(instagram_user_id, image_url, caption, access_token)
+        self.instagram_post_id = instagram_post_id
+        self.save()
+        
    
 class ProductImage(BaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images')
@@ -138,6 +152,11 @@ class ProductVariation(BaseModel):
     
     def __str__(self):
         return f'{self.size} {self.color} ({self.quantity})'
+
+
+
+
+
 
 
 

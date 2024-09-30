@@ -1,5 +1,9 @@
 {% load static %}
+{% load i18n %}
+{% load jformat %}
+{% load humanize %}
 {% load custom_filters %}
+
 
 <a class="back-btn" href="#outerContainer"  hx-get="{% url 'products_list'  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
 <section  class="about" style="height:auto;">
@@ -10,7 +14,7 @@
         <ul>
             
               <div class="col-lg-4" data-aos="fade-right">
-                <img src="{{product_details.images.url}}" class="img-fluid" alt="">
+                <img src="{{product_details.image.url}}" class="img-fluid" alt="">
               </div>
               <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
                     <h3>{{product_details.name}} </h3>
@@ -55,7 +59,7 @@
                   <a  hx-get="{% url 'edit_product' product_pk=product_details.pk %}" hx-target="#outerContainer" >
                     <div class="btn-style" ><button>ویرایش</button></div> 
                   </a> 
-                  
+                  <a href="{% url "publish_product_instagram_post" product_pk=product_details.pk %}">انتشار به عنوان پست در اینستاگرام</a>
                 </div>
                
               </div>

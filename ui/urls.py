@@ -5,7 +5,7 @@ from ui.view.auth import SignInView, LogOutView, SignUpView, accountInfoView, Ed
 from ui.view.profile import ProfileView, AboutUs, ProductsSection, Contact
 from ui.view.shop import CreateShop, EditShop
 from ui.view.storepage import StorePage, aboutShop
-from ui.view.products import ProductsView, CategoryAutocomplete, load_subcategories, ProductsListView, ProductDetails, EditProductView, DeleteProduct, SubcategoryProducts
+from ui.view.products import ProductsView, PublishProductInstagramPost, CategoryAutocomplete, load_subcategories, ProductsListView, ProductDetails, EditProductView, DeleteProduct, SubcategoryProducts
 from ui.view.category import CategoryPageView
 from ui.view.productQuantity import ProductQuantityView, EditProductVariation
 from ui.view.singleproductpage import SingleProductPage, AvailableColorsView
@@ -35,6 +35,7 @@ urlpatterns = [
     path("createshop/", CreateShop.as_view(), name="create_shop"),
     path("editshop/<int:pk>/", EditShop.as_view(), name='editshop'),
     path("products/", ProductsView.as_view(), name="products"),
+    path("product/<str:product_pk>/publish-instagram-post/", PublishProductInstagramPost.as_view(), name="publish_product_instagram_post"),
     path("productssection/", ProductsSection.as_view(), name="productssection"),
     path("productslist/", ProductsListView.as_view(), name="products_list"),
     path("productimages/", ProductsView.as_view(), name="product_images"),

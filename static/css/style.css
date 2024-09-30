@@ -38,7 +38,39 @@ html {
     overflow-x: hidden;
 }
 
-
+/* Loader styles */
+.loader {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+  }
+  
+  /* Spin animation */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Page overlay to cover the entire page */
+  #overlay {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
 
 a {
     color: #1f1f1f;
@@ -416,6 +448,17 @@ button {
     display: block;
     transition: 0.3s;
 }
+.subcat-title {
+    background-color:#f0f0f0; 
+    color:black; 
+    margin:auto; 
+    width:98%; 
+    padding:10px; 
+    text-align:center; 
+    border:1px; 
+    border-radius:8px;
+    margin-bottom: 10px;
+}
 
 .sidenav a:hover {
     color: #f26522;
@@ -537,6 +580,10 @@ button {
     padding-right: 15px;
     padding-left: 15px;
     height: auto;
+    background-color: white;
+    margin: 2px;
+    border: 1px;
+    border-radius: 8px;
 }
 .cart {
     background-color:#30302e; 
@@ -737,12 +784,16 @@ a:hover {
     color: #252525;
     text-align: center;
     font-weight: normal;
-    
+    padding: 10px;
+    background-color: white;
+    border: 1px;
+    border-radius: 8px;
+    margin-bottom: 3px;
+
 }
 
 .main-list {
    
-    background-color: white;
     padding-top: 5px;
     padding-bottom: 5%;
     margin: auto;
@@ -752,7 +803,6 @@ a:hover {
 }
 
 .fashion_section_2 {
-    width: 90%;
     margin-top: 30px;
     margin: auto;
 }
@@ -843,6 +893,28 @@ a:hover {
     float: right;
     text-align: right;
 }
+.pagination {
+    text-align: center;
+    padding: 10px 0;
+    margin: 5px !important;
+
+ }
+ 
+ .pagination .step-links a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #ddd;
+    text-decoration: none;
+ }
+ 
+ .pagination .step-links .current {
+    margin: 0 5px;
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+ }
+ 
 
 .seemore_bt a {
     width: 100%;
@@ -994,10 +1066,9 @@ a:hover {
     color: white;
     border: 1px solid #28a745;
     cursor: pointer;
-    padding: 8px 5px;
     border-radius: 4px;
     margin: 5px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .filter-options button[type="submit"]:hover {
@@ -1006,9 +1077,9 @@ a:hover {
 
 /* Clear Filters Link */
 .filter-group a {
-    padding: 10px 5px;
+    padding: 5px 5px;
     background-color: #dc3545;
-    font-size: 14px;
+    font-size: 12px;
     color: white;
     border-radius: 4px;
     text-decoration: none;
@@ -1023,6 +1094,7 @@ a:hover {
 @media (max-width: 768px) {
     .product-filters {
         flex-direction: column;
+        background-color: white;
     }
     
     .filter-options button, .filter-options select, .filter-options input {
@@ -1068,7 +1140,6 @@ a:hover {
 }
 .about{
     background-color:white; 
-    margin:10%; 
     padding:5%; 
     direction: rtl; 
     text-align: right;
@@ -1458,6 +1529,9 @@ input.mail_bt::placeholder {
 @media screen and (max-width: 768px) {
     #filter-section {
         width: 50%;
+        background-color: white;
+        border: 1px;
+        border-radius: 8px;
        
     }
     .custom_menu li {
@@ -1708,7 +1782,8 @@ input.mail_bt::placeholder {
     .most-sellers {
         padding: 0;
         margin: auto;
-        width: 45%;
+        width: 48%;
+        margin-top: 3px;
     }
     .box_main {
         padding: 0;
@@ -1725,8 +1800,8 @@ input.mail_bt::placeholder {
         margin-top: 10%;
     }
     .shop-list{
-        background-color: white;
-        width: 95%;
+        background-color: #f0f0f0;
+        width: 100%;
         margin: auto;
         border: 1px;
         border-radius: 8px;
@@ -1764,6 +1839,9 @@ input.mail_bt::placeholder {
     }
     .search-result {
         margin-top: 10%;
+    }
+    .subcat-title {
+        margin-bottom: 0;
     }
 }
 

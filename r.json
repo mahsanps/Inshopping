@@ -1,0 +1,30 @@
+{
+    "data": [
+        {
+            "access_token": "EAANZB7HYopG4BO2cWJMXSH3B1nvhbB9UnDfGHPeZBYMjmhKZAP628RxXBr8SPIw2ZC0TLdBm7IQmoitwMKsK1H8GbfTunruAx6ZBNSyjZCZAHCGEv5XZCr7PtrrReXSeZApxCZCuJXcTy2WNXpe75wZCWZAsTFCZBItVt6IiDZCd34oeoO2wlBYEjwcCLFZBZARrlWFrv4IZD",
+            "category": "Shopping & retail",
+            "category_list": [
+                {
+                    "id": "200600219953504",
+                    "name": "Shopping & Retail"
+                }
+            ],
+            "name": "Lucidcamp.travel",
+            "id": "263507206854777",
+            "tasks": [
+                "ADVERTISE",
+                "ANALYZE",
+                "CREATE_CONTENT",
+                "MESSAGING",
+                "MODERATE",
+                "MANAGE"
+            ]
+        }
+    ],
+    "paging": {
+        "cursors": {
+            "before": "QVFIUkJuQ3d3NkpwZAGhmemV2azRjN2NySmZAsbVFaTGFQYkQ1dU5PbDZAzQjN4a1NRUnJLUFRpRWZATNGd2alQ4ODEtdnZAKWGdDVWRjNGFQMFVTTG1yNHoxTVJB",
+            "after": "QVFIUkJuQ3d3NkpwZAGhmemV2azRjN2NySmZAsbVFaTGFQYkQ1dU5PbDZAzQjN4a1NRUnJLUFRpRWZATNGd2alQ4ODEtdnZAKWGdDVWRjNGFQMFVTTG1yNHoxTVJB"
+        }
+    }
+}

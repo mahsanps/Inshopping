@@ -10,7 +10,7 @@ class ProductsForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('name', 'productCode', 'description', 'image', 'material', 'madeIn', 'price', 'category', 'subcategory')
+        fields = ('name', 'productCode', 'description', 'image', 'material', 'madeIn', 'price', 'category', 'subcategory', 'instagram_post')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -33,6 +33,7 @@ class ProductsForm(forms.ModelForm):
         self.fields['price'].required = True 
         self.fields['category'].required = True 
         self.fields['subcategory'].required = True  
+        self.fields['instagram_post'].required = True  
         
         
         self.fields['price'].widget.attrs.update({'placeholder': '1,000,000 تومان'})

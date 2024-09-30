@@ -22,6 +22,7 @@ from ui import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("store/", include("store.urls")),
     path('', include('ui.urls')),
   
 ]

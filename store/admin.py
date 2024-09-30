@@ -1,6 +1,11 @@
 from django.contrib import admin
 from .models import Shop, Category, Product, BankAccount, Order, Contact, SubCategory, ProductVariation, Color, ProductImage, OrderItem, OrderDelivery
 from ui.forms.productQuantity import ProductsQuantityForm
+from .models import ShopAuth
+
+@admin.register(ShopAuth)
+class ShopAuthAdmin(admin.ModelAdmin):
+    pass
 
 # Inline for ProductImage
 class ProductImageInlineAdmin(admin.StackedInline):

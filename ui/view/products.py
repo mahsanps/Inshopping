@@ -1,7 +1,7 @@
 # views.py
 
 from django.shortcuts import render, redirect, get_object_or_404
-from store.models import Product, ProductVariation, ProductImage, SubCategory, Category, Color
+from store.models import Product, ProductVariation, ProductImage, SubCategory, Category, Color, ShopAuth, Shop
 from ui.forms.products import ProductsForm
 from ui.forms.deleteproduct import DeleteProductForm
 from utils.views import BaseView
@@ -13,6 +13,17 @@ from django.template.loader import render_to_string
 from dal import autocomplete
 from django.urls import reverse
 from constants import COLOR_MAP 
+from django.core.paginator import Paginator
+import requests
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+import json
+import jdatetime
+from datetime import datetime, timedelta
+
+from django.utils.timezone import now as django_now  # Use Django's timezone-aware `now`
+from django.utils.timezone import now as timezone_now, make_aware, is_naive
+
 
 
 User = get_user_model()
@@ -26,22 +37,22 @@ class ProductsView(BaseView):
     def post(self, request, *args, **kwargs):
         form = ProductsForm(request.POST, request.FILES)
         image_form = ProductsImagesForm(request.POST, request.FILES)
+
         if form.is_valid():
             product = form.save(commit=False)
             product.shop = request.user.shop_set.first()
             product.save()
-            for image in request.FILES.getlist('image'):
-                product_image = ProductImage(product=product, image=image)
-                product_image.save()
-                
-                images = request.FILES.getlist('images')
+
+            # Save product images
+            images = request.FILES.getlist('images')  # Assuming 'images' is the name for multiple image upload
+            saved_images = []
             for image in images:
-                ProductImage.objects.create(product=product, image=image)
-                
-                
-            print(f"Product PK: {product.pk}")    
-            return redirect(reverse('products_quantity', kwargs={'product_pk':product.pk}))
-        return render(request, 'products.html', {'form': form })
+                product_image = ProductImage.objects.create(product=product, image=image)
+                saved_images.append(product_image.image.url)  # Access the URL after saving
+
+            return redirect(reverse('products_quantity', kwargs={'product_pk': product.pk}))
+
+        return render(request, 'products.html', {'form': form})
 
 
 class CategoryAutocomplete(autocomplete.Select2QuerySetView):
@@ -50,7 +61,7 @@ class CategoryAutocomplete(autocomplete.Select2QuerySetView):
             return SubCategory.objects.none()
         
         category_id = self.forwarded.get('category', None)
-        print("Forwarded category ID:", category_id)
+        
         if category_id:
             return SubCategory.objects.filter(categoryname_id=category_id)
         return SubCategory.objects.none()
@@ -70,14 +81,19 @@ def load_subcategories(request):
     
 class ProductsListView(BaseView):
     def get(self, request, *args, **kwargs):
+        shop_instance = Shop.objects.filter(account=request.user)
         products= Product.objects.all()
         product_list = Product.objects.filter(shop__account=request.user).distinct()
         
         if 'category' in request.GET:
             category=request.GET['category']
             products=products.filter(category_id=request.GET['category'])
+            
+        if self.request.htmx:
+            return render(request, 'productslist.html', {'shop_instance':shop_instance,'products':products,'product_list': product_list,})
+        return render(request, 'productslist_full.html', {'shop_instance':shop_instance,'products':products,'product_list': product_list,})    
         
-        return render(request, 'productslist.html', {'products':products,'product_list': product_list,})
+       
 
 
 class SubcategoryProducts(BaseView):
@@ -86,6 +102,10 @@ class SubcategoryProducts(BaseView):
         subname: str= kwargs["subname"]
         subcategory=SubCategory.objects.get(subname=subname)
         subcategory_products= Product.objects.filter(subcategory=subcategory)
+        paginator = Paginator( subcategory_products, 40)  # Show 10 products per page
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         
         colors = Color.objects.exclude(color__isnull=True).exclude(color="")
 
@@ -98,18 +118,17 @@ class SubcategoryProducts(BaseView):
         # Fetch available sizes from products
         sizes = subcategory_products.values_list('variations__size', flat=True).exclude(variations__size__isnull=True).exclude(variations__size="").distinct()
 
-        print("Available sizes:", sizes)
+       
 
        
 
         # Get filter parameters from the request
         selected_color = request.GET.get("color")
         selected_size = request.GET.get("size")
-        print("Selected Size:", selected_size)
+        
         price_min = request.GET.get("price_min")
         price_max = request.GET.get("price_max")
-        print("Price Min:", price_min)
-        print("Price Max:", price_max)
+      
 
         
 
@@ -119,27 +138,27 @@ class SubcategoryProducts(BaseView):
         # Apply color filter
         if selected_color and selected_color != "None" and selected_color != "":
     # Apply color filter only if a valid color is selected
-           subcategory_products = subcategory_products.filter(variations__color__color=selected_color)
+           page_obj = subcategory_products.filter(variations__color__color=selected_color)
        
 
         # Apply size filter, only if selected_size is valid (not None or empty string)
         if selected_size and selected_size != "":
           
-           subcategory_products = subcategory_products.filter(variations__size=selected_size)
+           page_obj = subcategory_products.filter(variations__size=selected_size)
      
 
         # Apply price filters
         if price_min:
             try:
                 price_min = int(price_min)
-                subcategory_products = subcategory_products.filter(price__gte=price_min)
+                page_obj = subcategory_products.filter(price__gte=price_min)
             except ValueError:
                 price_min = None
 
         if price_max:
             try:
                 price_max = int(price_max)
-                subcategory_products = subcategory_products.filter(price__lte=price_max)
+                page_obj = subcategory_products.filter(price__lte=price_max)
             except ValueError:
                 price_max = None
                 # Apply subcategory filter
@@ -148,6 +167,7 @@ class SubcategoryProducts(BaseView):
         return render(request, 'subcategory.html', {'subname':subname,'categories':categories,             
             'colors': color_data,
             'sizes': sizes,
+            'page_obj':page_obj,
             'selected_color': selected_color,
             'selected_size': selected_size,
             'price_min': price_min,
@@ -207,5 +227,14 @@ class DeleteProduct(BaseView):
             if form.is_valid():
                 product.delete()
                   # Redirect to your products list view
-        return redirect('productssection') 
+        return redirect('products_list') 
+    
+    
+class PublishProductInstagramPost(BaseView):
+    def get(self, request, product_pk):
+        product = get_object_or_404(Product, pk=product_pk)
+        
+        product.publish_to_instagram()
+        return redirect('products_list') 
+    
     

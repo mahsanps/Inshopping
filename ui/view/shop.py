@@ -18,25 +18,23 @@ class CreateShop(BaseView):
         
     
     def post(self, request, *args, **kwargs):
-        print("POST method called")
+      
         form = ShopForm(data=request.POST, files=request.FILES)
         shop_instance = Shop.objects.filter(account=request.user)
         if form.is_valid():
-            print("Form is valid")
+           
             shop = form.save(commit=False)
             shop.account = request.user
             shop.save()
             if self.request.htmx:
-                print("HTMX request, sending 204 No Content")
+               
                 return HttpResponse(status=204)
             return redirect('account-info')
-        else:
-            print("Form is invalid", form.errors)
-
+        
         if self.request.htmx:
-            print("HTMX request with errors")
+         
             return render(request, 'createshop.html', {'form': form, 'shop_instance': shop_instance})
-        print("Normal request with errors")
+       
         return render(request, 'createshop_full.html', {'form': form, 'shop_instance': shop_instance})
 
 

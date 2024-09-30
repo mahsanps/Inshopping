@@ -151,7 +151,8 @@
          <!-- logo section end -->
           
         
-         {% block body %} {% endblock %}
+         {% block body %} <div id="loader" class="loader"></div>
+         {% endblock %}
 
          <!-- footer section start -->
       <div class="footer_section layout_padding" >
@@ -207,7 +208,24 @@
           document.getElementById("mySidenav").style.width = "0";
         }
      </script>
-   
+     <script>
+     // Show loader
+function showLoader() {
+  document.getElementById('loader').style.display = 'block';
+}
+
+// Hide loader
+function hideLoader() {
+  document.getElementById('loader').style.display = 'none';
+}
+
+// Example: Show loader on page load and hide after 2 seconds
+window.onload = function() {
+  showLoader();
+  setTimeout(hideLoader, 2000); // Hide after 2 seconds
+};
+
+</script>
 
     </body>
 </html>         

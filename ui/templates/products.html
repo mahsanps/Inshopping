@@ -65,6 +65,14 @@
             <label for="id_images">تصاویر دیگر</label>
             <input type="file" name="images" id="id_images" multiple>
         </div>
+
+        <div>
+            {{ form.instagram_post.errors }}
+            <label for="{{ form.instagram_post.id_for_label }}">{{ form.instagram_post.label }} {% if form.instagram_post.field.required %}<span style="color: red;">*</span>{% endif %}</label>
+            <br>
+            {{ form.instagram_post }}
+        </div>
+
         <button type="submit">ذخیره</button>
     </form>
 </div>

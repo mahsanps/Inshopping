@@ -4,6 +4,7 @@ from store.models import Shop, Category , SubCategory , Product , ProductVariati
 from utils.views import BaseView
 from authuser.models import Account
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
 from constants import COLOR_MAP 
 
 User = get_user_model()
@@ -25,6 +26,10 @@ class StorePage(BaseView):
 
         # Start with all approved products for the shop
         products = Product.objects.filter(shop__in=shop_list, is_approved=True).distinct()
+        paginator = Paginator(products, 40)  # Show 10 products per page
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         
         # Get only products with available variations (quantity >= 1)
         available_products = set()
@@ -45,61 +50,58 @@ class StorePage(BaseView):
         # Fetch available sizes from products
         sizes = products.values_list('variations__size', flat=True).exclude(variations__size__isnull=True).exclude(variations__size="").distinct()
 
-        print("Available sizes:", sizes)
+       
 
         subcategories = SubCategory.objects.all()
 
         # Get filter parameters from the request
         selected_color = request.GET.get("color")
         selected_size = request.GET.get("size")
-        print("Selected Size:", selected_size)
+       
         price_min = request.GET.get("price_min")
         price_max = request.GET.get("price_max")
-        print("Price Min:", price_min)
-        print("Price Max:", price_max)
+     
 
         selected_subcategory = request.GET.get("subcategory")
 
-        # Debug prints for filters (remove after debugging)
+      
         
 
         # Apply color filter
         if selected_color and selected_color != "None" and selected_color != "":
     # Apply color filter only if a valid color is selected
-           products = products.filter(variations__color__color=selected_color)
-           print("Selected Color:", selected_color)
-           print("Filtered Products after color filter:", products)
+           page_obj = products.filter(variations__color__color=selected_color)
+      
 
         # Apply size filter, only if selected_size is valid (not None or empty string)
         if selected_size and selected_size != "":
-           print("Products before size filter:", products)
-           products = products.filter(variations__size=selected_size)
-           print("Products after size filter:", products)
+          
+           page_obj = products.filter(variations__size=selected_size)
+         
 
         # Apply price filters
         if price_min:
             try:
                 price_min = int(price_min)
-                products = products.filter(price__gte=price_min)
+                page_obj = products.filter(price__gte=price_min)
             except ValueError:
                 price_min = None
 
         if price_max:
             try:
                 price_max = int(price_max)
-                products = products.filter(price__lte=price_max)
+                page_obj = products.filter(price__lte=price_max)
             except ValueError:
                 price_max = None
                 # Apply subcategory filter
         if selected_subcategory and selected_subcategory != "":
-                products = products.filter(subcategory__subname=selected_subcategory)
-                print("Products after subcategory filter:", products)
+                page_obj = products.filter(subcategory__subname=selected_subcategory)
+           
 
         
         
 
-        # Debugging the final product query
-        print("Filtered Products:", products)
+    
 
         context = {
             'available_products': available_products,
@@ -118,6 +120,7 @@ class StorePage(BaseView):
             'price_min': price_min,
             'price_max': price_max,
             'selected_subcategory': selected_subcategory,
+            'page_obj':page_obj,
         }
 
         return render(request, 'storepage.html', context)
