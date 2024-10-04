@@ -113,7 +113,7 @@
 </section>
 
 <!-- Include Chart.js from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
   function initializeCharts() {
     try {
@@ -236,18 +236,6 @@
       //pass
     }
   }
-
-  // Call initializeCharts after the DOM is fully loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded event fired');  // Debugging log to ensure event fires
-    initializeCharts();
-  });
-
-  // Re-initialize charts when HTMX swaps content
-  document.addEventListener('htmx:afterSwap', function() {
-    console.log('htmx:afterSwap event fired');  // Debugging log to check when HTMX reloads
-    initializeCharts();
-  });
-</script>
+  initializeCharts();</script>
 
 
