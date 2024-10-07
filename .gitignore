@@ -16,6 +16,7 @@ local_settings.py
 # Virtual environment
 /venv/
 myenv/
+django.log
 
 # OS files
 .DS_Store
