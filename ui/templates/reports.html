@@ -1,0 +1,222 @@
+{% load i18n %}
+{% load jformat %}
+{% load humanize %}
+{% load custom_filters %}
+{% load static %}
+
+<a class="back-btn" href="#" hx-get="{% url 'dashboard' %}" hx-target="#outerContainer">
+    <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
+</a>
+<section id="dashboard" class="about" style="padding:15px;">
+  <div id="outerContainer" class="container">
+    <div class="section-title">
+    
+
+      <h2>{% trans 'Reports' %}</h2>
+      <h5 style="width: fit-content; background-color:#30302e; color: white; padding: 10px; border-radius: 5px; font-weight:normal;">
+        {% trans 'Total Sales' %}: {{ total_price|custom_price_format }} تومان
+      </h5>
+      <br>
+      <div>
+        <h3>نمودار فروش ۷ روز گذشته</h3>
+        <canvas id="last7DaysSalesChart"></canvas>
+      </div>
+      <br>
+      <div style="background-color:#ebf1f5; padding:10px; width:100%;">
+        <h5>{% trans 'Daily Sales' %}</h5>
+        <p>{% trans 'Total Sales Today' %}: {{ daily_sales|custom_price_format }} تومان</p>
+        <br>
+        <div>
+         
+          <canvas id="dailySalesChart"></canvas>
+        </div>
+
+        <h5>{% trans 'Top 5 Daily Sold Products' %}</h5>
+        <ul>
+          {% for product in daily_top_products %}
+          <li>
+            <img src="{{ product.image.url }}" style="width: 50px; height: 50px;">
+            {{ product.name }} -تعداد فروخته شده: {{ product.total_sold }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <br>
+      <div style="width:100%;">
+        <h5>{% trans 'Weekly Sales' %}</h5>
+        <p>{% trans 'Total Sales This Week' %}: {{ weekly_sales|custom_price_format }} تومان</p>
+        <br>
+        <div>
+          
+          <canvas id="weeklySalesChart"></canvas>
+        </div>
+      
+        <h5>{% trans 'Top 5 Weekly Sold Products' %}</h5>
+        <ul>
+          {% for product in weekly_top_products %}
+          <li>
+            <img src="{{ product.image.url }}" style="width: 50px; height: 50px;">
+            {{ product.name }} -تعداد فروخته شده: {{ product.total_sold }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        <h3>مقایسه فروش</h3>
+        <p>فروش امروز: {{ today_sales|custom_price_format }} تومان</p>
+        <p>فروش دیروز: {{ yesterday_sales|custom_price_format }} تومان</p>
+        <p>فروش هفته: {{ this_week_sales|custom_price_format }} تومان</p>
+        <p>فروش هفته گذشته: {{ last_week_sales|custom_price_format }} تومان</p>
+      </div>
+      <br>
+      <div style="background-color:#ebf1f5; padding:10px; width:100%;">
+        <h5>{% trans 'Monthly Sales' %}</h5>
+        <p>{% trans 'Total Sales This Month' %}: {{ monthly_sales|custom_price_format }} تومان</p>
+        <br>
+        <div>
+         
+          <canvas id="monthlySalesChart"></canvas>
+        </div>
+        <h5>{% trans 'Top 5 Monthly Sold Products' %}</h5>
+        <ul>
+          {% for product in monthly_top_products %}
+          <li>
+            <img src="{{ product.image.url }}" style="width: 50px; height: 50px;">
+            {{ product.name }} -تعداد فروخته شده: {{ product.total_sold }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <br>
+      <br>
+    </div>
+  </div>
+</section>
+
+<!-- Include Chart.js from CDN -->
+
+<script>
+  function initializeCharts() {
+    try {
+      console.log('Initializing charts');  // Debugging log to check when this function is called
+
+      // Daily Sales Chart
+      var dailySales = "{{daily_sales}}";
+      var dailyCtx = document.getElementById('dailySalesChart');
+      if (dailyCtx) {
+        console.log('Daily Sales Chart found and initialized');  // Debugging log for daily chart
+        dailyCtx = dailyCtx.getContext('2d');
+        new Chart(dailyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['فروش روزانه'],
+            datasets: [{
+              label: 'فروش کل (روزانه)',
+              data: [dailySales],
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Weekly Sales Chart
+      var weeklySales = "{{ weekly_sales }}";
+      var weeklyCtx = document.getElementById('weeklySalesChart');
+      if (weeklyCtx) {
+        console.log('Weekly Sales Chart found and initialized');  // Debugging log for weekly chart
+        weeklyCtx = weeklyCtx.getContext('2d');
+        new Chart(weeklyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['فروش هفتگی'],
+            datasets: [{
+              label: 'فروش کل (هفتگی)',
+              data: [weeklySales],
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Monthly Sales Chart
+      var monthlySales = "{{ monthly_sales }}";
+      var monthlyCtx = document.getElementById('monthlySalesChart');
+      if (monthlyCtx) {
+        console.log('Monthly Sales Chart found and initialized');  // Debugging log for monthly chart
+        monthlyCtx = monthlyCtx.getContext('2d');
+        new Chart(monthlyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['فروش ماهانه'],
+            datasets: [{
+              label: 'فروش کل (ماهانه)',
+              data: [monthlySales],
+              backgroundColor: 'rgba(255, 206, 86, 0.2)',
+              borderColor: 'rgba(255, 206, 86, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+
+      // Last 7 Days Sales Chart
+      var last7DaysLabels = JSON.parse('{{ last_7_days_labels|safe }}');
+      var last7DaysData = JSON.parse('{{ last_7_days_sales|safe }}');
+      var last7DaysCtx = document.getElementById('last7DaysSalesChart');
+      if (last7DaysCtx) {
+        console.log('Last 7 Days Sales Chart found and initialized');  // Debugging log for 7 days chart
+        last7DaysCtx = last7DaysCtx.getContext('2d');
+        new Chart(last7DaysCtx, {
+          type: 'line',
+          data: {
+            labels: last7DaysLabels,
+            datasets: [{
+              label: 'Sales (Last 7 Days)',
+              data: last7DaysData,
+              fill: false,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              tension: 0.1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    }
+    catch {
+      //pass
+    }
+  }
+  initializeCharts();</script>
+
+

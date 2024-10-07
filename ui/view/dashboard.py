@@ -16,14 +16,52 @@ from ui.forms.orderdelivery import OrderDeliveryForm
 import json
 import jdatetime
 from datetime import datetime, timedelta
-
+from django.contrib.auth import get_user_model
 from django.utils.timezone import now as django_now  # Use Django's timezone-aware `now`
 from django.utils.timezone import now as timezone_now, make_aware, is_naive
+
+
+user = get_user_model()
+
 
 
 class Dashboard(BaseView):
     
     def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('signin')
+        shop = request.user.shop_set.first()
+        shop_instance = Shop.objects.filter(account=request.user)
+
+        # Filter order items related to paid orders
+        order_items = OrderItem.objects.filter(variation__product__shop=shop, order__is_paid=True)
+
+        # Orders that are paid and registered
+        orders_registered = Order.objects.filter(id__in=order_items.values('order_id'), is_paid=True)\
+                                         .distinct()\
+                                         .select_related('delivery')\
+                                         .order_by('-created_at')  # Assuming 'created_at' is the field for order date
+
+        
+        # Correct calculation for total price
+        total_price = sum(item.variation.product.price * item.quantity for item in order_items)
+
+       
+        context = {
+           'orders_registered': orders_registered,
+           'shop_instance' : shop_instance,
+        }
+
+        # Check if it's an HTMX request
+        if self.request.htmx:
+            return render(request, 'dashboard.html', context)
+        return render(request, 'dashboard_full.html', context)
+
+
+class Reports(BaseView):  
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('signin')
         shop = request.user.shop_set.first()
         shop_instance = Shop.objects.filter(account=request.user)
 
@@ -78,8 +116,8 @@ class Dashboard(BaseView):
 
         # Check if it's an HTMX request
         if self.request.htmx:
-            return render(request, 'dashboard.html', context)
-        return render(request, 'dashboard_full.html', context)
+            return render(request, 'reports.html', context)
+        return render(request, 'reports_full.html', context)
 
     def get_sales_for_period(self, shop, now, period):
         """
@@ -230,8 +268,6 @@ class Dashboard(BaseView):
         ).order_by("-total_sold")[:5]
 
         return top_products
-
-  
         
 class ShopOrdersView(BaseView):
     def get(self, request, *args, **kwargs):

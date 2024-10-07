@@ -577,11 +577,9 @@ button {
     position: relative;
     width: 25%;
     min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
     height: auto;
     background-color: white;
-    margin: 2px;
+    margin: 5px;
     border: 1px;
     border-radius: 8px;
 }
@@ -712,6 +710,7 @@ a:hover {
 }
 .befor-form {
     padding:10% 20%;
+    background-color: white;
 }
 
 .buynow_bt {
@@ -805,10 +804,10 @@ a:hover {
 .fashion_section_2 {
     margin-top: 30px;
     margin: auto;
+    padding: 10px;
 }
 
 .box_main {
-    margin: 10px;
     width: 100%;
     border: 1px;
     border-radius: 8px;
@@ -830,13 +829,14 @@ a:hover {
 
 .shirt_text {
     width: 100%;
-    font-size: 18px;
+    font-size: 16px;
     color: #252525;
     text-align: right;
     font-weight: normal;
     padding-bottom: 5px;
     font-weight: 400;
-    margin-right: 5px;
+    margin-right: 10px;
+    padding-right: 5px;
 }
 .banner2-div {
     display: inline; 
@@ -850,7 +850,8 @@ a:hover {
     text-align: right;
     margin: 0px;
     font-weight: 400;
-    margin-right: 5px;
+    margin-right: 10px;
+    padding-right: 5px;
 }
 
 .tshirt_img {
@@ -861,7 +862,7 @@ a:hover {
 .tshirt_img img {
     max-height: 300px;
     border: 1px;
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
 }
 
 .btn_main {
@@ -1134,9 +1135,10 @@ a:hover {
     height: 100%;
 }
 .electronic_img img {
-    max-height: 300px;
+    max-height: 350px;
     border: 1px;
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
+    width: 100%;
 }
 .about{
     background-color:white; 
@@ -1672,6 +1674,8 @@ input.mail_bt::placeholder {
     }
     .fashion_section_2 {
         font-size: 11px;
+        padding: 0;
+        margin-top: 0;
     }
     .cat-link{
         width: 100%;
@@ -1787,7 +1791,7 @@ input.mail_bt::placeholder {
     }
     .box_main {
         padding: 0;
-        margin: 10px auto;
+       
     }
     .heading-banner {
         display: none;
@@ -1806,9 +1810,7 @@ input.mail_bt::placeholder {
         border: 1px;
         border-radius: 8px;
     }
-    .fashion_section_2 {
-        margin-top: 0;
-    }
+    
     .subscribe_bt {
         text-align: center;
     }

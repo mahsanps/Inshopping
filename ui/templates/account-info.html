@@ -81,7 +81,7 @@
                 </div>   
                 <div >
                   <a hx-get="{% url 'editshop' pk=shop.pk %}" hx-target="#outerContainer" >
-                  <div style="margin:5%;" class="btn-style" ><button>ویرایش</button></div>
+                  <div style="margin:5%;" class="btn-style" ><button id="actionButton"> <span class="btn-text">ویرایش</span><div class="loader" id="loader"></div></button></div>
                   </a>
                   <a href="{% url "instagram_login" %}">اتصال به حساب اینستاگرام</a>
                 </div>  

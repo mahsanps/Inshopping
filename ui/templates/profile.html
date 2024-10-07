@@ -131,8 +131,25 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'asset/js/main.js' %}"></script>
+<script>
+  const actionButton = document.getElementById('actionButton');
+const loader = document.getElementById('loader');
+const buttonText = document.querySelector('.btn-text');
 
-  
+actionButton.addEventListener('click', function () {
+    // Show loader
+    loader.style.display = 'inline-block';
+    buttonText.style.display = 'none'; // Hide the button text
+
+    // Simulate a delay (e.g., an AJAX request)
+    setTimeout(() => {
+        // Hide loader and show button text after 3 seconds (simulating completion)
+        loader.style.display = 'none';
+        buttonText.style.display = 'inline-block';
+        alert('Action completed!');
+    }, 3000);
+});
+</script>
 
 <!-- Include Django Autocomplete Light static files -->
 

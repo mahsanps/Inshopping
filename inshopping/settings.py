@@ -83,14 +83,20 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django.log',
+        },        
+        
     },
     "root": {
-        "handlers": ["console"],
+        "handlers": ["console", 'file'],
         "level": "INFO",
     },
     "loggers": {
         "django": {
-            "handlers": ["console"],
+            "handlers": ["console", 'file'],
             "level": "INFO",
             "propagate": False,
         },
@@ -104,14 +110,26 @@ LOGGING = {
 }
 
 # Database settings
-DATABASES = {
+if IS_LOCAL :
+    DATABASES = {
+        'default': {
+            
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / config('DATABASE_URL', default='db.sqlite3'),
+
+        }
+    }
+
+else :
+    DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / config('DATABASE_URL', default='db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':config('DATABASE_NAME'),  # Replace with your MySQL database name
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
 
     }
 }
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -159,9 +177,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-EMAIL_USE_SSL = config('EMAIL_USE_SSL', cast=bool)
+EMAIL_PORT =465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 # Default primary key field type

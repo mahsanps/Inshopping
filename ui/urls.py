@@ -12,7 +12,7 @@ from ui.view.singleproductpage import SingleProductPage, AvailableColorsView
 from ui.view.facebook_login import facebook_login
 from ui.view.cart import CartView, CheckoutView, SuccessfulOrdr, OrderDetailView, OrderListView, UpdateCartItemView, DeleteCartItemView
 from ui.view.search import Search_view
-from ui.view.dashboard import Dashboard, ShopOrdersView, OrderDeliveryView
+from ui.view.dashboard import Dashboard, ShopOrdersView, OrderDeliveryView, Reports
 from ui.view.wallet import BankAccountView, WalletView, EditBankAccount
 from ui.view.contact import contact_view
 from ui.view.payment import zarinpal_callback, success_view, initiate_payment
@@ -55,6 +55,7 @@ urlpatterns = [
     path('successful_order', SuccessfulOrdr.as_view(), name='successful_order'),
     path('loadsubcategories/', load_subcategories, name='loadsubcategories'),
     path('dashboard/', Dashboard.as_view(), name='dashboard'),
+    path('reports/', Reports.as_view(), name='reports'),
     path('order-registered-details/<int:pk>', ShopOrdersView.as_view(), name='order-registered-details'),
     path('bankaccount/', BankAccountView.as_view(), name='bankaccount'),
     path('editbankaccount/<int:pk>/', EditBankAccount.as_view(), name='editbankaccount'),

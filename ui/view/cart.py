@@ -14,11 +14,17 @@ from ui.forms.ckeckout import CheckoutForm
 from inshopping import settings
 from django.contrib import messages
 from urllib.parse import quote
-
+import jdatetime
+from django.utils.timezone import is_aware, make_naive
 
 user = get_user_model()
 
-
+def get_jalali_date(gregorian_date):
+    """ Convert a Gregorian datetime to Jalali """
+    if gregorian_date:
+        jalali_date = jdatetime.datetime.fromgregorian(datetime=gregorian_date)
+        return jalali_date.strftime('%Y-%m-%d %H:%M:%S')
+    return None
 
 
 class CartView(BaseView):
@@ -180,7 +186,7 @@ class CheckoutView(BaseView):
     def post(self, request, store_name):
         categories = Category.objects.all()
         if not request.user.is_authenticated:
-            return redirect('login')
+            return redirect('signin')
 
         form = CheckoutForm(request.POST)
         if form.is_valid():
@@ -224,6 +230,18 @@ class CheckoutView(BaseView):
                     'error_message': f"The following items are not available in the required quantity: {', '.join(unavailable_items)}"
                 })
 
+            jalali_now = jdatetime.datetime.now()
+            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Remove microseconds
+
+            jalali_now = jdatetime.datetime.now()
+            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Remove microseconds
+
+        # If the datetime is timezone-aware, make it naive
+            if is_aware(gregorian_now):
+               gregorian_now = make_naive(gregorian_now)
+
+
+
             order = Order.objects.create(
                 account=request.user,
                 total_price=total_price,
@@ -235,7 +253,7 @@ class CheckoutView(BaseView):
                 delivery_address_state=form.cleaned_data.get('delivery_address_state', ''),
                 delivery_address_postcode=form.cleaned_data.get('delivery_address_postcode', ''),
                 shop=shop,
-                
+                created_at=gregorian_now 
             )
 
             for cart_item in store_cart_cookie.get("cart_items", []):
@@ -347,7 +365,7 @@ class OrderListView(BaseView):
     
     def get(self, request):
         if not request.user.is_authenticated:
-            return redirect('login')
+            return redirect('signin')
         shop_instance = Shop.objects.filter(account=request.user)
         orders = Order.objects.filter( account=request.user,  is_paid=True)
         if self.request.htmx:

@@ -16,6 +16,7 @@ import jdatetime
 from store.utils import post_to_instagram
 from django.conf import settings
 
+
 from django.utils.timezone import now, timedelta
 # Create your models here.
 
@@ -172,6 +173,7 @@ class BankAccount(BaseModel):
 
 
 
+
 class Order(BaseModel):
     created_at = jmodels.jDateTimeField()
     account = models.ForeignKey(Account, on_delete=models.DO_NOTHING, db_constraint=False, null=False, blank=True,  verbose_name=_("account"))
@@ -190,31 +192,13 @@ class Order(BaseModel):
     payment_authority = models.CharField(max_length=50, blank=True, null=True)
     payment_status = models.BooleanField(default=False)
     shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
-    
+
     def save(self, *args, **kwargs):
-        # Manually set `created_at` with a timezone-aware Jalali datetime if it's not set
+        # Convert Jalali datetime to Gregorian for storing in the database
         if not self.created_at:
-            # Get current Jalali date and convert to Gregorian
             jalali_now = jdatetime.datetime.now()
-            gregorian_now = jalali_now.togregorian()
-            
-            # Convert it to a timezone-aware datetime
-            self.created_at = make_aware(gregorian_now)
-        
-        # Check if the order is being marked as paid
-        if self.pk:
-            try:
-                old_order = Order.objects.get(pk=self.pk)
-                if not old_order.is_paid and self.is_paid:
-                    # If the order was not paid before but is now being marked as paid
-                    if hasattr(self, 'items'):
-                        for item in self.items.all():
-                            if item.variation:
-                                new_quantity = item.variation.quantity - item.quantity
-                                item.variation.quantity = max(new_quantity, 0)  # Ensure quantity doesn't go below zero
-                                item.variation.save(update_fields=["quantity"])
-            except Order.DoesNotExist:
-                pass  # Handle error if needed
+            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Remove timezone and microseconds
+            self.created_at = gregorian_now
 
         super().save(*args, **kwargs)
 
@@ -243,9 +227,14 @@ class OrderItem(BaseModel):
     
     def save(self, *args, **kwargs):
         # Check if there is a variation and if the variation has enough quantity
-        if self.variation and self.variation.quantity - self.quantity < 0:
-            raise Exception("There is not enough item available to submit this order")
-
+        if self.variation:
+            if self.variation.quantity < self.quantity:
+                raise Exception(f"Not enough items available. Only {self.variation.quantity} left in stock.")
+            
+            # Decrease the variation quantity by the order quantity
+            self.variation.quantity -= self.quantity
+            self.variation.save(update_fields=["quantity"])
+        
         # Call the original save method to save the order item first
         super().save(*args, **kwargs)
     
