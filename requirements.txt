@@ -11,7 +11,7 @@ gunicorn
 idna
 jalali_core
 jdatetime
-mysqlclient
+pymysql
 packaging
 pillow
 pip
