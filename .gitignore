@@ -14,7 +14,7 @@ local_settings.py
 .env
 
 # Virtual environment
-venv/
+/venv/
 myenv/
 
 # OS files
