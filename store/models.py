@@ -15,6 +15,10 @@ from django.utils.timezone import make_aware
 import jdatetime
 from store.utils import post_to_instagram
 from django.conf import settings
+from django.utils.text import slugify
+from unidecode import unidecode  # To handle Persian characters
+
+
 
 
 from django.utils.timezone import now, timedelta
@@ -48,14 +52,38 @@ class AccountInfo(BaseModel):
     
 
         
-class Category(BaseModel):
+class Category(models.Model):
     name=models.CharField(max_length=100, verbose_name=_("Category"))
     image=models.ImageField(upload_to='media/static/images/', null=True, blank=True) 
+    slug = models.SlugField(max_length=100, unique=True, blank=True)  # Slug field
+
+
+    def save(self, *args, **kwargs):
+        # Generate the slug automatically from the name if slug is not provided
+        if not self.slug:
+            self.slug = slugify(unidecode(self.name))  # Converts Persian to ASCII-like slugs
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+    
+
  
 class SubCategory(BaseModel):
     subname=models.CharField(max_length=200, verbose_name=_("Subcategory"))
     categoryname=models.ForeignKey(Category, on_delete=models.CASCADE, default="") 
     image=models.ImageField(upload_to='media/static/images/', null=True, blank=True) 
+    slug = models.SlugField(max_length=100, unique=True, blank=True)  # Slug field
+
+
+    def save(self, *args, **kwargs):
+        # Generate the slug automatically from the name if slug is not provided
+        if not self.slug:
+            self.slug = slugify(unidecode(self.name))  # Converts Persian to ASCII-like slugs
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
     
     def __str__(self):
         return f'{self.subname}' 

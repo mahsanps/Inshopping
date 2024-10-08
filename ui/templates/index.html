@@ -143,9 +143,10 @@
                      
                      <div class="fashion_section_2" style="display:flex;  overflow-x: auto;;">
                         
-                        
+                       
                            {% for subcategory in categories %}
-                           <a class="cat-link"  href="{% url 'category' category_name=subcategory.name %}">
+                           <a class="cat-link" href="{% url 'category' category_slug=subcategory.slug %}">
+
                            <div >
                               <li>
                               <div class="cat-container" style="text-align:center; margin:5px;">
@@ -157,8 +158,9 @@
                                  <div style="text-align:center;  " ><img style="height:100px;" src="{% static 'images/tshirt-img.png' %}"></div>
                                  
                                  {% endif %}
-                                 <h4 style="font-size:14px; margin-top:3px; " class="shirt_text">{{ subcategory.name }}</h4>
-                  
+                                 <h4 style="font-size:14px; margin-top:3px;" class="shirt_text">
+                                    {{ subcategory.name }}
+                                </h4>
                               </div>
                            </li>
                            </div>

@@ -93,7 +93,7 @@
                         <ui class="cat-items">
                            {% for cat in categories  %}
                            <li style="text-align:center;">
-                           <a class="dropdown-item" href="{% url 'category' category_name=cat.name %}">{{ cat.name }}</a>
+                           <a class="dropdown-item" href="{% url 'category' category_slug=cat.slug %}">{{ cat.name }}</a>
                            </li>
                            {% endfor %}
                         </ui>

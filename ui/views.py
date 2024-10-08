@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.utils import translation
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 # Create your views here.
 def Index_view(request):
@@ -11,18 +12,17 @@ def Index_view(request):
     shop_list = Shop.objects.filter(is_approved=True)
     products = Product.objects.filter(is_approved=True).order_by('?')[:60] 
     user = request.user
-
    
-    
     available_products = set()
     for product in products:
             if any(variation.quantity >= 1 for variation in product.variations.all()):
                 available_products.add(product.id)
     
     if 'category' in request.GET:
-            category=request.GET['category']
-          
-            products=products.filter(category_id=request.GET['category'])
+        category_slug = request.GET.get('category')
+        category = get_object_or_404(Category, slug=category_slug)
+        products = products.filter(category=category)
+
     
     return render(request, "index.html", {'categories': categories , 'shop_list':shop_list, 'products':products, "user": user,"available_products":available_products})
     

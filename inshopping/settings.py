@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_jalali',
     'django.contrib.humanize',
     'sslserver',
+    'unidecode',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,9 @@ else :
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),  
         'PORT': config('DATABASE_PORT'),  
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
 
     }
 }

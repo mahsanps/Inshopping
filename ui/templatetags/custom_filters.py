@@ -1,6 +1,10 @@
 from django import template
 from django.template.defaultfilters import floatformat
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django import template
+from django.utils.translation import gettext as _
+
+
 
 
 
@@ -19,3 +23,5 @@ def custom_price_format(value):
     except (ValueError, TypeError):
         # In case the value is not a number, return it as is
         return value
+    
+    
