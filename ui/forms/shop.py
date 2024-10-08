@@ -20,3 +20,9 @@ class ShopForm(forms.ModelForm):
         self.fields['banner_image1'].required = True
         self.fields['banner_image2'].required = True
         self.fields['banner_image3'].required = True
+        
+        self.fields['store_name'].widget.attrs.update({
+            'placeholder': 'name',
+            
+        })
+        self.fields['store_name'].help_text =  '(نام فروشگاه شما به عنوان وبسایت شما معرفی می شود و حتما باید با حروف لاتین نوشته شود.)'

@@ -99,14 +99,15 @@ class ProductsListView(BaseView):
 class SubcategoryProducts(BaseView):
     def get(self, request, *args, **kwargs):
         categories = Category.objects.all()
-        subname: str= kwargs["subname"]
-        subcategory=SubCategory.objects.get(subname=subname)
-        subcategory_products= Product.objects.filter(subcategory=subcategory)
-        paginator = Paginator( subcategory_products, 40)  # Show 10 products per page
-
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+        subcategory_slug = kwargs.get("subcategory_slug")
         
+        # Get the subcategory using the slug
+        subcategory = get_object_or_404(SubCategory, slug=subcategory_slug)
+        
+        # Fetch all products in this subcategory
+        subcategory_products = Product.objects.filter(subcategory=subcategory)
+
+        # Fetch available colors from products
         colors = Color.objects.exclude(color__isnull=True).exclude(color="")
 
         color_data = []
@@ -118,62 +119,54 @@ class SubcategoryProducts(BaseView):
         # Fetch available sizes from products
         sizes = subcategory_products.values_list('variations__size', flat=True).exclude(variations__size__isnull=True).exclude(variations__size="").distinct()
 
-       
-
-       
-
         # Get filter parameters from the request
         selected_color = request.GET.get("color")
         selected_size = request.GET.get("size")
-        
         price_min = request.GET.get("price_min")
         price_max = request.GET.get("price_max")
-      
-
-        
-
-        # Debug prints for filters (remove after debugging)
-        
 
         # Apply color filter
         if selected_color and selected_color != "None" and selected_color != "":
-    # Apply color filter only if a valid color is selected
-           page_obj = subcategory_products.filter(variations__color__color=selected_color)
-       
+            subcategory_products = subcategory_products.filter(variations__color__color=selected_color)
 
-        # Apply size filter, only if selected_size is valid (not None or empty string)
+        # Apply size filter
         if selected_size and selected_size != "":
-          
-           page_obj = subcategory_products.filter(variations__size=selected_size)
-     
+            subcategory_products = subcategory_products.filter(variations__size=selected_size)
 
         # Apply price filters
         if price_min:
             try:
                 price_min = int(price_min)
-                page_obj = subcategory_products.filter(price__gte=price_min)
+                subcategory_products = subcategory_products.filter(price__gte=price_min)
             except ValueError:
                 price_min = None
 
         if price_max:
             try:
                 price_max = int(price_max)
-                page_obj = subcategory_products.filter(price__lte=price_max)
+                subcategory_products = subcategory_products.filter(price__lte=price_max)
             except ValueError:
                 price_max = None
-                # Apply subcategory filter
-        
-        
-        return render(request, 'subcategory.html', {'subname':subname,'categories':categories,             
+
+        # Apply pagination after filtering
+        paginator = Paginator(subcategory_products, 40)  # Show 40 products per page
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        # Render the subcategory page
+        return render(request, 'subcategory.html', {
+            'categories': categories,
             'colors': color_data,
             'sizes': sizes,
-            'page_obj':page_obj,
+            'page_obj': page_obj,
             'selected_color': selected_color,
             'selected_size': selected_size,
             'price_min': price_min,
             'price_max': price_max,
-            'subcategory_products':subcategory_products,
-            'subcategory':subcategory})    
+            'subcategory_products': subcategory_products,
+            'subcategory': subcategory
+        })
+ 
         
 class ProductDetails(BaseView):
     def get(self, request, *args, **kwargs):

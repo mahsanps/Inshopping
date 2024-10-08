@@ -79,11 +79,9 @@ class SubCategory(BaseModel):
     def save(self, *args, **kwargs):
         # Generate the slug automatically from the name if slug is not provided
         if not self.slug:
-            self.slug = slugify(unidecode(self.name))  # Converts Persian to ASCII-like slugs
+            self.slug = slugify(unidecode(self.subname))  # Converts Persian to ASCII-like slugs
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return self.name
     
     def __str__(self):
         return f'{self.subname}' 
@@ -102,6 +100,7 @@ class Shop(BaseModel):
     banner_image1=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image1"))
     banner_image2=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image2"))
     banner_image3=models.ImageField(upload_to='media/static/images/', default="",  verbose_name=_("banner-Image3"))
+   
     
     shop_auth: ShopAuth
     
@@ -157,6 +156,14 @@ class Product(BaseModel):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
     instagram_post = models.BooleanField(default=False, verbose_name=_("Post to Instagram"))
     instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)  # Slug field
+
+
+    def save(self, *args, **kwargs):
+        # Generate the slug automatically from the name if slug is not provided
+        if not self.slug:
+            self.slug = slugify(unidecode(self.name))  # Converts Persian to ASCII-like slugs
+        super().save(*args, **kwargs)
     
     def publish_to_instagram(self):
         instagram_user_id = self.shop.shop_auth.instagram_user_id
