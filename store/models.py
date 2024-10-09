@@ -154,7 +154,6 @@ class Product(BaseModel):
     category=models.ForeignKey(Category, on_delete=models.CASCADE,  verbose_name=_("Category"))
     subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, default="", verbose_name=_("subcategory"))
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
-    instagram_post = models.BooleanField(default=False, verbose_name=_("Post to Instagram"))
     instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)  # Slug field
 

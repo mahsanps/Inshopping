@@ -74,6 +74,7 @@
         </div>
 
         <button type="submit">ذخیره</button>
+        <div id="loader" style="display:none;">...</div>
     </form>
 </div>
 
@@ -103,3 +104,19 @@
     });
 </script>
 
+<script>
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        // Show the loader
+        document.getElementById('loader').style.display = 'block';
+        
+        // Optionally hide the button to prevent further clicks
+        document.getElementById('submitBtn').style.display = 'none';
+        
+        // Simulate a delay (e.g., form submission delay) 
+        setTimeout(function() {
+          // Hide the loader after 2 seconds (adjust as needed)
+          document.getElementById('loader').style.display = 'none';
+        }, 2000); // Adjust time to match your form submission or process duration
+      });
+      
+</script>

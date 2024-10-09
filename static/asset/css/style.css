@@ -54,6 +54,21 @@ a {
   overflow-wrap: break-word;
 }
 
+#loader {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 a:hover {
   color: #37b3ed;
   text-decoration: none;
