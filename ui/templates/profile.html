@@ -151,6 +151,22 @@ actionButton.addEventListener('click', function () {
 });
 </script>
 
+<script>
+  document.addEventListener('htmx:beforeRequest', function (event) {
+      if (event.target.closest('form')) {
+          document.getElementById('loader').style.display = 'block';  // Show loader
+          document.getElementById('submitButton').style.display = 'none';  // Hide submit button
+      }
+  });
+
+  document.addEventListener('htmx:afterRequest', function (event) {
+      if (event.target.closest('form')) {
+          document.getElementById('loader').style.display = 'none';  // Hide loader
+          document.getElementById('submitButton').style.display = 'block';  // Show submit button
+      }
+  });
+</script>
+
 <!-- Include Django Autocomplete Light static files -->
 
 </body>
