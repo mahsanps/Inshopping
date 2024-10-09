@@ -1,10 +1,12 @@
 {% load static %}
 
+<a class="back-btn" href="#outerContainer"  hx-get="{% url 'account-info' %}" hx-target="#outerContainer">
+    <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
+</a>
 
-  <a class="back-btn" href="#outerContainer"  hx-get="{% url 'account-info' %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
-    
-    <form class="inputs" action="{% url 'create_shop' %}" method="post" enctype="multipart/form-data" >
-      <div class="forms" style="height:auto;">
+<!-- Add an ID to the form -->
+<form id="myForm" class="inputs" action="{% url 'create_shop' %}" method="post" enctype="multipart/form-data">
+    <div class="forms" style="height:auto;">
         {% csrf_token %}
         {% for field in form %}
             <div class="form-group">
@@ -21,14 +23,15 @@
             </div>
         {% endfor %}
         <p>توجه : هزینه ارسال یکبار برای تمام محصولات شما اعمال می شود.(هزینه به تومان)</p>
-        
-        <button type="submit" id="submitButton" >ذخیره</button>
-        
+
+        <button type="submit" id="submitButton">ذخیره</button>
+
+        <!-- Loader -->
         <div id="loader" style="display:none;"></div>
     </div>
-    </form>
+</form>
 
-    <!-- CSS for Spinner -->
+<!-- CSS for Spinner -->
 <style>
     #loader {
         display: none;
@@ -40,19 +43,19 @@
         animation: spin 1s linear infinite;
         margin-top: 10px; /* Add spacing if needed */
     }
-    
+
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-    </style>
-    
-    <!-- JavaScript to handle loader -->
-    <script>
-        document.getElementById('myForm').addEventListener('submit', function (event) {
-            // Show the loader
-            document.getElementById('loader').style.display = 'block';
-            // Hide the submit button to prevent multiple submissions
-            document.getElementById('submitButton').style.display = 'none';
-        });
-    </script>
+</style>
+
+<!-- JavaScript to handle loader -->
+<script>
+    document.getElementById('myForm').addEventListener('submit', function (event) {
+        // Show the loader
+        document.getElementById('loader').style.display = 'block';
+        // Hide the submit button to prevent multiple submissions
+        document.getElementById('submitButton').style.display = 'none';
+    });
+</script>
