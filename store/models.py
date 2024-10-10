@@ -223,10 +223,16 @@ class Order(BaseModel):
 
 
     def save(self, *args, **kwargs):
-        if    is_aware(self.created_at):
-           self.created_at = make_naive(self.created_at)
-        super().save(*args, **kwargs)
+    # Ensure the created_at datetime is converted from Jalali to Gregorian
+        jalali_now = jdatetime.datetime.now()
+        gregorian_now = jalali_now.togregorian()
 
+        # Strip timezone information (make it naive)
+        if is_aware(gregorian_now):
+            gregorian_now = make_naive(gregorian_now)
+
+        self.created_at = gregorian_now.replace(microsecond=0)
+        super().save(*args, **kwargs)
     
     
     def full_delivery_address(self):
