@@ -116,7 +116,7 @@ class ShopAuth(BaseModel):
     access_token = models.TextField()
     
     # Expiry date of the access token
-    token_expiry = models.DateTimeField(default=now() + timedelta(days=60))  # Adjust if you know the exact expiry period
+    token_expiry = models.DateTimeField()  # Adjust if you know the exact expiry period
     
     # Date when the user last authenticated/authorized the app
     last_authenticated = models.DateTimeField(auto_now=True)
