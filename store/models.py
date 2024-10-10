@@ -238,9 +238,11 @@ class Order(BaseModel):
             super().save(*args, **kwargs)  # Use Django's default save method
         else:
                 if self.created_at:
-                           # Convert the datetime to naive in UTC or your local time
-                    self.created_at = timezone.make_naive(self.created_at, timezone=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-                
+                    if timezone.is_aware(self.created_at):
+                                # Convert timezone-aware datetime to naive UTC
+                            self.created_at = timezone.make_naive(self.created_at, timezone=timezone.utc)
+                            # Ensure created_at is formatted for MySQL as naive datetime
+                            self.created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
                 super().save(*args, **kwargs)
     
     def full_delivery_address(self):
