@@ -238,9 +238,8 @@ class Order(BaseModel):
             super().save(*args, **kwargs)  # Use Django's default save method
         else:
                 if self.created_at:
-                    # Convert to naive datetime and format it as 'YYYY-MM-DD HH:MM:SS'
-                    if timezone.is_aware(self.created_at):
-                        self.created_at = timezone.make_naive(self.created_at).strftime('%Y-%m-%d %H:%M:%S')
+                           # Convert the datetime to naive in UTC or your local time
+                    self.created_at = timezone.make_naive(self.created_at, timezone=timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
                 
                 super().save(*args, **kwargs)
     
