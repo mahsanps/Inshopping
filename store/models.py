@@ -236,20 +236,11 @@ class Order(BaseModel):
                 self.created_at = make_naive(self.created_at)
             super().save(*args, **kwargs)  # Use Django's default save method
         else:
-            with connection.cursor() as cursor:
-             cursor.execute(
-                """
-                INSERT INTO store_order (created_at, is_paid, total_price, account_id, shop_id)
-                VALUES (STR_TO_DATE(%s, '%%Y-%%m-%%d %%H:%%i:%%s'), %s, %s, %s, %s)
-                """,
-                [
-                    self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                    self.is_paid,
-                    self.total_price,
-                    self.account.id,
-                    self.shop.id
-                ]
-            )
+            if self.created_at:
+                # Convert to UTC if necessary and format as 'YYYY-MM-DD HH:MM:SS'
+                self.created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            
+            super().save(*args, **kwargs)
     
     def full_delivery_address(self):
         address_parts = [
