@@ -19,6 +19,7 @@ from django.utils.text import slugify
 from unidecode import unidecode  # To handle Persian characters
 from django.utils.timezone import is_aware, make_naive
 from django.db import connection
+from django.utils import timezone
 from decouple import config, Csv
 
 
@@ -236,11 +237,12 @@ class Order(BaseModel):
                 self.created_at = make_naive(self.created_at)
             super().save(*args, **kwargs)  # Use Django's default save method
         else:
-            if self.created_at:
-                # Convert to UTC if necessary and format as 'YYYY-MM-DD HH:MM:SS'
-                self.created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
-            
-            super().save(*args, **kwargs)
+                if self.created_at:
+                    # Convert to naive datetime and format it as 'YYYY-MM-DD HH:MM:SS'
+                    if timezone.is_aware(self.created_at):
+                        self.created_at = timezone.make_naive(self.created_at).strftime('%Y-%m-%d %H:%M:%S')
+                
+                super().save(*args, **kwargs)
     
     def full_delivery_address(self):
         address_parts = [
