@@ -221,18 +221,18 @@ class Order(BaseModel):
     payment_status = models.BooleanField(default=False)
     shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
 
-
     def save(self, *args, **kwargs):
-    # Ensure the created_at datetime is converted from Jalali to Gregorian
-        jalali_now = jdatetime.datetime.now()
-        gregorian_now = jalali_now.togregorian()
+        # Ensure 'created_at' is properly converted to a naive datetime
+        if not self.created_at:
+            jalali_now = jdatetime.datetime.now()
+            gregorian_now = jalali_now.togregorian().replace(microsecond=0)
 
-        # Strip timezone information (make it naive)
-        if is_aware(gregorian_now):
-            gregorian_now = make_naive(gregorian_now)
+            # If the datetime is timezone-aware, make it naive
+            if is_aware(gregorian_now):
+                gregorian_now = make_naive(gregorian_now)
 
-        self.created_at = gregorian_now.replace(microsecond=0)
-        super().save(*args, **kwargs)
+            self.created_at = gregorian_now
+        super(Order, self).save(*args, **kwargs)
     
     
     def full_delivery_address(self):
