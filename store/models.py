@@ -18,6 +18,12 @@ from django.conf import settings
 from django.utils.text import slugify
 from unidecode import unidecode  # To handle Persian characters
 from django.utils.timezone import is_aware, make_naive
+from django.db import connection
+from decouple import config, Csv
+
+
+
+IS_LOCAL = config("IS_LOCAL", default=False, cast=bool)
 
 
 
@@ -221,18 +227,23 @@ class Order(BaseModel):
     payment_status = models.BooleanField(default=False)
     shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
 
+
+
     def save(self, *args, **kwargs):
-        # Ensure 'created_at' is properly converted to a naive datetime
-        if not self.created_at:
-            jalali_now = jdatetime.datetime.now()
-            gregorian_now = jalali_now.togregorian().replace(microsecond=0)
-
-            # If the datetime is timezone-aware, make it naive
-            if is_aware(gregorian_now):
-                gregorian_now = make_naive(gregorian_now)
-
-            self.created_at = gregorian_now
-        super(Order, self).save(*args, **kwargs)
+        if IS_LOCAL:
+            # In local environment (e.g., SQLite), ensure created_at is naive
+            if is_aware(self.created_at):
+                self.created_at = make_naive(self.created_at)
+            super().save(*args, **kwargs)  # Use Django's default save method
+        else:
+            # In production (e.g., MySQL), manually insert with raw SQL
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO store_order (created_at) VALUES (STR_TO_DATE(%s, '%%Y-%%m-%%d %%H:%%i:%%s'))",
+                    [self.created_at.strftime('%Y-%m-%d %H:%M:%S')]
+                )
+            # Call super to handle the rest of the fields with Django's default save
+            super().save(*args, **kwargs)
     
     
     def full_delivery_address(self):
