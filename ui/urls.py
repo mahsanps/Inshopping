@@ -61,6 +61,7 @@ urlpatterns = [
     path('editbankaccount/<int:pk>/', EditBankAccount.as_view(), name='editbankaccount'),
     path('wallet/', WalletView.as_view(), name='mywallet'),
     path('terms&conditions/', views.Terms_Conditions, name='terms&conditions'),
+    path('privacy-policy/', views.Privacy_Policy, name='privacy_policy'),
     path('about/', views.about, name='about'),
     path('blog/', views.blog, name='blog'),
     path('guid/', views.guid, name='guid'),

@@ -30,6 +30,10 @@ def Terms_Conditions(request):
         
  return render(request, 'terms&conditions.html')    
 
+def Privacy_Policy(request):
+        
+ return render(request, 'privacy_policy.html')  
+
 def Contact(request):
         
  return render(request, 'contactus.html')   
