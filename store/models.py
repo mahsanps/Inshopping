@@ -17,6 +17,7 @@ from store.utils import post_to_instagram
 from django.conf import settings
 from django.utils.text import slugify
 from unidecode import unidecode  # To handle Persian characters
+from django.utils.timezone import is_aware, make_naive
 
 
 
@@ -220,11 +221,16 @@ class Order(BaseModel):
     payment_status = models.BooleanField(default=False)
     shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
 
+
     def save(self, *args, **kwargs):
-        # Convert Jalali datetime to Gregorian for storing in the database
         if not self.created_at:
             jalali_now = jdatetime.datetime.now()
-            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Remove timezone and microseconds
+            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Convert Jalali to Gregorian
+
+            # Convert the timezone-aware datetime to naive before saving to MySQL
+            if is_aware(gregorian_now):
+                gregorian_now = make_naive(gregorian_now)
+
             self.created_at = gregorian_now
 
         super().save(*args, **kwargs)
