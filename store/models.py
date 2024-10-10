@@ -156,13 +156,6 @@ class Product(BaseModel):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
     instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
    
-
-
-    def save(self, *args, **kwargs):
-        # Generate the slug automatically from the name if slug is not provided
-        if not self.slug:
-            self.slug = slugify(unidecode(self.name))  # Converts Persian to ASCII-like slugs
-        super().save(*args, **kwargs)
     
     def publish_to_instagram(self):
         instagram_user_id = self.shop.shop_auth.instagram_user_id
