@@ -232,17 +232,15 @@ class Order(BaseModel):
 
     def save(self, *args, **kwargs):
         if IS_LOCAL:
-            # In local environment (e.g., SQLite), ensure created_at is naive
-            if is_aware(self.created_at):
-                self.created_at = make_naive(self.created_at)
-            super().save(*args, **kwargs)  # Use Django's default save method
-        else:
-                if self.created_at:
-                   if timezone.is_aware(self.created_at):
-                        self.created_at = timezone.make_naive(self.created_at, timezone=timezone.utc)
-                    # Ensure it's stored as a naive datetime
-                        self.created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                super().save(*args, **kwargs)
+            if self.created_at:
+                # Convert to UTC if timezone-aware, then make it naive
+                if timezone.is_aware(self.created_at):
+                    self.created_at = self.created_at.astimezone(timezone.utc)
+                    self.created_at = self.created_at.replace(tzinfo=None)
+                # Format the datetime for MySQL compatibility
+                self.created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            
+            super().save(*args, **kwargs)
     
     def full_delivery_address(self):
         address_parts = [
