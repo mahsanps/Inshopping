@@ -223,16 +223,8 @@ class Order(BaseModel):
 
 
     def save(self, *args, **kwargs):
-        if not self.created_at:
-            jalali_now = jdatetime.datetime.now()
-            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Convert Jalali to Gregorian
-
-            # Convert the timezone-aware datetime to naive before saving to MySQL
-            if is_aware(gregorian_now):
-                gregorian_now = make_naive(gregorian_now)
-
-            self.created_at = gregorian_now
-
+        if    is_aware(self.created_at):
+           self.created_at = make_naive(self.created_at)
         super().save(*args, **kwargs)
 
     
