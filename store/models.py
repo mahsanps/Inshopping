@@ -55,7 +55,7 @@ class AccountInfo(BaseModel):
 class Category(models.Model):
     name=models.CharField(max_length=100, verbose_name=_("Category"))
     image=models.ImageField(upload_to='media/static/images/', null=True, blank=True) 
-    slug = models.SlugField(max_length=100, unique=True, blank=True)  # Slug field
+    slug = models.SlugField(max_length=100, blank=True)  # Slug field
 
 
     def save(self, *args, **kwargs):
@@ -73,7 +73,7 @@ class SubCategory(BaseModel):
     subname=models.CharField(max_length=200, verbose_name=_("Subcategory"))
     categoryname=models.ForeignKey(Category, on_delete=models.CASCADE, default="") 
     image=models.ImageField(upload_to='media/static/images/', null=True, blank=True) 
-    slug = models.SlugField(max_length=100, unique=True, blank=True)  # Slug field
+    slug = models.SlugField(max_length=100, blank=True)  # Slug field
 
 
     def save(self, *args, **kwargs):
@@ -155,7 +155,7 @@ class Product(BaseModel):
     subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, default="", verbose_name=_("subcategory"))
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
     instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
-    slug = models.SlugField(max_length=100, unique=True, blank=True)  # Slug field
+   
 
 
     def save(self, *args, **kwargs):
