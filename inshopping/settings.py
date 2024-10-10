@@ -137,7 +137,9 @@ else :
         'PORT': config('DATABASE_PORT'),  
         'OPTIONS': {
             'charset': 'utf8mb4',
+            'init_command': "SET SESSION sql_mode='STRICT_TRANS_TABLES'"
         },
+        
 
     }
 }
