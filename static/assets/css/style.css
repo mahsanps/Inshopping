@@ -1,11 +1,23 @@
 /* Google Fonts - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
+@font-face {
+    font-family:'Shabnam';
+    src: url('/static/fonts/Shabnam.woff2') format('woff2'),
+         url('/static/fonts/Shabnam.woff') format('woff'),
+         url('/static/fonts/Shabnam.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  body {
+    font-family: "shabnam", sans-serif;
+    color: #272829;
+  }
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+   
 }
 .container{
     height: 100vh;
