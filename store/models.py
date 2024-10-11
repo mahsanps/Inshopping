@@ -231,11 +231,13 @@ class Order(BaseModel):
 
     def save(self, *args, **kwargs):
      if self.created_at:
-        # Make datetime naive (remove timezone) and ensure it's compatible for MySQL
+        # Convert to UTC if it's timezone-aware
         if timezone.is_aware(self.created_at):
-            self.created_at = self.created_at.astimezone(timezone.utc).replace(tzinfo=None)
+            self.created_at = self.created_at.astimezone(timezone.utc)
+        # Remove the timezone info (make it naive)
+        self.created_at = self.created_at.replace(tzinfo=None)
 
-     super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
    
     
     def full_delivery_address(self):
