@@ -233,11 +233,11 @@ class Order(BaseModel):
      if isinstance(self.created_at, jdatetime.datetime):
         # Convert Jalali to Gregorian
         gregorian_now = self.created_at.togregorian()
-        
-        # Ensure it's naive (no timezone)
-        gregorian_now = gregorian_now.replace(tzinfo=None)
-        
-        self.created_at = gregorian_now  # Save Gregorian datetime
+
+        # Ensure it's in UTC and naive
+        gregorian_now = gregorian_now.astimezone(timezone.utc).replace(tzinfo=None)
+
+        self.created_at = gregorian_now
 
      super().save(*args, **kwargs)
    
