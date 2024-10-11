@@ -229,18 +229,14 @@ class Order(BaseModel):
     shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
 
 
-
     def save(self, *args, **kwargs):
-        if IS_LOCAL:
-            if self.created_at:
-                # Convert to UTC if timezone-aware, then make it naive
-                if timezone.is_aware(self.created_at):
-                    self.created_at = self.created_at.astimezone(timezone.utc)
-                    self.created_at = self.created_at.replace(tzinfo=None)
-                # Format the datetime for MySQL compatibility
-                self.created_at = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
-            
-            super().save(*args, **kwargs)
+     if self.created_at:
+        # Make datetime naive (remove timezone) and ensure it's compatible for MySQL
+        if timezone.is_aware(self.created_at):
+            self.created_at = self.created_at.astimezone(timezone.utc).replace(tzinfo=None)
+
+     super().save(*args, **kwargs)
+   
     
     def full_delivery_address(self):
         address_parts = [
