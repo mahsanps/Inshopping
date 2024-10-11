@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'sslserver',
     'unidecode',
+ 
+
 ]
 
 MIDDLEWARE = [

@@ -21,6 +21,7 @@ from django.utils.timezone import is_aware, make_naive
 from django.db import connection
 from django.utils import timezone
 from decouple import config, Csv
+from django_jalali.db import models as jmodels
 
 
 
@@ -210,7 +211,7 @@ class BankAccount(BaseModel):
 
 
 class Order(BaseModel):
-    created_at = jmodels.jDateTimeField()
+    created_at = created_at = jmodels.jDateTimeField() 
     account = models.ForeignKey(Account, on_delete=models.DO_NOTHING, db_constraint=False, null=False, blank=True,  verbose_name=_("account"))
     is_paid = models.BooleanField(default=False)
     total_price = models.FloatField( verbose_name=_("totalPrice"))
@@ -228,16 +229,17 @@ class Order(BaseModel):
     payment_status = models.BooleanField(default=False)
     shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
 
-
     def save(self, *args, **kwargs):
-     if self.created_at:
-        # Convert to UTC if it's timezone-aware
-        if timezone.is_aware(self.created_at):
-            self.created_at = self.created_at.astimezone(timezone.utc)
-        # Remove the timezone info (make it naive)
-        self.created_at = self.created_at.replace(tzinfo=None)
+     if isinstance(self.created_at, jdatetime.datetime):
+        # Convert Jalali to Gregorian
+        gregorian_now = self.created_at.togregorian()
+        
+        # Ensure it's naive (no timezone)
+        gregorian_now = gregorian_now.replace(tzinfo=None)
+        
+        self.created_at = gregorian_now  # Save Gregorian datetime
 
-        super().save(*args, **kwargs)
+     super().save(*args, **kwargs)
    
     
     def full_delivery_address(self):
