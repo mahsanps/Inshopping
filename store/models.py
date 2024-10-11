@@ -228,7 +228,8 @@ class Order(BaseModel):
     email = models.EmailField(blank=True, null=True)
     payment_authority = models.CharField(max_length=50, blank=True, null=True)
     payment_status = models.BooleanField(default=False)
-    shop = models.OneToOneField(Shop, on_delete=models.CASCADE,  db_constraint=False, null=False, blank=False, verbose_name=_("shop"))
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, db_constraint=False, verbose_name=_("shop"))
+
 
     def save(self, *args, **kwargs):
         # Keep it in Gregorian, and handle timezone correctly
