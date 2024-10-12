@@ -5,7 +5,7 @@ from django import forms
 class ShopForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ('store_name', 'description', 'instagramId', 'email', 'contact', 'address','image','delivery_cost', 'banner_image1','banner_image2','banner_image3')
+        fields = ('store_name', 'description', 'instagramId', 'email', 'contact', 'address','delivery_cost','image', 'banner_image1','banner_image2','banner_image3')
 
     def __init__(self, *args, **kwargs):
         super(ShopForm, self).__init__(*args, **kwargs)
@@ -21,8 +21,11 @@ class ShopForm(forms.ModelForm):
         self.fields['banner_image2'].required = True
         self.fields['banner_image3'].required = True
         
+     
         self.fields['store_name'].widget.attrs.update({
             'placeholder': 'name',
             
         })
+        self.fields['delivery_cost'].help_text = '(هزینه ارسال کالا یکبار برای تمام محصولات شما اعمال می شود.(هزینه به تومان))'
         self.fields['store_name'].help_text =  '(نام فروشگاه شما به عنوان وبسایت شما معرفی می شود و حتما باید با حروف لاتین نوشته شود.)'
+        self.fields['image'].label = "لوگوی فروشگاه"
