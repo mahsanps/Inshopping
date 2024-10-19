@@ -123,10 +123,13 @@ class CheckoutView(BaseView):
         store_cart_items = []
         categories = Category.objects.all()
        
-        try:
-            account_info = request.user.account_info
-        except AccountInfo.DoesNotExist:
-            account_info = None
+        account_info = None
+        if request.user.is_authenticated:
+            try:
+                account_info = request.user.account_info
+            except AccountInfo.DoesNotExist:
+                account_info = None
+
 
         shop = Shop.objects.filter(store_name=store_name).first()
         delivery_cost = shop.delivery_cost if shop else 0 
