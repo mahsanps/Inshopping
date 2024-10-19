@@ -237,6 +237,7 @@ img {
     flex-wrap: nowrap;
     background-color: #393939;
     height: 60px;
+    padding-right: 2%;
 }
 
 
@@ -1545,7 +1546,7 @@ input.mail_bt::placeholder {
     .header1 {
         flex-wrap: wrap; 
         height: 50px;
-        
+        padding-right: 5px;
     }
     
    
