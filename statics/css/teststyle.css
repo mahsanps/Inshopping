@@ -36,7 +36,7 @@ nav ul li a {
 }
 
 .hero {
-    background: url('{% static "images/main.png" %}') no-repeat center center/cover;
+    background-image: url(../images/main.png) !important;
     color: #fff;
     text-align: center;
     padding: 100px 0;
