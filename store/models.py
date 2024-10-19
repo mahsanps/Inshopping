@@ -64,7 +64,7 @@ class AccountInfo(BaseModel):
         
 class Category(models.Model):
     name=models.CharField(max_length=100, verbose_name=_("Category"))
-    image=models.ImageField(upload_to='static/images/', null=True, blank=True) 
+    image=models.ImageField(upload_to='media/images/', null=True, blank=True) 
     slug = models.SlugField(max_length=100, blank=True)  # Slug field
 
 
@@ -82,7 +82,7 @@ class Category(models.Model):
 class SubCategory(BaseModel):
     subname=models.CharField(max_length=200, verbose_name=_("Subcategory"))
     categoryname=models.ForeignKey(Category, on_delete=models.CASCADE, default="") 
-    image=models.ImageField(upload_to='static/images/', null=True, blank=True) 
+    image=models.ImageField(upload_to='media/images/', null=True, blank=True) 
     slug = models.SlugField(max_length=100, blank=True)  # Slug field
 
 
@@ -106,10 +106,10 @@ class Shop(BaseModel):
     contact=models.CharField(blank=True,max_length=20, verbose_name=_("Contact"))
     address=models.CharField(blank=True, max_length=400, verbose_name=_("Address"))
     delivery_cost=models.IntegerField(default=0,verbose_name=_("delivery-cost"))
-    image=models.ImageField(upload_to='static/images/', default="",  verbose_name=_("Image"))
-    banner_image1=models.ImageField(upload_to='static/images/', default="",  verbose_name=_("banner-Image1"))
-    banner_image2=models.ImageField(upload_to='static/images/', default="",  verbose_name=_("banner-Image2"))
-    banner_image3=models.ImageField(upload_to='static/images/', default="",  verbose_name=_("banner-Image3"))
+    image=models.ImageField(upload_to='media/images/', default="",  verbose_name=_("Image"))
+    banner_image1=models.ImageField(upload_to='media/images/', default="",  verbose_name=_("banner-Image1"))
+    banner_image2=models.ImageField(upload_to='media/images/', default="",  verbose_name=_("banner-Image2"))
+    banner_image3=models.ImageField(upload_to='media/images/', default="",  verbose_name=_("banner-Image3"))
    
     
     shop_auth: ShopAuth
@@ -155,7 +155,7 @@ class Product(BaseModel):
     is_approved = models.BooleanField(default=False)
     name=models.CharField(max_length=200, default="",  verbose_name=_("productName"))
     productCode=models.CharField(blank=True, max_length=500,  verbose_name=_("productCode"))
-    image=models.ImageField(upload_to='static/images/', default="",  verbose_name=_("Image"))
+    image=models.ImageField(upload_to='media/images/', default="",  verbose_name=_("Image"))
     description=models.TextField(default="",null=True, blank=True, verbose_name=_("Description"))
     material=models.CharField(max_length=200,null=True, blank=True,  verbose_name=_("material"))
     madeIn=models.CharField(max_length=200,null=True, blank=True,  verbose_name=_("madeIn"))
@@ -179,7 +179,7 @@ class Product(BaseModel):
    
 class ProductImage(BaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images')
-    image = models.ImageField(upload_to='static/images/',  verbose_name=_("Images"))
+    image = models.ImageField(upload_to='media/images/',  verbose_name=_("Images"))
     
 
 class ProductVariation(BaseModel):
