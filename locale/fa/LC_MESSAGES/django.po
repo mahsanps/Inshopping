@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-08 15:20+0330\n"
+"POT-Creation-Date: 2024-10-20 13:55+0330\n"
 "Language: fa\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
@@ -431,7 +431,7 @@ msgid "File"
 msgstr ""
 
 #: .\myenv\Lib\site-packages\django\db\models\fields\files.py:393
-#: .\store\models.py:74 .\store\models.py:123
+#: .\store\models.py:109 .\store\models.py:158
 msgid "Image"
 msgstr "عکس"
 
@@ -1316,209 +1316,199 @@ msgstr "ارسال شده"
 msgid "DELIVERED"
 msgstr "تحویل داده شده"
 
-#: .\store\models.py:45
+#: .\store\models.py:58
 msgid "user"
 msgstr ""
 
-#: .\store\models.py:46
+#: .\store\models.py:59
 msgid "firstname"
 msgstr "نام"
 
-#: .\store\models.py:47
+#: .\store\models.py:60
 msgid "lastname"
 msgstr "نام خانوادگی"
 
-#: .\store\models.py:48
+#: .\store\models.py:61
 msgid "phone"
 msgstr "شماره تماس"
 
-#: .\store\models.py:53 .\store\models.py:129
+#: .\store\models.py:66 .\store\models.py:164
 msgid "Category"
 msgstr "دسته بندی"
 
-#: .\store\models.py:58
+#: .\store\models.py:83
 msgid "Subcategory"
 msgstr "زیر مجموعه"
 
-#: .\store\models.py:67
+#: .\store\models.py:101
 msgid "Storename"
 msgstr "نام فروشگاه"
 
-#: .\store\models.py:68 .\store\models.py:181
+#: .\store\models.py:102 .\store\models.py:216
 #, fuzzy
 #| msgid "Account"
 msgid "account"
 msgstr "حساب کاربری"
 
-#: .\store\models.py:69 .\store\models.py:124
+#: .\store\models.py:103 .\store\models.py:159
 msgid "Description"
 msgstr "توضیحات"
 
-#: .\store\models.py:70
+#: .\store\models.py:104
 msgid "InstagramId"
 msgstr "حساب کاربری اینستاگرام"
 
-#: .\store\models.py:71
+#: .\store\models.py:105
 msgid "Email"
 msgstr " ایمیل"
 
-#: .\store\models.py:72
+#: .\store\models.py:106
 msgid "Contact"
 msgstr "تماس"
 
-#: .\store\models.py:73 .\ui\templates\order-registered-details.html:17
+#: .\store\models.py:107 .\ui\templates\order-registered-details.html:17
 msgid "Address"
 msgstr "آدرس"
 
-#: .\store\models.py:75
+#: .\store\models.py:108
 msgid "delivery-cost"
 msgstr "هزینه ارسال"
 
-#: .\store\models.py:76
+#: .\store\models.py:110
 msgid "banner-Image1"
 msgstr "بنر اول سایت"
 
-#: .\store\models.py:77
+#: .\store\models.py:111
 msgid "banner-Image2"
 msgstr "بنر دوم سایت"
 
-#: .\store\models.py:78
+#: .\store\models.py:112
 msgid "banner-Image3"
 msgstr "بنر سوم سایت"
 
-#: .\store\models.py:113 .\store\models.py:153
+#: .\store\models.py:148 .\store\models.py:188
 msgid "color"
 msgstr "رنگ"
 
-#: .\store\models.py:121
+#: .\store\models.py:156
 msgid "productName"
 msgstr "نام محصول"
 
-#: .\store\models.py:122
+#: .\store\models.py:157
 msgid "productCode"
 msgstr "کد محصول"
 
-#: .\store\models.py:125
+#: .\store\models.py:160
 msgid "material"
 msgstr " جنس"
 
-#: .\store\models.py:126
+#: .\store\models.py:161
 msgid "madeIn"
 msgstr "تولید کشور"
 
-#: .\store\models.py:127 .\ui\templates\orderdetails.html:16
+#: .\store\models.py:162 .\ui\templates\orderdetails.html:16
 msgid "Price"
 msgstr "قیمت"
 
-#: .\store\models.py:128
+#: .\store\models.py:163
 msgid "isactive"
 msgstr " فعال"
 
-#: .\store\models.py:130
+#: .\store\models.py:165
 msgid "subcategory"
 msgstr "زیر مجموعه"
 
-#: .\store\models.py:131 .\store\models.py:196
+#: .\store\models.py:166 .\store\models.py:231
 #: .\ui\templates\orderdetails.html:22
 msgid "shop"
 msgstr "فروشگاه"
 
-#: .\store\models.py:132
-#, fuzzy
-#| msgid "InstagramId"
-msgid "Post to Instagram"
-msgstr "حساب کاربری اینستاگرام"
-
-#: .\store\models.py:147
+#: .\store\models.py:182
 msgid "Images"
 msgstr "تصاویر"
 
-#: .\store\models.py:152 .\ui\templates\orderdetails.html:18
+#: .\store\models.py:187 .\ui\templates\orderdetails.html:18
 msgid "size"
 msgstr "سایز"
 
-#: .\store\models.py:154 .\store\models.py:228
+#: .\store\models.py:189 .\store\models.py:263
 #: .\ui\templates\orderdetails.html:19
 msgid "quantity"
 msgstr "تعداد"
 
-#: .\store\models.py:168 .\ui\templates\wallet.html:18
+#: .\store\models.py:203 .\ui\templates\wallet.html:18
 #, fuzzy
 #| msgid "Storename"
 msgid "name"
 msgstr "نام فروشگاه"
 
-#: .\store\models.py:169
+#: .\store\models.py:204
 msgid "bankName"
 msgstr "نام بانک"
 
-#: .\store\models.py:170
+#: .\store\models.py:205
 msgid "cartNumber"
+msgstr "شماره کارت"
+
+#: .\store\models.py:206
+msgid "accountNumber"
 msgstr "شماره شباء"
 
-#: .\store\models.py:171
-msgid "accountNumber"
-msgstr "شماره حساب"
-
-#: .\store\models.py:183 .\store\models.py:225
+#: .\store\models.py:218 .\store\models.py:260
 #: .\ui\templates\order-registered-details.html:13
 #: .\ui\templates\orderdetails.html:27
 msgid "totalPrice"
 msgstr "مجموع قیمت"
 
-#: .\store\models.py:184
+#: .\store\models.py:219
 msgid "totalDiscount"
 msgstr "مجموع تخفیف ها"
 
-#: .\store\models.py:185
+#: .\store\models.py:220
 msgid "unitNumber"
 msgstr "پلاک و واحد"
 
-#: .\store\models.py:186
+#: .\store\models.py:221
 msgid "streetName"
 msgstr "کوچه "
 
-#: .\store\models.py:187
+#: .\store\models.py:222
 msgid "suburb"
 msgstr "خیابان"
 
-#: .\store\models.py:188
+#: .\store\models.py:223
 msgid "city"
 msgstr "شهر"
 
-#: .\store\models.py:189
+#: .\store\models.py:224
 msgid "state"
 msgstr "استان"
 
-#: .\store\models.py:191 .\ui\templates\order-registered-details.html:18
+#: .\store\models.py:226 .\ui\templates\order-registered-details.html:18
 msgid "postCode"
 msgstr "کد پستی"
 
-#: .\store\models.py:192
+#: .\store\models.py:227
 msgid "mobileNumber"
 msgstr "شماره همراه"
 
-#: .\store\models.py:227
+#: .\store\models.py:262
 #, fuzzy
 #| msgid "Discount"
 msgid "discount"
 msgstr "تخفیف"
 
-#: .\store\models.py:245
+#: .\store\models.py:280
 msgid "status"
 msgstr "وضعیت"
 
-#: .\store\models.py:246
+#: .\store\models.py:281
 msgid "trackingNumber"
 msgstr "کد رهگیری پست"
 
 #: .\ui\templates\dashboard.html:13
 msgid "Orders Registered"
 msgstr "سفارشات ثبت شده"
-
-#: .\ui\templates\index.html:146 .\ui\views.py:15
-msgid "beauty"
-msgstr "آرایشی و بهداشتی"
 
 #: .\ui\templates\order-registered-details.html:31
 msgid "No order items found."
@@ -1633,6 +1623,14 @@ msgstr "شماره شبا"
 msgid "Edit"
 msgstr "ویرایش"
 
+#, fuzzy
+#~| msgid "InstagramId"
+#~ msgid "Post to Instagram"
+#~ msgstr "حساب کاربری اینستاگرام"
+
+#~ msgid "beauty"
+#~ msgstr "آرایشی و بهداشتی"
+
 #, fuzzy, python-format
 #~| msgid "subcategory"
 #~ msgid "%(subcategory.name)s"
@@ -1725,7 +1723,6 @@ msgstr "ویرایش"
 
 #~ msgid "Shops"
 #~ msgstr "فروشگاه ها"
-
 
 #~ msgid "Create Your Shop'"
 #~ msgstr "فروشگاه خود را بسازید"
