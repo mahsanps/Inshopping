@@ -1491,6 +1491,7 @@ input.mail_bt::placeholder {
 .pro-btn a {
     padding-top: 2px;
     color: white;
+    text-align: center;
 }
 .pro-btn img {
     width: 30px;
