@@ -18,13 +18,13 @@
             <li>{% trans "size" %}: {{ item.variation.size }}</li>
             <li>{% trans "quantity" %}: {{ item.quantity }}</li>
             <li>{% trans "finalPrice" %}:{{ item.total_price|custom_price_format   }} تومان</li>
-            <li>{% trans "Discount" %}: {{ item.discount }}</p>
+            <li>{% trans "Discount" %}: {{ item.discount }}%</p>
             <li>{% trans "shop" %}: <a href="{% url 'storepage' store_name=item.variation.product.shop.store_name   %}" >{{ item.variation.product.shop.store_name }}</a></li>
             
                  
             {% endfor %}
             <p> تاریخ خرید : {{order.created_at|jformat:"%Y/%m/%d" }}</p>
-            <p>{% trans "totalPrice" %}: {{order.total_price|custom_price_format  }} تومان</p>
+            <p>مجموع پرداخت: {{order.total_price|custom_price_format  }} تومان</p>
             
             </ul> 
     </div>    

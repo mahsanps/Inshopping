@@ -222,9 +222,16 @@
                               <div class="box_main">
                                  <div class="tshirt_img"><img  src="{{product.image.url}}"></div>
                                  <h4 class="shirt_text">{{ product.name }}</h4>
+                                 {% if product.discount > 0 %}
+                                 <div style="text-align: right;">
+                                 <del class="price_del"> <span > {{product.price|custom_price_format }} تومان</span></del>
                                 
-                                 <p class="price_text">{{product.price|custom_price_format }} تومان <span style="color: #262626;"></span></p>
-                                 
+                                 <span class="price_text"> {{ product.final_price|custom_price_format }} تومان <p style="margin: auto; margin-right: 6px; max-width: 20%; background-color:black; border-radius:50%; padding:5px; color:white;">{{product.discount|custom_price_format}}% </p></span>
+                                 </div>
+                                 {%else%}
+                                  <p class="price_text"> <span > {{product.price|custom_price_format }} تومان</span></p>
+                                 {% endif %} 
+                              
                                     
                                     <div >
                                        {% if not product.id in available_products %}

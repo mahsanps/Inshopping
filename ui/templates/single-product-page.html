@@ -96,7 +96,17 @@
                     <li><h1 style="font-size:30px;" >{{ product_details.name }}</h1></li>
                    
                    <br>
-                    <li><h4 style="font-weight:600; color:#41011a; border:1px solid #41011a; padding: 5px; border-radius: 10px;">قیمت :  {{ product_details.price|custom_price_format  }} تومان</h4></li>
+                    <li>
+                        {% if product_details.discount > 0 %}
+                       
+                        <del class="price_del"> <span > {{product_details.price|custom_price_format }} تومان</span></del>
+                        <p style="margin:2px; margin-right: 6px; max-width: 10%; background-color:red; border-radius:50%; padding:5px; color:white;">{{product_details.discount|custom_price_format}}% </p>
+                       
+                        <h4 style="font-weight:600; color:#41011a; border:1px solid #41011a; padding: 5px; border-radius: 10px;">قیمت :  {{product_details.final_price|custom_price_format }} تومان</h4></li>
+                        {%else%}
+                         <h4 style="font-weight:600; color:#41011a; border:1px solid #41011a; padding: 5px; border-radius: 10px;">قیمت :  {{product_details.price|custom_price_format }} تومان</h4></li>
+                        {% endif %}
+                       
                     <br>
                     {% if product_details.material %}
                     <li><h4>جنس : {{product_details.material}}</h4></li>

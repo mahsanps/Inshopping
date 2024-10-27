@@ -72,7 +72,12 @@
     padding:3px; 
 }
 
-
+@media screen and (max-width: 990px) {
+    .product-list-img {
+        max-height: 100px;
+      
+    }
+}
 
 
 @media screen and (max-width: 768px) {
@@ -83,11 +88,11 @@
     .product-list-img {
         max-height: 100px;
       
-    
     }
     .box-li {
         padding: 0;
-        width: 50%;
+        width: 45%;
+        margin: 5px;
     }
     .back-btn {
         float: left;

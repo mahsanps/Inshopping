@@ -19,7 +19,14 @@
               <div>
               <p>{{ item.name }}</p>
               <p>تعداد :{{item.quantity}}</p>
-              <p>قیمت: {{ item.price|custom_price_format  }} تومان</p>
+              <p>قیمت: 
+                {% if item.discount > 0 %}
+                  
+                    <span>{{ item.get_discounted_price|custom_price_format }} تومان</span>  <!-- Discounted price -->
+                {% else %}
+                    {{ item.price|custom_price_format }} تومان  <!-- Original price if no discount -->
+                {% endif %}
+            </p>
               <p>رنگ: {{ item.color|default:'N/A' }}</p>
               <p>سایز: {{ item.size|default:'N/A' }}</p>
               </a>

@@ -844,7 +844,6 @@ a:hover {
 }
 
 .price_text {
-    width: 100%;
     font-size: 16px;
     color: #c30707;
     text-align: right;
@@ -852,6 +851,20 @@ a:hover {
     font-weight: 400;
     margin-right: 10px;
     padding-right: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.price_del {
+    font-size: 16px;
+    color: #444242;
+    text-align: right;
+    margin: 0px;
+    font-weight: 400;
+    margin-right: 10px;
+    padding-right: 5px;
+    display: flex;
+    align-items: center;
 }
 
 .tshirt_img {

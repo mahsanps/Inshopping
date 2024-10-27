@@ -165,7 +165,17 @@ class Product(BaseModel):
     subcategory=models.ForeignKey(SubCategory, on_delete=models.CASCADE, default="", verbose_name=_("subcategory"))
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
     instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
+    discount = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, verbose_name=_("Discount"))
    
+    
+    @property
+    def final_price(self):
+        """
+        Calculate the final price after applying discount.
+        """
+        if self.discount > 0:
+            return self.price * (1 - (self.discount / 100))
+        return self.price
     
     def publish_to_instagram(self):
         instagram_user_id = self.shop.shop_auth.instagram_user_id
@@ -215,8 +225,8 @@ class Order(BaseModel):
     created_at = models.DateTimeField(auto_now_add=True)  
     account = models.ForeignKey(Account, on_delete=models.DO_NOTHING, db_constraint=False, null=False, blank=True,  verbose_name=_("account"))
     is_paid = models.BooleanField(default=False)
-    total_price = models.FloatField( verbose_name=_("totalPrice"))
-    total_discount = models.FloatField( verbose_name=_("totalDiscount"))
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("totalPrice"))
+    total_discount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("totalDiscount"))
     delivery_address_unit_number = models.CharField(max_length=200, blank=True, null=True,  verbose_name=_("unitNumber"))
     delivery_address_street_name = models.CharField(max_length=200, blank=True, null=True,  verbose_name=_("streetName"))
     delivery_address_suburb = models.CharField(max_length=200, blank=True, null=True,  verbose_name=_("suburb"))

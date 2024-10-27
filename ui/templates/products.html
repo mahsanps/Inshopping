@@ -42,6 +42,12 @@
             
         </div>
         <div>
+            {{ form.discount.errors }}
+            <label for="{{ form.discount.id_for_label }}">{{ form.discount.label }}<span style="color: red;"> (بر اساس ٪)</span> {% if form.discount.field.required %}{% endif %}</label>
+            {{ form.discount }}
+            {{ form.discount.placeholder }}
+        </div>
+        <div>
             {{ form.isactive.errors }}
             <label for="{{ form.isactive.id_for_label }}">{{ form.isactive.label }} {% if form.isactive.field.required %}<span style="color: red;">*</span>{% endif %}</label>
             {{ form.isactive }}

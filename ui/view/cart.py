@@ -16,6 +16,10 @@ from django.contrib import messages
 from urllib.parse import quote
 import jdatetime
 from django.utils.timezone import is_aware, make_naive
+import logging
+from decimal import Decimal
+
+logger = logging.getLogger(__name__)
 
 user = get_user_model()
 
@@ -26,16 +30,14 @@ def get_jalali_date(gregorian_date):
         return jalali_date.strftime('%Y-%m-%d %H:%M:%S')
     return None
 
-
 class CartView(BaseView):
     def get(self, request, store_name):
         cart_cookie = request.COOKIES.get("cart", "{}")
         cart_cookie_dict = json.loads(cart_cookie)
         store_cart_cookie = cart_cookie_dict.get(store_name, {})
         store_cart_items = []
-        categories = Category.objects.all() 
-        
-        
+        categories = Category.objects.all()
+
         for cart_item in store_cart_cookie.get("cart_items", []):
             if cart_item.get("variation_id"):
                 temp_variation = ProductVariation.objects.filter(pk=cart_item.get("variation_id")).first()
@@ -46,23 +48,29 @@ class CartView(BaseView):
                 product = Product.objects.filter(name=cart_item.get("name")).first()
 
             if product:
+                # Use the product's price from the database and its discount
+                price = product.price  # Fetch the current price from the database
+                discount = product.discount if product.discount else 0.0
+
                 store_cart_items.append(CartItem(
-                product_id=product.pk,
-                variation_id=cart_item.get("variation_id"), 
-                price=cart_item.get("price"), 
-                quantity=cart_item.get("quantity"),
-                name=cart_item.get("name"),
-                image=cart_item.get("image"),
-                color=cart_item.get("color"),
-                size=cart_item.get("size"),
-                store_name=product.shop.store_name, 
-               
-            ))
+                    product_id=product.pk,
+                    variation_id=cart_item.get("variation_id"), 
+                    price=price,  # Use the updated price from the product
+                    quantity=cart_item.get("quantity"),
+                    name=cart_item.get("name"),
+                    image=cart_item.get("image"),
+                    color=cart_item.get("color"),
+                    size=cart_item.get("size"),
+                    store_name=product.shop.store_name, 
+                    discount=discount,  # Pass the discount from the product
+                ))
+
         store_cart_cookie["cart_items"] = store_cart_items
-        cart = Cart(**store_cart_cookie)        
-        
+        cart = Cart(**store_cart_cookie)
+
         total_price = cart.get_total_price()
-        return render(request,'cart.html',{'cart':cart,'total_price': total_price,'categories':categories ,"store_name": store_name})
+        return render(request, 'cart.html', {'cart': cart, 'total_price': total_price, 'categories': categories, 'store_name': store_name})
+
 
 class UpdateCartItemView(BaseView):
     def post(self, request, store_name, variation_pk):
@@ -139,32 +147,41 @@ class CheckoutView(BaseView):
                 temp_variation = ProductVariation.objects.filter(pk=cart_item.get("variation_id")).first()
                 if not temp_variation:
                     continue
+                product = temp_variation.product
+                price = product.price
+                discount = product.discount if product.discount else 0.0
                 store_cart_items.append(CartItem(
                     product_id=temp_variation.product.pk,
                     variation_id=temp_variation.pk,
-                    price=cart_item.get("price"),
+                    price=float(cart_item.get("price")),
                     quantity=cart_item.get("quantity"),
                     name=cart_item.get("name"),
                     image=cart_item.get("image"),
                     color=temp_variation.color.color if temp_variation.color else None,
                     size=temp_variation.size,
+                    discount=float(discount),
                 ))
             else:
                 product = Product.objects.filter(name=cart_item.get("name")).first()
                 if not product:
                     continue
+                price = product.price
+                discount = product.discount if product.discount else 0.0
+
                 store_cart_items.append(CartItem(
                     product_id=product.pk,
                     variation_id=None,
-                    price=cart_item.get("price"),
+                    price=float(cart_item.get("price")),
                     quantity=cart_item.get("quantity"),
                     name=cart_item.get("name"),
                     image=cart_item.get("image"),
                     color=None,
                     size=None,
+                    discount=float(discount), 
                 ))
 
-        total_price = sum(item.price * item.quantity for item in store_cart_items)+ delivery_cost
+        total_price = sum(item.get_discounted_price() * item.quantity for item in store_cart_items) + delivery_cost
+
         form = CheckoutForm()
 
         if not request.user.is_authenticated:
@@ -174,9 +191,10 @@ class CheckoutView(BaseView):
         if not account_info:
             messages.info(request, 'برای ادامه فرایند پرداخت باید حساب کاربری خود را تکمیل کنید.') 
             return redirect('account-info')
-            
+         
+
              
-        return render(request, 'checkout.html', {
+        response = HttpResponse(render(request, 'checkout.html', {
             'categories': categories,
             'cart_items': store_cart_items,
             'form': form,
@@ -184,10 +202,16 @@ class CheckoutView(BaseView):
             'store_name': store_name,
              'delivery_cost':delivery_cost,
             'error_message': None  # Add this line
-        })
+        }))
+        if not cart_cookie_dict.get(store_name):
+            cart_cookie_dict[store_name] = {}        
+        cart_cookie_dict[store_name].update({"cart_items": [item.__dict__ for item in store_cart_items]})        
+        response.set_cookie('cart', value=json.dumps(cart_cookie_dict))           
+        return response
 
     def post(self, request, store_name):
         categories = Category.objects.all()
+
         if not request.user.is_authenticated:
             return redirect('signin')
 
@@ -197,30 +221,37 @@ class CheckoutView(BaseView):
             cart_cookie_dict = json.loads(cart_cookie)
             store_cart_cookie = cart_cookie_dict.get(store_name, {})
             store_cart_items = store_cart_cookie.get("cart_items", [])
-            
+
             shop = Shop.objects.filter(store_name=store_name).first()
-            delivery_cost = shop.delivery_cost if shop else 0 
+            delivery_cost = (shop.delivery_cost) if shop else 0
 
-            total_price = sum(
-                item.get("price") * item.get("quantity") for item in store_cart_cookie.get("cart_items", [])
-            ) + delivery_cost 
-            total_discount = sum(
-                item.get("discount", 0.0) * item.get("quantity") for item in store_cart_cookie.get("cart_items", [])
-            )
-
-            # Check for item availability
+            total_price= 0
+            total_discount= 0
             unavailable_items = []
-            for cart_item in store_cart_cookie.get("cart_items", []):
+
+            # Calculate totals and discounts with availability check
+            for cart_item in store_cart_items:
+                price = (cart_item.get("price", 0))
+                discount = (cart_item.get("discount", 0))
+                quantity = cart_item.get("quantity", 1)
+               
+                # Calculate discounted price for the item
+                discounted_price = price - (price * (discount / 100))
+                total_price += (discounted_price * quantity)
+               
+                total_discount += (price - discounted_price) * quantity
+
+                # Check availability
                 if cart_item.get("variation_id"):
                     temp_variation = ProductVariation.objects.filter(pk=cart_item.get("variation_id")).first()
-                    if not temp_variation or temp_variation.quantity < cart_item.get("quantity"):
+                    if not temp_variation or temp_variation.quantity < quantity:
                         unavailable_items.append(cart_item.get("name"))
                 else:
                     product = Product.objects.filter(name=cart_item.get("name")).first()
                     if not product:
                         continue
                     total_product_quantity = sum(variation.quantity for variation in product.variations.all())
-                    if total_product_quantity < cart_item.get("quantity"):
+                    if total_product_quantity < quantity:
                         unavailable_items.append(cart_item.get("name"))
 
             if unavailable_items:
@@ -228,26 +259,21 @@ class CheckoutView(BaseView):
                     'cart_items': store_cart_items,
                     'form': form,
                     'categories': categories,
-                    'total_price': total_price,
+                    'total_price': total_price + delivery_cost,  # Ensure total reflects discount
                     'store_name': store_name,
                     'error_message': f"The following items are not available in the required quantity: {', '.join(unavailable_items)}"
                 })
 
+            # Adjust total price by adding delivery cost
+            total_price += delivery_cost
+
+            # Create the order
             jalali_now = jdatetime.datetime.now()
-            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Remove microseconds
-
-            jalali_now = jdatetime.datetime.now()
-            gregorian_now = jalali_now.togregorian().replace(microsecond=0)  # Remove microseconds
-
-        # If the datetime is timezone-aware, make it naive
-            if is_aware(gregorian_now):
-               gregorian_now = make_naive(gregorian_now)
-
-
+            gregorian_now = jalali_now.togregorian().replace(microsecond=0)
 
             order = Order.objects.create(
                 account=request.user,
-                total_price=total_price,
+                total_price=total_price,  # Use discounted total price
                 total_discount=total_discount,
                 delivery_address_unit_number=form.cleaned_data.get('delivery_address_unit_number', ''),
                 delivery_address_street_name=form.cleaned_data.get('delivery_address_street_name', ''),
@@ -256,21 +282,27 @@ class CheckoutView(BaseView):
                 delivery_address_state=form.cleaned_data.get('delivery_address_state', ''),
                 delivery_address_postcode=form.cleaned_data.get('delivery_address_postcode', ''),
                 shop=shop,
-                created_at=gregorian_now 
+                created_at=gregorian_now  # Keeping your date settings
             )
 
-            for cart_item in store_cart_cookie.get("cart_items", []):
+            # Create OrderItem entries with discounted price
+            for cart_item in store_cart_items:
+                price = Decimal(cart_item.get("price", 0))
+                discount = Decimal(cart_item.get("discount", 0.0))
+                quantity = cart_item.get("quantity", 1)
+                discounted_price = price * (1 - discount / 100)
+
                 if cart_item.get("variation_id"):
                     temp_variation = ProductVariation.objects.filter(pk=cart_item.get("variation_id")).first()
                     if not temp_variation:
                         continue
                     OrderItem.objects.create(
                         variation=temp_variation,
-                        variation_price=cart_item.get("price"),
+                        variation_price=price,
                         order=order,
-                        quantity=cart_item.get("quantity"),
-                        total_price=cart_item.get("price") * cart_item.get("quantity"),
-                        discount=cart_item.get("discount", 0.0),
+                        quantity=quantity,
+                        total_price=discounted_price * quantity,  # Correctly calculate total price
+                        discount=discount,
                     )
                 else:
                     product = Product.objects.filter(name=cart_item.get("name")).first()
@@ -278,20 +310,20 @@ class CheckoutView(BaseView):
                         continue
                     OrderItem.objects.create(
                         variation=None,
-                        variation_price=cart_item.get("price"),
+                        variation_price=price,
                         order=order,
-                        quantity=cart_item.get("quantity"),
-                        total_price=cart_item.get("price") * cart_item.get("quantity"),
-                        discount=cart_item.get("discount", 0.0),
+                        quantity=quantity,
+                        total_price=discounted_price * quantity,  # Correctly calculate total price
+                        discount=discount,
                     )
 
-            # Prepare the payment request to ZarinPal
+            # ZarinPal payment initiation
             callback_url = request.build_absolute_uri(f'/callback/{quote(store_name)}/')
             req_data = {
                 "merchant_id": settings.ZARINPAL_MERCHANT_ID,
-                "amount": total_price*10,
+                "amount": int(total_price * 10),  # Convert to Toman for ZarinPal
                 "callback_url": callback_url,
-                "description": "Order #{}".format(order.id),
+                "description": f"Order #{order.id}",
                 "metadata": {"email": request.user.email}
             }
             req_header = {"accept": "application/json", "content-type": "application/json"}
@@ -299,6 +331,7 @@ class CheckoutView(BaseView):
 
             if response.status_code == 200:
                 response_data = response.json()
+                print(1111, response_data)
                 if response_data['data']['code'] == 100:
                     authority = response_data['data']['authority']
                     order.payment_authority = authority
@@ -308,53 +341,17 @@ class CheckoutView(BaseView):
                     return render(request, 'error.html', {'message': response_data['errors']})
             else:
                 return render(request, 'error.html', {'message': 'An error occurred during the payment process.'})
+
         else:
-            cart_cookie = request.COOKIES.get("cart", "{}")
-            cart_cookie_dict = json.loads(cart_cookie)
-            store_cart_cookie = cart_cookie_dict.get(store_name, {})
-            store_cart_items = []
-
-
-            for cart_item in store_cart_cookie.get("cart_items", []):
-                if cart_item.get("variation_id"):
-                    temp_variation = ProductVariation.objects.filter(pk=cart_item.get("variation_id")).first()
-                    if not temp_variation:
-                        continue
-                    store_cart_items.append(CartItem(
-                        product_id=temp_variation.product.pk,
-                        variation_id=temp_variation.pk,
-                        price=cart_item.get("price"),
-                        quantity=cart_item.get("quantity"),
-                        name=cart_item.get("name"),
-                        image=cart_item.get("image"),
-                        color=temp_variation.color.color,
-                        size=temp_variation.size,
-                    ))
-                else:
-                    product = Product.objects.filter(name=cart_item.get("name")).first()
-                    if not product:
-                        continue
-                    store_cart_items.append(CartItem(
-                        product_id=product.pk,
-                        variation_id=None,
-                        price=cart_item.get("price"),
-                        quantity=cart_item.get("quantity"),
-                        name=cart_item.get("name"),
-                        image=cart_item.get("image"),
-                        color=None,
-                        size=None,
-                    ))
-
-            total_price = sum(item.price * item.quantity for item in store_cart_items)
-
+            # Invalid form handling
             return render(request, 'checkout.html', {
                 'cart_items': store_cart_items,
                 'form': form,
+                'categories': categories,
                 'total_price': total_price,
                 'store_name': store_name,
-                'categories': categories,
-                'error_message': None , # Add this line
-                'delivery_cost':delivery_cost
+                'error_message': 'Form submission failed.',
+                'delivery_cost': delivery_cost
             })
 
 

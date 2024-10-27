@@ -14,8 +14,16 @@ class CartItem:
     size: str = ""
     store_name: str = ""
     
+    def get_discounted_price(self):
+        """Returns the price after applying the discount, if any."""
+        if self.discount > 0:
+            return self.price * (1 - (self.discount / 100))
+        return self.price
+
     def get_total_price(self):
-        return self.price * self.quantity
+        """Returns the total price for the cart item, considering the discount."""
+        discounted_price = self.get_discounted_price()
+        return discounted_price * self.quantity
 
 @dataclass
 class Cart:
