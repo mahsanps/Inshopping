@@ -99,7 +99,7 @@ def zarinpal_callback(request, store_name):
         if not order:
             return render(request, 'error.html', {'message': 'Order not found.'})
 
-        price = order.total_price * 10  # ZarinPal uses Rial (10x Toman)
+        price = float(order.total_price * 10) # ZarinPal uses Rial (10x Toman)
 
         req_data = {
             "merchant_id": settings.ZARINPAL_MERCHANT_ID,
