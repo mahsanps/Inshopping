@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 12:08+0330\n"
+"POT-Creation-Date: 2024-11-02 14:42+0330\n"
 "Language: fa\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
@@ -431,7 +431,7 @@ msgid "File"
 msgstr ""
 
 #: .\myenv\Lib\site-packages\django\db\models\fields\files.py:393
-#: .\store\models.py:109 .\store\models.py:158
+#: .\store\models.py:110 .\store\models.py:159
 msgid "Image"
 msgstr "عکس"
 
@@ -1332,7 +1332,7 @@ msgstr "نام خانوادگی"
 msgid "phone"
 msgstr "شماره تماس"
 
-#: .\store\models.py:66 .\store\models.py:164
+#: .\store\models.py:66 .\store\models.py:165
 msgid "Category"
 msgstr "دسته بندی"
 
@@ -1344,13 +1344,13 @@ msgstr "زیر مجموعه"
 msgid "Storename"
 msgstr "نام فروشگاه"
 
-#: .\store\models.py:102 .\store\models.py:226
+#: .\store\models.py:102 .\store\models.py:227
 #, fuzzy
 #| msgid "Account"
 msgid "account"
 msgstr "حساب کاربری"
 
-#: .\store\models.py:103 .\store\models.py:159
+#: .\store\models.py:103 .\store\models.py:160
 msgid "Description"
 msgstr "توضیحات"
 
@@ -1366,7 +1366,7 @@ msgstr " ایمیل"
 msgid "Contact"
 msgstr "تماس"
 
-#: .\store\models.py:107 .\ui\templates\order-registered-details.html:17
+#: .\store\models.py:107 .\ui\templates\order-registered-details.html:18
 msgid "Address"
 msgstr "آدرس"
 
@@ -1374,139 +1374,141 @@ msgstr "آدرس"
 msgid "delivery-cost"
 msgstr "هزینه ارسال"
 
-#: .\store\models.py:110
+#: .\store\models.py:109
+msgid "delivery-policy"
+msgstr "شیوه و سیاست های ارسال کالا"
+
+#: .\store\models.py:111
 msgid "banner-Image1"
 msgstr "بنر اول سایت"
 
-#: .\store\models.py:111
+#: .\store\models.py:112
 msgid "banner-Image2"
 msgstr "بنر دوم سایت"
 
-#: .\store\models.py:112
+#: .\store\models.py:113
 msgid "banner-Image3"
 msgstr "بنر سوم سایت"
 
-#: .\store\models.py:148 .\store\models.py:198
+#: .\store\models.py:149 .\store\models.py:199
 msgid "color"
 msgstr "رنگ"
 
-#: .\store\models.py:156
+#: .\store\models.py:157
 msgid "productName"
 msgstr "نام محصول"
 
-#: .\store\models.py:157
+#: .\store\models.py:158
 msgid "productCode"
 msgstr "کد محصول"
 
-#: .\store\models.py:160
+#: .\store\models.py:161
 msgid "material"
 msgstr " جنس"
 
-#: .\store\models.py:161
+#: .\store\models.py:162
 msgid "madeIn"
 msgstr "تولید کشور"
 
-#: .\store\models.py:162 .\ui\templates\orderdetails.html:16
+#: .\store\models.py:163 .\ui\templates\orderdetails.html:16
 msgid "Price"
 msgstr "قیمت"
 
-#: .\store\models.py:163
+#: .\store\models.py:164
 msgid "isactive"
 msgstr " فعال"
 
-#: .\store\models.py:165
+#: .\store\models.py:166
 msgid "subcategory"
 msgstr "زیر مجموعه"
 
-#: .\store\models.py:166 .\store\models.py:241
+#: .\store\models.py:167 .\store\models.py:242
 #: .\ui\templates\orderdetails.html:22
 msgid "shop"
 msgstr "فروشگاه"
 
-#: .\store\models.py:168 .\ui\templates\orderdetails.html:21
+#: .\store\models.py:169 .\ui\templates\orderdetails.html:21
 msgid "Discount"
 msgstr "تخفیف"
 
-#: .\store\models.py:192
+#: .\store\models.py:193
 msgid "Images"
 msgstr "تصاویر"
 
-#: .\store\models.py:197 .\ui\templates\orderdetails.html:18
+#: .\store\models.py:198 .\ui\templates\orderdetails.html:18
 msgid "size"
 msgstr "سایز"
 
-#: .\store\models.py:199 .\store\models.py:273
+#: .\store\models.py:200 .\store\models.py:274
 #: .\ui\templates\orderdetails.html:19
 msgid "quantity"
 msgstr "تعداد"
 
-#: .\store\models.py:213 .\ui\templates\wallet.html:18
+#: .\store\models.py:214 .\ui\templates\wallet.html:18
 #, fuzzy
 #| msgid "Storename"
 msgid "name"
 msgstr "نام فروشگاه"
 
-#: .\store\models.py:214
+#: .\store\models.py:215
 msgid "bankName"
 msgstr "نام بانک"
 
-#: .\store\models.py:215
+#: .\store\models.py:216
 msgid "cartNumber"
 msgstr "شماره کارت"
 
-#: .\store\models.py:216
+#: .\store\models.py:217
 msgid "accountNumber"
 msgstr "شماره شباء"
 
-#: .\store\models.py:228 .\store\models.py:270
-#: .\ui\templates\order-registered-details.html:13
-#: .\ui\templates\orderdetails.html:27
+#: .\store\models.py:229 .\store\models.py:271
 msgid "totalPrice"
 msgstr "مجموع قیمت"
 
-#: .\store\models.py:229
+#: .\store\models.py:230
 msgid "totalDiscount"
 msgstr "مجموع تخفیف ها"
 
-#: .\store\models.py:230
+#: .\store\models.py:231
 msgid "unitNumber"
 msgstr "پلاک و واحد"
 
-#: .\store\models.py:231
+#: .\store\models.py:232
 msgid "streetName"
 msgstr "کوچه "
 
-#: .\store\models.py:232
+#: .\store\models.py:233
 msgid "suburb"
 msgstr "خیابان"
 
-#: .\store\models.py:233
+#: .\store\models.py:234
 msgid "city"
 msgstr "شهر"
 
-#: .\store\models.py:234
+#: .\store\models.py:235
 msgid "state"
 msgstr "استان"
 
-#: .\store\models.py:236 .\ui\templates\order-registered-details.html:18
+#: .\store\models.py:237 .\ui\templates\order-registered-details.html:19
 msgid "postCode"
 msgstr "کد پستی"
 
-#: .\store\models.py:237
+#: .\store\models.py:238
 msgid "mobileNumber"
 msgstr "شماره همراه"
 
-#: .\store\models.py:272
+#: .\store\models.py:273
 #, fuzzy
 #| msgid "Discount"
 msgid "discount"
 msgstr "تخفیف"
 
-#: .\store\models.py:290
+#: .\store\models.py:291
 msgid "status"
 msgstr "وضعیت"
 
-#: .\store\models.py:291
+#: .\store\models.py:292
 msgid "trackingNumber"
 msgstr "کد رهگیری پست"
 
@@ -1514,7 +1516,7 @@ msgstr "کد رهگیری پست"
 msgid "Orders Registered"
 msgstr "سفارشات ثبت شده"
 
-#: .\ui\templates\order-registered-details.html:31
+#: .\ui\templates\order-registered-details.html:32
 msgid "No order items found."
 msgstr ""
 

@@ -200,8 +200,9 @@ class CheckoutView(BaseView):
             'form': form,
             'total_price': total_price,
             'store_name': store_name,
-             'delivery_cost':delivery_cost,
-            'error_message': None  # Add this line
+            'delivery_cost':delivery_cost,
+            'error_message': None, 
+            'shop': shop,
         }))
         if not cart_cookie_dict.get(store_name):
             cart_cookie_dict[store_name] = {}        

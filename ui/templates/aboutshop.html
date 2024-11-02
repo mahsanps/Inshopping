@@ -42,6 +42,10 @@
           <li  ><i class="bi bi-chevron-right"></i> درباره فروشگاه :<span>{{shop.description}}</span></li>
           {% endif %}
           <br>
+          {% if shop.delivery_policy %}
+          <li  ><i class="bi bi-chevron-right"></i>  سیاست های ارسال کالا :<span>{{shop.delivery_policy}}</span></li>
+          {% endif %}
+          <br>
           <li  ><i class="bi bi-chevron-right"></i>  چگونه ما را پیدا کنید :</li>
           {% if shop.instagramId %}
           <li><i class="bi bi-chevron-right"></i> <strong><img style="width:30px; height:30px; margin:5px;" src="{% static 'images/instagram-icon.png' %}"> : </strong> <span>{{shop.instagramId}}</span></li>

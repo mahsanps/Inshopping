@@ -12,12 +12,20 @@
         <p class="cost_fields">مجموع پرداخت: {{ total_price|custom_price_format  }} تومان</p>
         {% csrf_token %}
         {{ form.as_p }}
+        {% if shop.delivery_policy%}
+            <p style="color:red" >  سیاست های ارسال کالای فروشگاه {{shop.store_name}} :</p> 
+            <p>    {{shop.delivery_policy}}</p>
+            {% endif %}
+            
         <div style="display:flex;">
             <input type="checkbox" id="terms" name="terms" required style="flex:1;">
+            
             <label style="flex:20;" for="terms">من تمامی <a style="color:red" href="{% url 'terms&conditions' %}" target="_blank">شرایط و ضوابط</a> تعیین شده در وبسایت این شاپینگ را مطالعه کرده و با آن موافق هستم.</label>
           </div>
+        
         <button type="submit">پرداخت</button>
     </form>
+   
     {% if error_message %}
         <div class="error">{{ error_message }}</div>
     {% endif %}

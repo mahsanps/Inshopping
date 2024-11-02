@@ -106,6 +106,7 @@ class Shop(BaseModel):
     contact=models.CharField(blank=True,max_length=20, verbose_name=_("Contact"))
     address=models.CharField(blank=True, max_length=400, verbose_name=_("Address"))
     delivery_cost=models.IntegerField(default=0,verbose_name=_("delivery-cost"))
+    delivery_policy= models.TextField(blank=True,verbose_name=_("delivery-policy"))
     image=models.ImageField(upload_to='images/', default="",  verbose_name=_("Image"))
     banner_image1=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image1"))
     banner_image2=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image2"))
