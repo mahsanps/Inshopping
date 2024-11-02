@@ -10,10 +10,11 @@
     {% if orders_registered %}
         <!-- Assuming orders_registered is a queryset of OrderItem objects -->
         <h6>{{ orders_registered.first.order.created_at|jformat:"%Y/%m/%d" }}</h6>
-        <h6>{% trans 'totalPrice' %}: {{ orders_registered.first.order.total_price|custom_price_format   }} تومان</h6>
-        <h6>نام خریدار :{{ orders_registered.first.order.account.account_info.firstname}} {{ orders_registered.first.order.account.account_info.lastname}}</h6>
+        <h6> مجموع خرید : {{ orders_registered.first.order.total_price|custom_price_format   }} تومان</h6>
+        <h6>نام خریدار : {{ orders_registered.first.order.account.account_info.firstname}} {{ orders_registered.first.order.account.account_info.lastname}}</h6>
         
         <h6>ایمیل خریدار :{{ orders_registered.first.order.account.email}}</h6>
+        <h6>شماره تماس خریدار :{{ orders_registered.first.order.account.account_info.phone}}</h6>
         <h6>{% trans 'Address' %}: {{ orders_registered.first.order.full_delivery_address }}</h6> 
         <h6>{% trans 'postCode' %}: {{ orders_registered.first.order.delivery_address_postcode }}</h6>
 
