@@ -60,20 +60,36 @@
                      <div class="fashion_section_2">
                         
                         <div class="row">
-                           {%for shop in shop_list%}
-                                         <a  href="{% url 'storepage' store_name=shop.store_name  %}">
-                                             <div class="col-lg-4 col-sm-4" style="max-width:12%;">
-                                                <div class="box-shop">
-                                                   
-                                                   
-                                                   <div ><img  src="{{shop.image.url}}">
-                                                      
-                                                   </div>
-                                                   <h4 style="font-size:12px; text-align:center;  margin-right:0; " class="shirt_text">{{shop.store_name}}</h4>
-                                                </div>
-                                             </div>
-                                          </a>                
-                            {%endfor%}
+                           <div id="shopCarousel" class="carousel slide" data-bs-ride="carousel">
+                              <div class="carousel-inner">
+                                  {% for chunk in shop_list|chunked:4 %} <!-- Default to 4, but JavaScript will handle resizing -->
+                                      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                          <div class="container">
+                                              <div class="fashion_section_2">
+                                                  <div class="row shop-row">
+                                                      {% for shop in chunk %}
+                                                          <a href="{% url 'storepage' store_name=shop.store_name %}">
+                                                              <div class="col-lg-3 col-md-4 col-sm-6" style="max-width:25%;">
+                                                                  <div class="box-shop">
+                                                                      <div>
+                                                                          <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
+                                                                      </div>
+                                                                      <h4 style="font-size:12px; text-align:center; margin-right:0;" class="shirt_text">
+                                                                          {{ shop.store_name }}
+                                                                      </h4>
+                                                                  </div>
+                                                              </div>
+                                                          </a>
+                                                      {% endfor %}
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  {% endfor %}
+                              </div>
+                           
+                          </div>
+                          
                            
                            
                         </div>
@@ -109,20 +125,30 @@
                      
                      <div class="fashion_section_2">
                         <div class="row">
-                           {% for shop in shop_list %}
-                           <a href="{% url 'storepage' store_name=shop.store_name %}">
-                               <div class="col-lg-4 col-sm-4" style="max-width:12%;">
-                                   <div class="box-shop" >
-                                       
-                                       <div>
-                                           <img  src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
-                                           
-                                       </div>
-                                       <h4 style="font-size:12px; text-align:center; margin-right:0; " class="shirt_text">{{ shop.store_name }}</h4>
-                                   </div>
-                               </div>
-                           </a>
-                       {% endfor %}
+                           <div id="shopCarousel" class="carousel slide" data-ride="carousel">
+                              <div class="carousel-inner">
+                                  {% for chunk in shop_chunks %}
+                                      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                          <div class="container">
+                                              <div class="row justify-content-center">
+                                                  {% for shop in chunk %}
+                                                      <a href="{% url 'storepage' store_name=shop.store_name %}" class="col-lg-1 col-md-3 col-sm-4 col-4 d-flex flex-column align-items-center">
+                                                          <div class="box-shop">
+                                                              <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}" class="img-fluid">
+                                                              <h4 class="shirt_text text-center" style="font-size:12px; margin-top:5px;">
+                                                                  {{ shop.store_name }}
+                                                              </h4>
+                                                          </div>
+                                                      </a>
+                                                  {% endfor %}
+                                              </div>
+                                          </div>
+                                      </div>
+                                  {% endfor %}
+                              </div>
+                             
+                          </div>
+                          
                            
                         </div>
                      </div>
@@ -243,6 +269,9 @@
          </div>
       </div>
       <!-- jewellery  section end -->
+     
+
+
     <script>
       document.addEventListener("DOMContentLoaded", function() {
          const customBanner = document.getElementById("custom-banner");

@@ -12,6 +12,7 @@ def Index_view(request):
     shop_list = Shop.objects.filter(is_approved=True)
     products = Product.objects.filter(is_approved=True).order_by('?')[:60] 
     user = request.user
+    shop_chunks = [shop_list[i:i + 10] for i in range(0, len(shop_list), 10)] 
    
     available_products = set()
     for product in products:
@@ -24,7 +25,7 @@ def Index_view(request):
         products = products.filter(category=category)
 
     
-    return render(request, "index.html", {'categories': categories , 'shop_list':shop_list, 'products':products, "user": user,"available_products":available_products})
+    return render(request, "index.html", {'shop_chunks': shop_chunks,'categories': categories , 'shop_list':shop_list, 'products':products, "user": user,"available_products":available_products})
     
 def Terms_Conditions(request):
         
