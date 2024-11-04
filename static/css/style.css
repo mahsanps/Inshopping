@@ -1782,14 +1782,14 @@ input.mail_bt::placeholder {
     }
    
     .box-shop {
-        width:80px; 
-        height:80px; 
+        width:70px; 
+        height:70px; 
         margin:2px;
-        padding: 5px;
+        padding: 2px;
         
     }
     .box-shop img {
-        height:60px;
+        height:50px;
     }
     
     .box_main img {
