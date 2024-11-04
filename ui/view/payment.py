@@ -183,8 +183,3 @@ def success_view(request):
     return render(request, 'success.html', {'ref_id': ref_id, 'store_name': store_name})
 
 
-def callback_redirect(request, store_name):
-    # Get the query parameters and pass them along with the redirect
-    query_params = request.GET.urlencode()
-    target_url = f"http://inshopping.ir/callback/{store_name}/?{query_params}"
-    return redirect(target_url)

@@ -15,7 +15,7 @@ from ui.view.search import Search_view
 from ui.view.dashboard import Dashboard, ShopOrdersView, OrderDeliveryView, Reports
 from ui.view.wallet import BankAccountView, WalletView, EditBankAccount
 from ui.view.contact import contact_view
-from ui.view.payment import zarinpal_callback, success_view, initiate_payment, callback_redirect
+from ui.view.payment import zarinpal_callback, success_view, initiate_payment
 from django.contrib.auth import views as auth_views
 
 
@@ -87,6 +87,6 @@ urlpatterns = [
     path('<str:store_name>/delete_cart_item/<str:variation_pk>/', DeleteCartItemView.as_view(), name='delete_cart_item'),
     path('<str:store_name>/availablecolor/<int:product_pk>/', AvailableColorsView.as_view(), name='available_colors'),
     path('<str:store_name>/<str:product_pk>/', SingleProductPage.as_view(), name='singleproductpage'),
-    path('callback/<str:store_name>/', callback_redirect, name='callback_redirect'),
+    
     path('initiate-payment/<int:order_id>/', initiate_payment, name='initiate_payment'),  # Add this line for payment initiation
 ]
