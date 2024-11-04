@@ -1228,12 +1228,14 @@ a:hover {
 
 #jewellery_main_slider .carousel-control-next,
 #jewellery_main_slider .carousel-control-prev {
-    width: 55px;
-    height: 55px;
-    background-color: #30302e;
+    width: 10px;
+    height: 10px;
+    background-color: #50504f;
     opacity: 1;
     font-size: 30px;
     color: #ffffff;
+    margin: auto;
+    border-radius: 50%;
 }
 
 #jewellery_main_slider .carousel-control-next:focus,
