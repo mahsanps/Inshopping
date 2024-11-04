@@ -1785,12 +1785,12 @@ input.mail_bt::placeholder {
         width:70px; 
         height:70px; 
         margin:2px;
-        padding: 2px;
+        padding: 5px;
         
     }
     .box-shop img {
         height:50px;
-        width: auto;
+        width: 50px;
     }
     
     .box_main img {
