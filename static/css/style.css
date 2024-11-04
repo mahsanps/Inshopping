@@ -1790,6 +1790,7 @@ input.mail_bt::placeholder {
     }
     .box-shop img {
         height:50px;
+        width: auto;
     }
     
     .box_main img {

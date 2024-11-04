@@ -50,108 +50,56 @@
        </div>
       </div>
          
-         <div id="jewellery_main_slider" class="carousel slide" data-ride="carousel" style="line-height:0.5 ; border:1px; border-radius:8px; width: 99%; margin: auto; background-color: white; border: 1px; borer-radius: 8px; ">
-            <div class="carousel-inner">
-              
-               <div class="carousel-item active">
-                  <div class="container">
-                     
-                    
+      <div id="jewellery_main_slider" class="carousel slide" data-bs-ride="carousel" style="border-radius:8px; width: 99%; margin: auto; background-color: white;">
+         <div class="carousel-inner">
+     
+             <!-- First carousel item: first set of shops -->
+             <div class="carousel-item active">
+                 <div class="container">
                      <div class="fashion_section_2">
-                        
-                        <div class="row" style=" flex-wrap: nowrap;">
-                           {%for shop in shop_list%}
-                                         <a  href="{% url 'storepage' store_name=shop.store_name  %}">
-                                             <div class="col-lg-4 col-sm-4" style="max-width:12%;">
-                                                <div class="box-shop">
-                                                   
-                                                   
-                                                   <div ><img  src="{{shop.image.url}}">
-                                                      
-                                                   </div>
-                                                   <h4 style="font-size:12px; text-align:center;  margin-right:0; " class="shirt_text">{{shop.store_name}}</h4>
-                                                </div>
-                                             </div>
-                                          </a>                
-                            {%endfor%}
-                           
-                           
-                        </div>
+                         <div class="row flex-nowrap overflow-auto" style="white-space: nowrap;">
+                             {% for shop in shop_list|slice:":4" %}
+                             <a href="{% url 'storepage' store_name=shop.store_name %}">
+                                 <div class="col" style="width: 12%;">
+                                     <div class="box-shop">
+                                         <div><img src="{{ shop.image.url }}" alt="{{ shop.store_name }}" class="img-fluid"></div>
+                                         <h4 style="font-size:12px; text-align:center; margin-right:0;" class="shirt_text">{{ shop.store_name }}</h4>
+                                     </div>
+                                 </div>
+                             </a>
+                             {% endfor %}
+                         </div>
                      </div>
-                  </div>
-               </div>
-               <div id="shopCarousel" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                      <!-- First slide: Shows first 4 items -->
-                      <div class="carousel-item active">
-                          <div class="container">
-                              <div class="fashion_section_2">
-                                  <div class="row" style="flex-wrap: nowrap;">
-                                      {% for shop in shop_list|slice:":4" %}
-                                      <a href="{% url 'storepage' store_name=shop.store_name %}">
-                                          <div class="col-lg-4 col-sm-4" style="max-width:12%;">
-                                              <div class="box-shop">
-                                                  <div>
-                                                      <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
-                                                  </div>
-                                                  <h4 style="font-size:12px; text-align:center; margin-right:0;" class="shirt_text">{{ shop.store_name }}</h4>
-                                              </div>
-                                          </div>
-                                      </a>
-                                      {% endfor %}
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-              
-                      <!-- Second slide: Shows next 4 items -->
-                      <div class="carousel-item">
-                          <div class="container">
-                              <div class="fashion_section_2">
-                                  <div class="row" style="flex-wrap: nowrap;">
-                                      {% for shop in shop_list|slice:"4:8" %}
-                                      <a href="{% url 'storepage' store_name=shop.store_name %}">
-                                          <div class="col-lg-4 col-sm-4" style="max-width:12%;">
-                                              <div class="box-shop">
-                                                  <div>
-                                                      <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
-                                                  </div>
-                                                  <h4 style="font-size:12px; text-align:center; margin-right:0;" class="shirt_text">{{ shop.store_name }}</h4>
-                                              </div>
-                                          </div>
-                                      </a>
-                                      {% endfor %}
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-              
-                      <!-- Add more slides as needed, each with a different slice of `shop_list` -->
-                      <div class="carousel-item">
-                          <div class="container">
-                              <div class="fashion_section_2">
-                                  <div class="row" style="flex-wrap: nowrap;">
-                                      {% for shop in shop_list|slice:"8:12" %}
-                                      <a href="{% url 'storepage' store_name=shop.store_name %}">
-                                          <div class="col-lg-4 col-sm-4" style="max-width:12%;">
-                                              <div class="box-shop">
-                                                  <div>
-                                                      <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
-                                                  </div>
-                                                  <h4 style="font-size:12px; text-align:center; margin-right:0;" class="shirt_text">{{ shop.store_name }}</h4>
-                                              </div>
-                                          </div>
-                                      </a>
-                                      {% endfor %}
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              
-                 
-              </div>
-              
+                 </div>
+             </div>
+     
+             <!-- Second carousel item: second set of shops -->
+             <div class="carousel-item">
+                 <div class="container">
+                     <div class="fashion_section_2">
+                         <div class="row flex-nowrap overflow-auto" style="white-space: nowrap;">
+                             {% for shop in shop_list|slice:"4:8" %}
+                             <a href="{% url 'storepage' store_name=shop.store_name %}">
+                                 <div class="col" style="width: 12%;">
+                                     <div class="box-shop">
+                                         <div><img src="{{ shop.image.url }}" alt="{{ shop.store_name }}" class="img-fluid"></div>
+                                         <h4 style="font-size:12px; text-align:center; margin-right:0;" class="shirt_text">{{ shop.store_name }}</h4>
+                                     </div>
+                                 </div>
+                             </a>
+                             {% endfor %}
+                         </div>
+                     </div>
+                 </div>
+             </div>
+     
+             <!-- Add more carousel items as needed for additional sets of shops -->
+     
+         </div>
+     
+        
+     </div>
+     
        <br>
        <br>
 
