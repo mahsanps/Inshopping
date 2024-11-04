@@ -11,6 +11,20 @@
          opacity: 1; /* نمایش بنر */
          transform: translateY(0); /* بازگشت به موقعیت */
      }
+
+
+      @media (min-width: 1200px) {
+         .col-lg-3 {
+            max-width: 8%; 
+         }
+      }
+
+      @media (min-width: 768px) and (max-width: 1199px) {
+         .col-md-4 {
+            max-width: 33.33%; /* Show 3 items per slide on medium screens */
+         }
+      }
+
      
 
    </style>
@@ -133,29 +147,31 @@
                      
                      <div class="fashion_section_2">
                         <div class="row">
-                           <div id="shopCarousel" class="carousel slide" data-ride="carousel">
+                            
+                           <div id="shopCarousel" class="carousel slide" data-bs-ride="carousel">
                               <div class="carousel-inner">
-                                  {% for chunk in shop_chunks %}
-                                      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                          <div class="container">
-                                              <div class="row justify-content-center">
-                                                  {% for shop in chunk %}
-                                                      <a href="{% url 'storepage' store_name=shop.store_name %}" class="col-lg-1 col-md-3 col-sm-4 col-4 d-flex flex-column align-items-center">
-                                                          <div class="box-shop">
-                                                              <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}" class="img-fluid">
-                                                              <h4 class="shirt_text text-center" style="font-size:12px; margin-top:5px;">
-                                                                  {{ shop.store_name }}
-                                                              </h4>
-                                                          </div>
-                                                      </a>
-                                                  {% endfor %}
+                                  {% for chunk in shop_list|chunked:4 %}  <!-- Adjust the chunk number to match desktop display count -->
+                                  <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                      <div class="d-flex justify-content-center">
+                                          {% for shop in chunk %}
+                                          <a href="{% url 'storepage' store_name=shop.store_name %}" class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                              <div class="box-shop text-center">
+                                                  <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}" class="img-fluid mb-2" style="width: 100%; height: auto;">
+                                                  <h4 class="shirt_text" style="font-size:12px; text-align:center;">{{ shop.store_name }}</h4>
                                               </div>
-                                          </div>
+                                          </a>
+                                          {% endfor %}
                                       </div>
+                                  </div>
                                   {% endfor %}
                               </div>
-                             
+                          
+                              <!-- Carousel controls -->
+                          
                           </div>
+                          
+                             
+                          
                           
                            
                         </div>
@@ -303,7 +319,7 @@
      
    </script>    
    <!-- Include Bootstrap JS -->
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
 <script>
    document.addEventListener("DOMContentLoaded", function () {
        var myCarousel = new bootstrap.Carousel(document.getElementById('shopCarousel'), {
