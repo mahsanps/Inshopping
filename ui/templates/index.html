@@ -58,7 +58,7 @@
                  <div class="container">
                      <div class="fashion_section_2">
                          <div class="row flex-nowrap overflow-auto" style="white-space: nowrap;">
-                             {% for shop in shop_list|slice:":4" %}
+                             {% for shop in shop_list|slice:":8" %}
                              <a href="{% url 'storepage' store_name=shop.store_name %}">
                                  <div class="col" style="width: 12%;">
                                      <div class="box-shop">
@@ -78,7 +78,7 @@
                  <div class="container">
                      <div class="fashion_section_2">
                          <div class="row flex-nowrap overflow-auto" style="white-space: nowrap;">
-                             {% for shop in shop_list|slice:"4:8" %}
+                             {% for shop in shop_list|slice:"8:16" %}
                              <a href="{% url 'storepage' store_name=shop.store_name %}">
                                  <div class="col" style="width: 12%;">
                                      <div class="box-shop">
