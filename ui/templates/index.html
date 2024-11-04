@@ -101,20 +101,28 @@
                      
                      <div class="fashion_section_2">
                         <div class="row">
-                           {% for shop in shop_list %}
-                           <a href="{% url 'storepage' store_name=shop.store_name %}">
-                               <div class="col-lg-4 col-sm-4" style="max-width:12%;">
-                                   <div class="box-shop">
-                                       
-                                       <div >
-                                           <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}">
-                                           
-                                       </div>
-                                       <h4 style="font-size:12px; text-align:center; margin-right:0; " class="shirt_text">{{ shop.store_name }}</h4>
-                                   </div>
-                               </div>
-                           </a>
-                       {% endfor %}
+                           <div id="shopCarousel" class="carousel slide" data-bs-ride="carousel">
+                              <div class="carousel-inner">
+                                  {% for shops_chunk in shop_list|chunked:10 %}
+                                      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                          <div class="d-flex justify-content-center flex-wrap">
+                                              {% for shop in shops_chunk %}
+                                                  <a href="{% url 'storepage' store_name=shop.store_name %}" class="shop-item">
+                                                      <div class="box-shop">
+                                                          <div>
+                                                              <img src="{{ shop.image.url }}" alt="{{ shop.store_name }}" class="shop-image">
+                                                          </div>
+                                                          <h4 class="shop-name">{{ shop.store_name }}</h4>
+                                                      </div>
+                                                  </a>
+                                              {% endfor %}
+                                          </div>
+                                      </div>
+                                  {% endfor %}
+                              </div>
+                             
+                          </div>
+                          
                            
                         </div>
                      </div>
@@ -293,6 +301,18 @@
          }, 1000); // Change every 2 seconds
      });
      
-   </script>     
+   </script>    
+   <!-- Include Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+       var myCarousel = new bootstrap.Carousel(document.getElementById('shopCarousel'), {
+           interval: 3000,  // Set sliding interval (in milliseconds)
+           wrap: true       // Carousel loops back to the beginning
+       });
+   });
+</script>
+
+ 
 {% endblock %}  
 
