@@ -144,8 +144,10 @@ def initiate_payment(request, store_name, order_id):
         order = get_object_or_404(Order, id=order_id)
         total_price = order.total_price * 10  # ZarinPal uses Rial (10x Toman)
 
-        # Prepare the payment request to ZarinPal
-        callback_url = request.build_absolute_uri(reverse('zarinpal_callback', kwargs={'store_name': quote(store_name)}))
+        # Construct the callback URL using the request's domain
+        callback_url = request.build_absolute_uri(
+            reverse('zarinpal_callback', kwargs={'store_name': quote(store_name)})
+        )
         req_data = {
             "merchant_id": settings.ZARINPAL_MERCHANT_ID,
             "amount": total_price,
