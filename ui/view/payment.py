@@ -13,6 +13,7 @@ from urllib.parse import quote, unquote
 from store.models import Order
 from django.utils.html import format_html
 from django.templatetags.static import static 
+from urllib.parse import urlencode
 from django.contrib.sites.shortcuts import get_current_site
 
 
@@ -180,3 +181,10 @@ def success_view(request):
     ref_id = request.GET.get('ref_id')
     store_name = unquote(request.GET.get('store_name')) if request.GET.get('store_name') else ''
     return render(request, 'success.html', {'ref_id': ref_id, 'store_name': store_name})
+
+
+def callback_redirect(request, store_name):
+    # Get the query parameters and pass them along with the redirect
+    query_params = request.GET.urlencode()
+    target_url = f"http://inshopping.ir/callback/{store_name}/?{query_params}"
+    return redirect(target_url)
