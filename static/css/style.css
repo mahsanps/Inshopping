@@ -582,6 +582,7 @@ button {
     margin: auto;
     border: 1px;
     border-radius: 8px;
+    margin-top: 3px;
 }
 .cart {
     background-color:#30302e; 

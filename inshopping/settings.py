@@ -24,7 +24,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Application definition
 PROJECT_APPS = [
     'authuser',
-    'store',
     'ui',
 ]
 
@@ -43,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'sslserver',
     'unidecode',
- 
+    'store.apps.StoreConfig',
 
 ]
 
