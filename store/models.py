@@ -108,7 +108,7 @@ class SubCategory(BaseModel):
 
 class Shop(BaseModel):
     is_approved = models.BooleanField(default=False)
-    store_name=models.CharField(max_length=400,unique=True,  verbose_name=_("Storename"))
+    store_name=models.CharField(max_length=255 ,unique=True,  verbose_name=_("Storename"))
     account=models.ForeignKey(User,on_delete=models.CASCADE,  verbose_name=_("account")) 
     description=models.TextField(blank=True,verbose_name=_("Description"))
     instagramId=models.CharField(max_length=400, verbose_name=_("InstagramId"))
