@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'sslserver',
     'unidecode',
     'store.apps.StoreConfig',
-    'kavenegar',
     'medianasms',
 ]
 
