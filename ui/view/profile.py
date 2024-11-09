@@ -9,13 +9,13 @@ class ProfileView(BaseView):
     template_name = "profile.html"
     
     def get(self, request, *args, **kwargs):
-        shop_instance = Shop.objects.filter(account=request.user)
+        shop_instance = Shop.objects.filter(account=request.user).first()
         return render(request, self.template_name, {'shop_instance':shop_instance})   
     
     
 class AboutUs(BaseView):
      def get(self, request, *args, **kwargs):
-        shop_instance = Shop.objects.filter(account=request.user)
+        shop_instance = Shop.objects.filter(account=request.user).first()
         account_info = AccountInfo.objects.filter(user=request.user)
         if self.request.htmx:
             return render(request, 'account-info.html', {'shop_instance':shop_instance, 'account_info':account_info})
@@ -25,7 +25,7 @@ class AboutUs(BaseView):
 
 class ProductsSection(BaseView):
     def get(self,request, *args, **kwargs):
-        shop_instance = Shop.objects.filter(account=request.user)
+        shop_instance = Shop.objects.filter(account=request.user).first()
         if self.request.htmx:
            return render(request,'productssection.html', {'shop_instance':shop_instance}) 
         return render(request,'productsection_full.html', {'shop_instance':shop_instance}) 

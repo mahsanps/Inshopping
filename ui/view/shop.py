@@ -44,14 +44,28 @@ class EditShop(BaseView):
     def get(self, request,pk, *args, **kwargs):
         shop_instance = get_object_or_404(Shop, pk=pk)
         form = ShopForm(instance=shop_instance)
-        return render(request, 'editshop.html', {'form': form, 'shop_instance': shop_instance})
+        if self.request.htmx:
+            return render(request, 'editshop.html', {'form': form, 'shop_instance': shop_instance})
+        return render(request, 'editshop_full.html', {'form': form, 'shop_instance': shop_instance})
 
     def post(self, request,pk, *args, **kwargs):
         shop_instance = get_object_or_404(Shop, pk=pk)
         form = ShopForm(request.POST,  request.FILES, instance=shop_instance)
+        
         if form.is_valid():
             form.save()
+            if self.request.htmx:
+               
+                return HttpResponse(status=204)
             return redirect('account-info')
-        return render(request, 'editshop.html', {'form': form, 'shop_instance': shop_instance})
         
+        else:
+            if self.request.htmx:
+         
+             return render(request, 'editshop.html', {'form': form, 'shop_instance': shop_instance})
+       
+        return render(request, 'editshop_full.html', {'form': form, 'shop_instance': shop_instance})
+
+
+       
         

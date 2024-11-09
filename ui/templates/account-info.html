@@ -57,41 +57,41 @@
      
     
             <ul id="outerContainer">
-              {% for shop in shop_instance %}
+             
               <div class="row">
                 {% if shop.image %}
                 <div class="col-lg-4" data-aos="fade-right">
-                  <img src="{{shop.image.url}}" style="width:200px; height:200px;" alt="">
+                  <img src="{{shop_instance.image.url}}" style="width:200px; height:200px;" alt="">
                 </div> 
                 {% endif%}
-              <h3>{{shop.store_name}}</h3>
+              <h3>{{shop_instance.store_name}}</h3>
               <p class="fst-italic">
-                {{shop.description}}
+                {{shop_instance.description}}
               </p>
               <div class="row">
                 <div class="col-lg-6">
                   <ul>
-                    <li> <strong>اینستاگرام:</strong> <span>{{shop.instagramId}}</span></li>
-                    <li> <strong>ایمیل:</strong> <span>{{shop.email}}</span></li>
-                    <li><strong>تلفن تماس:</strong> <span>{{shop.contact}}</span></li>
-                    <li><strong>آدرس:</strong> <span>{{shop.address}}</span></li>
-                    <li><strong>هزینه ارسال محصولات:</strong> <span>{{shop.delivery_cost}}</span></li>
+                    <li> <strong>اینستاگرام:</strong> <span>{{shop_instance.instagramId}}</span></li>
+                    <li> <strong>ایمیل:</strong> <span>{{shop_instance.email}}</span></li>
+                    <li><strong>تلفن تماس:</strong> <span>{{shop_instance.contact}}</span></li>
+                    <li><strong>آدرس:</strong> <span>{{shop_instance.address}}</span></li>
+                    <li><strong>هزینه ارسال محصولات:</strong> <span>{{shop_instance.delivery_cost}}</span></li>
                   </ul>
                 
                 </div>   
                 <div >
-                  <a hx-get="{% url 'editshop' pk=shop.pk %}" hx-target="#outerContainer" >
+                  <a href="{% url 'editshop' pk=shop_instance.pk %}" >
                   <div style="margin:5%;" class="btn-style" ><button id="actionButton"> <span class="btn-text">ویرایش</span><div class="loader" id="loader"></div></button></div>
                   </a>
                 
                 </div>  
               </div> 
-              {% endfor %}
+           
               
             </ul> 
             
             {% endif %}
-           {% if shop_instance == None or shop_instance|length == 0 or shop_instance == "" %}
+           {% if  not shop_instance %}
             <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
               <p>در صورت تمایل به داشتن فروشگاه آنلاین خود بر روی دکمه زیر کلیک کنید و فرم مربوطه را پر کنید.</p>
               <a href="{% url 'create_shop' %}"  >

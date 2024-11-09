@@ -57,12 +57,12 @@
       
       <div class="profile" style="padding:5%;">
         {% if shop_instance %}
-         {% for shop_instance in shop_instance %}
-            {% if shop_instance.image  %}
+         
+           
             <img src="{{shop_instance.image.url}}" alt="" style="max-height:15vh;" class="img-fluid rounded-circle">
-            {%endif%}
+         
             <h5 style="text-align:center;" class="text-light">{{shop_instance.store_name}}</h5>
-         {%endfor%}
+        
         {% endif %}
         <!--  <h3 style="text-align:center;" class="text-light">{{user.username}}</h3>-->
         <div class="social-links mt-3 text-center">
@@ -86,9 +86,14 @@
           {%endif%}
           <li><a href="#main" hx-get="{% url 'orders' %}" hx-push-url="true" hx-target="#outerContainer" class="nav-link scrollto"><i class="bx bx-book-content"></i><span>سفارشات من</span></a></li>
         
-            {% for shop_instance in shop_instance %}
-            <li><a href="{% url 'storepage' store_name=shop_instance.store_name %}" class="nav-link scrollto"><i class="bx bx-book-content"></i><span>فروشگاه من</span></a></li>  
-            {%endfor%}
+          {% if shop_instance and shop_instance.store_name %}
+          <li>
+              <a href="{% url 'storepage' store_name=shop_instance.store_name %}" class="nav-link scrollto">
+                  <i class="bx bx-book-content"></i><span>فروشگاه من</span>
+              </a>
+          </li>  
+      {% endif %}
+      
           <li><a href="{% url 'logout' %}" class="nav-link scrollto"><span>خروج</span></a></li>
         </ul>
       </nav><!-- .nav-menu -->

@@ -35,6 +35,6 @@ class ShopForm(forms.ModelForm):
         
     def clean_store_name(self):
         store_name = self.cleaned_data.get('store_name')
-        if Shop.objects.filter(store_name=store_name).exists():
+        if Shop.objects.filter(store_name=store_name).exclude(pk=self.instance.pk).exists():
             raise ValidationError("* خطا : این نام توسط دیگری انتخاب شده و تکراری می باشد, لطفا نام دیگری انتخاب کنید.")
         return store_name

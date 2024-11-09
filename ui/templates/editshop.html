@@ -1,31 +1,37 @@
 {% load static %}
-<a class="back-btn" href="#outerContainer"  hx-get="{% url 'account-info' %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
-<div class="forms">
-   
-        <form class="inputs" action="{% url 'editshop' pk=shop_instance.pk %}" method="post" enctype="multipart/form-data" >
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="form-group">
-            <label for="{{ field.id_for_label }}">
-                {{ field.label }}
-                {% if field.field.required %}
-                    <span style="color: red;">*</span>  <!-- Add asterisk for required fields -->
-                {% endif %}
-            </label>
-            {{ field }}
-            {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text }}</small>
-            {% endif %}
-        </div>
-    {% endfor %}
-    <p>توجه : هزینه ارسال یکبار برای تمام محصولات شما اعمال می شود.(هزینه به تومان)</p>
-       
-        <button type="submit" id="submitButton">ذخیره تغییرات</button>
+<a class="back-btn" href="#outerContainer" hx-get="{% url 'account-info' %}" hx-target="#outerContainer">
+    <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
+</a>
 
+<div class="forms">
+    <form id="myForm" class="inputs" action="{% url 'editshop' pk=shop_instance.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+       
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                        <span style="color: red;">*</span>
+                    {% endif %}
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.name == "store_name" and form.store_name.errors %}
+                    <div style="color:red;" class="error">
+                        {{ form.store_name.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <p>توجه : هزینه ارسال یکبار برای تمام محصولات شما اعمال می شود.(هزینه به تومان)</p>
+        <button type="submit" id="submitButton">ذخیره تغییرات</button>
         <div id="loader" style="display:none;"></div>
     </form>
 </div>
-
 
 <!-- CSS for Spinner -->
 <style>
@@ -39,7 +45,6 @@
         animation: spin 1s linear infinite;
         margin-top: 10px; /* Add spacing if needed */
     }
-
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
@@ -55,7 +60,6 @@
         document.getElementById('submitButton').style.display = 'none';
     });
 </script>
-
 
 <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
 <script src="{% static 'asset/js/main.js' %}"></script>
