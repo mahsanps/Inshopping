@@ -17,6 +17,7 @@ from ui.view.wallet import BankAccountView, WalletView, EditBankAccount
 from ui.view.contact import contact_view
 from ui.view.payment import zarinpal_callback, success_view, initiate_payment
 from django.contrib.auth import views as auth_views
+from ui.view.otp import send_otp_view, verify_otp_view
 
 
 
@@ -27,6 +28,8 @@ urlpatterns = [
     path("signup/", SignUpView.as_view(), name="signup"),
     path("signin/", SignInView.as_view(), name="signin"),
     path("logout/", LogOutView.as_view(), name="logout"),
+    path('send-otp/', send_otp_view, name='send_otp'),
+    path('verify-otp/<str:mobile_number>/', verify_otp_view, name='verify_otp'),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("account-info/", AboutUs.as_view(), name="account-info"),
     path('accountinfo/', accountInfoView.as_view(), name='accountinfo'),

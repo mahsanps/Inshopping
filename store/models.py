@@ -4,6 +4,7 @@ from utils.models import BaseModel
 import uuid
 import json
 from django.core.serializers import serialize
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.query import QuerySet
 from django.db.models import Model
 from authuser.models import Account
@@ -54,12 +55,21 @@ class DjangoJSONEncoder(json.JSONEncoder):
             except:
                 return ""
 
+
 class AccountInfo(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="account_info", verbose_name=_("user"))
     firstname= models.CharField(max_length=300, verbose_name=_("firstname"))
     lastname= models.CharField(max_length=300, verbose_name=_("lastname"))
     phone= models.CharField(max_length=300, verbose_name=_("phone"))
+      
     
+class OTP(BaseModel):
+    mobile_number = models.CharField(max_length=15)
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def is_valid(self):
+        return timezone.now() <= self.created_at + timedelta(minutes=5)    
 
         
 class Category(models.Model):
@@ -98,7 +108,7 @@ class SubCategory(BaseModel):
 
 class Shop(BaseModel):
     is_approved = models.BooleanField(default=False)
-    store_name=models.CharField(max_length=400, verbose_name=_("Storename"))
+    store_name=models.CharField(max_length=400,unique=True,  verbose_name=_("Storename"))
     account=models.ForeignKey(User,on_delete=models.CASCADE,  verbose_name=_("account")) 
     description=models.TextField(blank=True,verbose_name=_("Description"))
     instagramId=models.CharField(max_length=400, verbose_name=_("InstagramId"))

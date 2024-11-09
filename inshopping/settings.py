@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'sslserver',
     'unidecode',
     'store.apps.StoreConfig',
-
+    'kavenegar',
+    'medianasms',
 ]
 
 MIDDLEWARE = [
@@ -215,3 +216,7 @@ ZARINPAL_MERCHANT_ID = config('ZARINPAL_MERCHANT_ID')
 ZARINPAL_CALLBACK_URL = config('ZARINPAL_CALLBACK_URL')
 ZARINPAL_WEBSERVICE = config('ZARINPAL_WEBSERVICE')
 ZARINPAL_PAYMENT_VERIFICATION = config('ZARINPAL_PAYMENT_VERIFICATION')
+
+# settings.py
+MEDIANA_API_KEY = config('MEDIANA_API_KEY')
+

@@ -18,6 +18,21 @@
     display: flex;
     border-radius: 4px;
 }
+.in-form input, select, textarea, optgroup {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    border: 1px solid lightgray ;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 4px;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+.in-form select {
+    width: 200px !important;
+}
 
 .inputs input, optgroup, select, textarea{
     font-family: inherit;
@@ -53,6 +68,11 @@
     color: #149ddd;
     border: none;
 }
+.in-form button {
+    background-color: transparent;
+    color: #149ddd;
+    border: none;
+}
 .box-li {
     flex-shrink: 0;
     width: 30%;
@@ -84,6 +104,8 @@
     .forms {
        padding: 5px;
        height: auto;
+       margin: 10px;
+       margin-top: 30px;
     }
     .product-list-img {
         max-height: 100px;
@@ -125,5 +147,13 @@
    .inputs input, select, textarea {
     max-width: 100%;
     width: 100%;
+   }
+   .in-form select{
+    max-width: 100%;
+    width: 100px !important;
+   }
+   .in-form input{
+    max-width: 100%;
+    width: 60px !important;
    }
 }

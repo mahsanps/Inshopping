@@ -16,20 +16,29 @@
                         <span style="color: red;">*</span>  <!-- Add asterisk for required fields -->
                     {% endif %}
                 </label>
+                
                 {{ field }}
+                
                 {% if field.help_text %}
                     <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+
+                <!-- Display error only for store_name field -->
+                {% if field.name == "store_name" and form.store_name.errors %}
+                    <div style="color:red;" class="error">
+                        {{ form.store_name.errors }}
+                    </div>
                 {% endif %}
             </div>
         {% endfor %}
       
-
         <button type="submit" id="submitButton">ذخیره</button>
 
         <!-- Loader -->
         <div id="loader" style="display:none;"></div>
     </div>
 </form>
+
 
 <!-- CSS for Spinner -->
 <style>

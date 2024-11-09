@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from django.http import HttpResponse
+from kavenegar import *
+
 from .utils import (
     exchange_code_for_short_lived_token,
     exchange_for_long_lived_token,
@@ -79,6 +81,7 @@ def instagram_success(request):
 @login_required
 def instagram_error(request):
     return render(request, 'instagram_error.html', {'message': 'There was an error connecting your Instagram account.'})
+
 
 
 

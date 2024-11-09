@@ -1,6 +1,7 @@
 from store.models import Shop
 from django.shortcuts import render, redirect
 from django import forms
+from django.core.exceptions import ValidationError
 
 class ShopForm(forms.ModelForm):
     class Meta:
@@ -31,3 +32,9 @@ class ShopForm(forms.ModelForm):
         self.fields['delivery_cost'].help_text = '(هزینه ارسال کالا یکبار برای تمام محصولات شما اعمال می شود.(هزینه به تومان))'
         self.fields['store_name'].help_text =  '(نام فروشگاه شما به عنوان وبسایت شما معرفی می شود و حتما باید با حروف لاتین نوشته شود. در صورتی که نام فروشگاه شما بیش از یک کلمه است بین کلمات فاصله گذاشته نشود و از (-) استفاده شود. مثال : parvane-shop)'
         self.fields['image'].label = "لوگوی فروشگاه"
+        
+    def clean_store_name(self):
+        store_name = self.cleaned_data.get('store_name')
+        if Shop.objects.filter(store_name=store_name).exists():
+            raise ValidationError("* خطا : این نام توسط دیگری انتخاب شده و تکراری می باشد, لطفا نام دیگری انتخاب کنید.")
+        return store_name
