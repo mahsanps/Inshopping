@@ -5,6 +5,7 @@ from store.models import OTP
 from datetime import timedelta
 from django.utils import timezone
 import random
+from ui.forms.otp import MobileForm, OTPForm
 
 # ایجاد کلاینت مدیانا
 api_key = settings.MEDIANA_API_KEY
@@ -26,24 +27,35 @@ def send_otp_via_mediana(mobile_number, otp_code):
     except HTTPError as e:
         print(f"HTTP Error: {e}")
 
+
 def send_otp_view(request):
     if request.method == 'POST':
-        mobile_number = request.POST.get('mobile_number')
-        otp_code = generate_otp()
-        OTP.objects.create(mobile_number=mobile_number, otp_code=otp_code)
-        send_otp_via_mediana(mobile_number, otp_code)
-        return redirect('verify_otp', mobile_number=mobile_number)
-    return render(request, 'send_otp.html')
+        form = MobileForm(request.POST)
+        if form.is_valid():
+            mobile_number = form.cleaned_data.get('mobile_number')
+            otp_code = generate_otp()
+            OTP.objects.create(mobile_number=mobile_number, otp_code=otp_code)
+            send_otp_via_mediana(mobile_number, otp_code)
+            return redirect('verify_otp', mobile_number=mobile_number)
+    else:
+        form = MobileForm()
+    
+    return render(request, 'send_otp.html', {'form': form})
 
+# ویو برای تایید کد OTP
 def verify_otp_view(request, mobile_number):
     if request.method == 'POST':
-        otp_code = request.POST.get('otp_code')
-        otp_instance = get_object_or_404(OTP, mobile_number=mobile_number, otp_code=otp_code)
-        if otp_instance.is_valid():
-            # کد معتبر است، تایید ورود انجام شود
-            return redirect('index')
-        else:
-            # کد منقضی شده است، پیام خطا نشان داده شود
-            return render(request, 'verify_otp.html', {'error': 'کد منقضی شده است'})
-
-    return render(request, 'verify_otp.html')
+        form = OTPForm(request.POST)
+        if form.is_valid():
+            otp_code = form.cleaned_data.get('otp_code')
+            otp_instance = get_object_or_404(OTP, mobile_number=mobile_number, otp_code=otp_code)
+            if otp_instance.is_valid():
+                # کد معتبر است، تایید ورود انجام شود
+                return redirect('index')
+            else:
+                # کد منقضی شده است، پیام خطا نشان داده شود
+                return render(request, 'verify_otp.html', {'form': form, 'error': 'کد منقضی شده است'})
+    else:
+        form = OTPForm(initial={'mobile_number': mobile_number})
+    
+    return render(request, 'verify_otp.html', {'form': form})
