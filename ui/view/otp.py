@@ -8,6 +8,7 @@ import random
 from ui.forms.otp import MobileForm, OTPForm
 from authuser.models import Account
 from django.contrib import messages
+from django.contrib.auth import login
 
 # ایجاد کلاینت مدیانا
 api_key = settings.MEDIANA_API_KEY
@@ -52,14 +53,23 @@ def send_otp_view(request):
     return render(request, 'send_otp.html', {'form': form})
 
 # ویو برای تایید کد OTP
+
+
 def verify_otp_view(request, mobile_number):
     if request.method == 'POST':
         form = OTPForm(request.POST)
         if form.is_valid():
             otp_code = form.cleaned_data.get('otp_code')
             otp_instance = get_object_or_404(OTP, mobile_number=mobile_number, otp_code=otp_code)
+
             if otp_instance.is_valid():
-                # کد معتبر است، تایید ورود انجام شود
+                # پیدا کردن کاربر بر اساس شماره موبایل
+                user = get_object_or_404(Account, phone=mobile_number)
+
+                # ورود کاربر به حساب کاربری خود
+                login(request, user)
+
+                # انتقال به صفحه‌ای که می‌خواهید بعد از ورود کاربر به آن هدایت شود
                 return redirect('index')
             else:
                 # کد منقضی شده است، پیام خطا نشان داده شود
