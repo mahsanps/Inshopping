@@ -264,11 +264,13 @@ class Order(BaseModel):
     
     def full_delivery_address(self):
         address_parts = [
-            self.delivery_address_unit_number,
-            self.delivery_address_street_name,
-            self.delivery_address_suburb,
-            self.delivery_address_city,
             self.delivery_address_state,
+            self.delivery_address_city,
+            self.delivery_address_suburb,
+            self.delivery_address_street_name,
+            self.delivery_address_unit_number,
+            
+           
         ]
         return ", ".join(part for part in address_parts if part)
     
