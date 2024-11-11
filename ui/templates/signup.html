@@ -19,7 +19,15 @@
                         
     </head>
     <body style="direction:rtl">
-        
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div style="text-align:center; margin-top:20px;" class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
         <section class="container forms"  style="height:100vh;  margin: 0;">
            
             <div class="form login">

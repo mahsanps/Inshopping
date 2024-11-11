@@ -19,13 +19,16 @@ class AccountInfoInline(admin.StackedInline):
 @admin.register(Account)
 class AccountAdmin(UserAdmin):
     inlines = [AccountInfoInline]
-
+    list_display = ('username', 'email', 'phone', 'is_staff', 'is_active')
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('phone',)}),
+    )
 # Corrected AccountInfoAdmin
 class AccountInfoAdmin(admin.ModelAdmin):
     list_display = [
         'firstname',
         'lastname',
-        'phone'
+      
     ]
 
 admin.site.register(AccountInfo, AccountInfoAdmin)  

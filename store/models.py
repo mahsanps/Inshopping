@@ -60,12 +60,12 @@ class AccountInfo(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="account_info", verbose_name=_("user"))
     firstname= models.CharField(max_length=300, verbose_name=_("firstname"))
     lastname= models.CharField(max_length=300, verbose_name=_("lastname"))
-    phone= models.CharField(max_length=300, verbose_name=_("phone"))
+   
       
     
 class OTP(BaseModel):
-    mobile_number = models.CharField(max_length=15)
-    otp_code = models.CharField(max_length=6)
+    mobile_number = models.CharField(max_length=15 ,verbose_name=_("mobilenumber"))
+    otp_code = models.CharField(max_length=6, verbose_name=_("otp-code"))
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_valid(self):
@@ -221,7 +221,7 @@ class ProductVariation(BaseModel):
 
 class BankAccount(BaseModel):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True)
-    name= models.CharField(max_length=200, default="",  verbose_name=_("name"))
+    name= models.CharField(max_length=200, default="",  verbose_name=_("name-lastname"))
     bankName=models.CharField(max_length=200, default="",  verbose_name=_("bankName"))
     cartNumber=models.CharField(max_length=200, default="",  verbose_name=_("cartNumber"))
     accountNumber=models.CharField(max_length=200, default="",  verbose_name=_("accountNumber"))

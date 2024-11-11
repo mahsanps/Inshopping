@@ -6,6 +6,6 @@ class MobileForm(forms.ModelForm):
         model = OTP
         fields =('mobile_number',)
 
-class OTPForm(forms.Form):
-    mobile_number = forms.CharField(max_length=15, widget=forms.HiddenInput)
-    otp_code = forms.CharField(max_length=6)
+class OTPForm(forms.ModelForm):
+    mobile_number = forms.CharField(label='شماره موبایل',max_length=15, widget=forms.HiddenInput)
+    otp_code = forms.CharField(label='رمز یکبار مصرف',max_length=6)
