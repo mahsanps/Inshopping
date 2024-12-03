@@ -1,6 +1,6 @@
 {% load static %}
 
-<a class="back-btn" href="#outerContainer"  hx-get="{% url 'edit_product' product_pk=product.pk  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+<a class="back-btn" href="{% url 'edit_product' product_pk=product.pk  %}"  ><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
 <div class="forms" style="height:auto; margin:10px;">
     <legend>انبار کالا</legend>
     {% for form in variation_forms %}

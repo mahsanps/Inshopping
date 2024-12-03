@@ -32,8 +32,9 @@
             
             <div class="form login">
                 <div class="form-content"> 
-                    <header>ورود</header>
-               
+                    
+                    <br>
+                    <a class="mobile-enter-link" href="{% url 'send_otp' %}" class="forgot-pass">ورود با شماره موبایل</a>
                     <form class="signinputs" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}

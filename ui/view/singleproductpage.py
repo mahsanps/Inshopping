@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect , get_object_or_404
 from utils.views import BaseView
-from store.models import Product, Category, ProductVariation, Color
+from store.models import Product, Category, ProductVariation, Color,ProductImage
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.http import HttpResponseRedirect
@@ -16,6 +16,7 @@ class SingleProductPage(BaseView):
         categories = Category.objects.all()
         product_pk = kwargs["product_pk"]
         product_details = get_object_or_404(Product, pk=product_pk)
+        product_images = ProductImage.objects.filter(product__pk=product_pk)
         product_variations = list(ProductVariation.objects.filter(product__pk=product_pk).values('id', 'color__color', 'size', 'quantity'))
         
         available_products = set()
@@ -34,6 +35,7 @@ class SingleProductPage(BaseView):
             'sizes': sizes,
             "store_name": store_name,
             "available_products": available_products,
+            'product_images':product_images,
         })
         
     def post(self, request,store_name, *args, **kwargs):

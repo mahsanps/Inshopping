@@ -367,7 +367,7 @@ class OrderListView(BaseView):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('signin')
-        shop_instance = Shop.objects.filter(account=request.user)
+        shop_instance = Shop.objects.filter(account=request.user).first()
         orders = Order.objects.filter( account=request.user,  is_paid=True)
         if self.request.htmx:
            return render(request, 'orders.html', {'orders': orders,'shop_instance': shop_instance})

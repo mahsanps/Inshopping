@@ -1,80 +1,66 @@
-from django.conf import settings
-from medianasms import Client, Error, HTTPError
-from django.shortcuts import render, redirect, get_object_or_404
-from store.models import OTP
-from datetime import timedelta
-from django.utils import timezone
 import random
-from ui.forms.otp import MobileForm, OTPForm
-from authuser.models import Account
+from django.conf import settings
+from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import JsonResponse
 from django.contrib.auth import login
+from ui.forms.otp import MobileForm, OTPForm
+from store.models import Account, OTP
+from utils.utils import send_pattern_sms  # متد ارسال پیامک
 
-# ایجاد کلاینت مدیانا
-api_key = settings.MEDIANA_API_KEY
-sms_client = Client(api_key)
-
+# تولید کد OTP
 def generate_otp():
     return random.randint(100000, 999999)
 
-def send_otp_via_mediana(mobile_number, otp_code):
-    try:
-        bulk_id = sms_client.send(
-            originator="+9810001",  # شماره ارسال‌کننده معتبر
-            recipients=[mobile_number],
-            message=f'Your OTP code is {otp_code}'
-        )
-        return bulk_id
-    except Error as e:
-        print(f"Mediana Error - Code: {e.code}, Message: {e.message}")
-    except HTTPError as e:
-        print(f"HTTP Error: {e}")
-
-
+# ویو ارسال OTP
 def send_otp_view(request):
     if request.method == 'POST':
         form = MobileForm(request.POST)
         if form.is_valid():
-            mobile_number = form.cleaned_data.get('mobile_number')
-            
+            mobile_number = form.cleaned_data['mobile_number']
+
+            # Check if the phone number exists
             if Account.objects.filter(phone=mobile_number).exists():
-                
-            
                 otp_code = generate_otp()
                 OTP.objects.create(mobile_number=mobile_number, otp_code=otp_code)
-                send_otp_via_mediana(mobile_number, otp_code)
+
+                # Send SMS
+                response = send_pattern_sms(
+                    mobile_number=mobile_number,
+                    pattern_code="800128",
+                    otp_code=otp_code
+                )
+
+                if response and response.status_code == 200:
+                    messages.success(request, "کد تأیید ارسال شد!")
+                
+
                 return redirect('verify_otp', mobile_number=mobile_number)
-            else: 
+            else:
                 messages.error(request, "این شماره موبایل ثبت نشده است. لطفاً ابتدا ثبت‌نام کنید.")
                 return redirect('signup')
     else:
         form = MobileForm()
-    
+
     return render(request, 'send_otp.html', {'form': form})
 
-# ویو برای تایید کد OTP
 
-
+# ویو تأیید OTP
 def verify_otp_view(request, mobile_number):
     if request.method == 'POST':
         form = OTPForm(request.POST)
         if form.is_valid():
-            otp_code = form.cleaned_data.get('otp_code')
-            otp_instance = get_object_or_404(OTP, mobile_number=mobile_number, otp_code=otp_code)
+            otp_code = form.cleaned_data['otp_code']
+            otp_instance = OTP.objects.filter(mobile_number=mobile_number, otp_code=otp_code).first()
 
-            if otp_instance.is_valid():
-                # پیدا کردن کاربر بر اساس شماره موبایل
-                user = get_object_or_404(Account, phone=mobile_number)
-
-                # ورود کاربر به حساب کاربری خود
+            if otp_instance and otp_instance.is_valid():
+                # ورود کاربر
+                user = Account.objects.get(phone=mobile_number)
                 login(request, user)
-
-                # انتقال به صفحه‌ای که می‌خواهید بعد از ورود کاربر به آن هدایت شود
                 return redirect('index')
             else:
-                # کد منقضی شده است، پیام خطا نشان داده شود
-                return render(request, 'verify_otp.html', {'form': form, 'error': 'کد منقضی شده است'})
+                messages.error(request, "کد تأیید نامعتبر یا منقضی شده است.")
     else:
-        form = OTPForm(initial={'mobile_number': mobile_number})
-    
-    return render(request, 'verify_otp.html', {'form': form})
+        form = OTPForm()
+
+    return render(request, 'verify_otp.html', {'form': form, 'mobile_number': mobile_number})

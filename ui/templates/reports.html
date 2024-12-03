@@ -4,7 +4,7 @@
 {% load custom_filters %}
 {% load static %}
 
-<a class="back-btn" href="#" hx-get="{% url 'dashboard' %}" hx-target="#outerContainer">
+<a class="back-btn" href="{% url 'dashboard' %}" >
     <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
 </a>
 <section id="dashboard" class="about" style="padding:15px;">

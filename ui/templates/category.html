@@ -2,6 +2,11 @@
 
 {% load static %}
 {% block body %} 
+<head>
+   <title>{{ category.title }}</title>
+   <meta name="description" content="{{ category.meta_description }}"> <!-- اگر متا دیسکریپشن دارید -->
+   <meta name="keywords" content="{{ category.seo_keywords }}">
+</head>
       <!-- fashion section start -->
       <div class="fashion_section">
          <div id="main_slider" class="carousel slide" data-ride="carousel">
@@ -43,10 +48,16 @@
                         </div>
                      </div>
                   </div>
+                  {% if category.title and category.content%}
+                  <div class="cat-seo">
+                     <h5>درباره {{category.title}}</h5>
+                     <p>{{category.content}}</p>
+                  </div> 
+                  {%endif%}
                </div>
                
             </div>
-            
+           
          </div>
       </div>
       <!-- fashion section end -->

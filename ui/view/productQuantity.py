@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from store.models import  Color, Product, ProductVariation
+from store.models import  Color, Product, ProductVariation, Shop
 from ui.forms.productQuantity import ProductsQuantityForm
 from utils.views import BaseView
 
@@ -37,6 +37,9 @@ class ProductQuantityView(BaseView):
             quantity = form.save(commit=False)
             quantity.product = product  
             quantity.color = color_instance 
+            
+            product.is_ready = True
+            product.save()
 
             # Save the quantity
             quantity.save()
@@ -70,8 +73,10 @@ class EditProductVariation(BaseView):
         variation_forms = []
         for variation in variations:
             variation_forms.append(ProductsQuantityForm(instance=variation))
-        return render(request, 'productedit.html', {'variation_forms': variation_forms, 'product': product})
-
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        if self.request.htmx:    
+          return render(request, 'productedit.html', {'shop_instance':shop_instance,'variation_forms': variation_forms, 'product': product})
+        return render(request, 'productedit-full.html', {'shop_instance':shop_instance,'variation_forms': variation_forms, 'product': product})
     
     def post(self, request, product_pk, *args, **kwargs): 
         product = get_object_or_404(Product, pk=product_pk) 

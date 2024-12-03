@@ -10,7 +10,7 @@
       <div class="box-li" >
         
         <div class="portfolio-wrap" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-          <a href="#" hx-get="{% url 'product_details' product_pk=item.pk %}" hx-target="#outerContainer" hx-swap="InnerHTML">
+          <a href="#" hx-push-url="true" hx-get="{% url 'product_details' product_pk=item.pk %}" hx-target="#outerContainer" hx-swap="InnerHTML">
           <h6>{{ item.name }}</h6>
           <h6>{{ item.productCode }}</h6>
           <img class="product-list-img" src="{{ item.image.url }}" class="img-fluid" alt="">

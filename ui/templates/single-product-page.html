@@ -181,7 +181,7 @@
     <div class="swiper-slide" style="width:100px !important;">
         <img src="{{ product_details.image.url }}" data-large-src="{{ product_details.image.url }}" class="thumbnail">
     </div>
-    {% for image in product_details.product_images.all %}
+    {% for image in product_images.all %}
     <div class="swiper-slide" style="width:100px !important;">
         <img src="{{ image.image.url }}" data-large-src="{{ image.image.url }}" class="thumbnail">
     </div>
@@ -194,7 +194,7 @@
         <div class="swiper-slide">
             <img src="{{ product_details.image.url }}" loading="lazy">
         </div>
-        {% for image in product_details.product_images.all %}
+        {% for image in product_images.all %}
         <div class="swiper-slide">
             <img src="{{ image.image.url }}" loading="lazy">
         </div>
@@ -208,7 +208,7 @@
         <div class="swiper-slide" >
             <img src="{{ product_details.image.url }}" class="thumbnail" loading="lazy">
         </div>
-        {% for image in product_details.product_images.all %}
+        {% for image in product_images.all %}
         <div class="swiper-slide">
             <img src="{{ image.image.url }}" class="thumbnail" loading="lazy">
         </div>

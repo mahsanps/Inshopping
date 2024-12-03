@@ -1,0 +1,21 @@
+{% load static %}
+
+
+{% load static %}
+
+<form class="inputs"  enctype="multipart/form-data"  id="addmore" hx-encoding='multipart/form-data' hx-post="{% url 'edit-shop-images' pk=shop.pk %}" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a class="back-btn" href="{% url 'editshop' pk=shop.pk %}">
+    <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
+  </a>
+  
+  <div class="forms" style="height:auto;">
+    <h4>تغییر بنرهای سایت </h4>
+    {% csrf_token %}
+    {{ form.as_p }}
+   
+  
+    <button type="submit" >ذخیره</button>
+    <div id="loader"></div>
+
+  </div>   
+</form>

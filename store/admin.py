@@ -1,11 +1,15 @@
 from django.contrib import admin
-from .models import Shop, Category, Product, BankAccount, Order, Contact, SubCategory, ProductVariation, Color, ProductImage, OrderItem, OrderDelivery
+from .models import Shop,ShopImage, Category, Blog,HomepageContent, Product, BankAccount, Order, Contact, SubCategory, ProductVariation, Color, ProductImage, OrderItem, OrderDelivery
 from ui.forms.productQuantity import ProductsQuantityForm
 from .models import ShopAuth
 
 @admin.register(ShopAuth)
 class ShopAuthAdmin(admin.ModelAdmin):
     pass
+
+class ShopImagesInlineAdmin(admin.StackedInline):
+    model= ShopImage
+    extra=0
 
 # Inline for ProductImage
 class ProductImageInlineAdmin(admin.StackedInline):
@@ -54,7 +58,7 @@ class ShopAdmin(admin.ModelAdmin):
         'address',
         'contact'
     ]
-    inlines = [ProductBankAccountAdmin, ProductInlineAdmin]
+    inlines = [ProductBankAccountAdmin, ProductInlineAdmin, ShopImagesInlineAdmin]
     
     
 class OrderItemInline(admin.TabularInline):
@@ -73,8 +77,8 @@ class OrderAdmin(admin.ModelAdmin):
               'delivery_address_state','delivery_address_postcode', 
                'payment_authority', 'payment_status']  # Specify fields for the form
 
+  
     
-
 # Register models with the admin site
 admin.site.register(Shop, ShopAdmin)
 admin.site.register(Category)
@@ -86,4 +90,6 @@ admin.site.register(ProductImage)
 admin.site.register(Color)
 admin.site.register(BankAccount)
 admin.site.register(Contact)
+admin.site.register(Blog)
+admin.site.register(HomepageContent)
 

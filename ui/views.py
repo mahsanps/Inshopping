@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from store.models import Category, Shop, Product, SubCategory
+from store.models import Category, Shop, Product, SubCategory, Blog
 from django.shortcuts import redirect
 from django.utils import translation
 from django.core.paginator import Paginator
@@ -43,7 +43,12 @@ def about(request):
     return render(request, 'about.html')
 
 def blog(request):
-    return render(request, 'blog.html')
+    posts = Blog.objects.filter(is_published=True).order_by('-created_at')
+    return render(request, 'blog.html', {'posts': posts})
+
+def blog_detail(request, slug):
+    post = Blog.objects.get(slug=slug, is_published=True)
+    return render(request, 'blog_detail.html', {'post': post})
 
 def guid(request):
     return render(request, 'guid.html')

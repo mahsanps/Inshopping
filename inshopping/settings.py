@@ -21,6 +21,10 @@ LOGIN_URL = "/login/"
 AUTH_USER_MODEL = "authuser.Account"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 104857600
+
 # Application definition
 PROJECT_APPS = [
     'authuser',

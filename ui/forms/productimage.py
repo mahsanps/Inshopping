@@ -7,4 +7,5 @@ from django import forms
 class ProductsImagesForm(forms.ModelForm):
      class Meta:
         model = ProductImage
-        fields = []
+        fields = [] 
+        

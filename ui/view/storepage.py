@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, redirect , get_object_or_404
-from store.models import Shop, Category , SubCategory , Product , ProductVariation,Color
+from store.models import Shop, Category , SubCategory , Product , ProductVariation,Color, ShopImage
 from utils.views import BaseView
 from authuser.models import Account
 from django.contrib.auth import get_user_model
@@ -23,6 +23,7 @@ class StorePage(BaseView):
         store_name = kwargs.get("store_name")
         shop_instance = get_object_or_404(Shop, store_name=store_name)
         shop_list = Shop.objects.filter(store_name=store_name)
+        shop_images = ShopImage.objects.filter(shop__store_name=store_name) 
 
         # Start with all approved products for the shop
         products = Product.objects.filter(shop__in=shop_list, is_approved=True).distinct()
@@ -121,6 +122,7 @@ class StorePage(BaseView):
             'price_max': price_max,
             'selected_subcategory': selected_subcategory,
             'page_obj':page_obj,
+            'shop_images':shop_images
         }
 
         return render(request, 'storepage.html', context)

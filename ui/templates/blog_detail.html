@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load jformat %}
+{% load custom_filters %}
+{% load static %}
+{% block body %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <meta name="description" content="{{ post.meta_description }}"> <!-- اگر متا دیسکریپشن دارید -->
+    <meta name="keywords" content="{{ post.seo_keywords }}">
+</head>
+<div class="blog" >
+    <div class="blog-div">
+        <div>
+        <h2 style="color:#f5ba01;">{{ post.title }}</h2>
+        
+        <small>تاریخ: {{ post.created_at|jformat:"%Y/%m/%d" }}</small>
+        </div>
+        <div>
+            
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}">
+            {% endif %}
+        </div> 
+    </div>  
+           <br>
+            <hr>
+           
+            <div>
+                {{ post.content|safe }} <!-- متن کامل مقاله -->
+            </div>
+            <hr>
+            <a href="{% url 'blog' %}">بازگشت به لیست مقالات</a>
+
+            
+      
+       
+    
+</div>
+
+{%endblock%} 

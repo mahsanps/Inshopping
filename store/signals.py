@@ -2,7 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image
 import os
-from .models import Shop, Product, SubCategory, ProductImage
+from .models import ShopImage,Shop, Product, SubCategory, ProductImage, Blog
 from django.conf import settings
 
 # تابع برای تبدیل تصاویر به فرمت WebP
@@ -16,20 +16,27 @@ def convert_image_to_webp(image_field):
         return webp_path
     return None
 
+
+@receiver(post_save, sender=ShopImage)
 @receiver(post_save, sender=Shop)
 @receiver(post_save, sender=Product)
 @receiver(post_save, sender=SubCategory)
-@receiver(post_save, sender=ProductImage)  # اضافه کردن ProductImage به سیگنال
+@receiver(post_save, sender=ProductImage) 
+@receiver(post_save, sender=Blog)
 def optimize_images(sender, instance, created, **kwargs):
     if created:  # اجرا فقط در زمان ایجاد رکورد
-        if sender == Shop:
-            image_fields = ['image', 'banner_image1', 'banner_image2', 'banner_image3']
+        if sender == ShopImage:
+            image_fields = [ 'banner_image1', 'banner_image2', 'banner_image3']
+        elif sender == Shop:
+            image_fields = ['image']    
         elif sender == Product:
             image_fields = ['image']  # فقط فیلد image در Product
         elif sender == SubCategory:
             image_fields = ['image']  # فیلد image در SubCategory
         elif sender == ProductImage:  # اضافه کردن فیلد image در ProductImage
             image_fields = ['image']
+        elif sender == Blog:  
+            image_fields = ['image']    
 
         for field_name in image_fields:
             image_field = getattr(instance, field_name)

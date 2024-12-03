@@ -1,0 +1,9 @@
+{% for image in images %}
+  <div class="product-image" id="image-{{ image.id }}">
+    <img src="{{ image.image.url }}" alt="Image {{ image.id }}">
+    
+    <!-- چک‌باکس برای حذف تصویر -->
+    <input style="width:auto;" type="checkbox" name="image_ids" value="{{ image.id }}">
+    
+  </div>
+{% endfor %}

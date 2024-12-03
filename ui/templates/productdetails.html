@@ -5,7 +5,7 @@
 {% load custom_filters %}
 
 
-<a class="back-btn" href="#outerContainer"  hx-get="{% url 'products_list'  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+<a class="back-btn" href="{% url 'products_list'  %}" ><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
 <section  class="about" style="height:auto;">
  
     <div class="container" >
@@ -56,7 +56,7 @@
                     
                   
                 
-                  <a  hx-get="{% url 'edit_product' product_pk=product_details.pk %}" hx-target="#outerContainer" >
+                  <a hx-push-url="true"  hx-get="{% url 'edit_product' product_pk=product_details.pk %}" hx-target="#outerContainer" >
                     <div class="btn-style" ><button>ویرایش</button></div> 
                   </a> 
                  

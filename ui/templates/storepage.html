@@ -41,8 +41,8 @@
                      
                      <div class="fashion_section_2">
                         
-                       
-                           {%for shop in shop_list%}
+                        {%if shop_images %}
+                           {%for shop in shop_images%}
                                         
                                              <div class="bannershop" >
                                                 
@@ -57,7 +57,7 @@
                                                       
                             {%endfor%}
                            
-                           
+                          {%endif%} 
                         
                      </div>
                  
@@ -66,8 +66,8 @@
                   
                      
                      <div class="fashion_section_2">
-                       
-                           {% for shop in shop_list %}
+                        {%if shop_images %}
+                           {% for shop in shop_images %}
                           
                                <div class="bannershop" >
                                   
@@ -81,7 +81,7 @@
                                </div>
                            
                        {% endfor %}
-                           
+                       {%endif%} 
                       
                      </div>
                   
@@ -90,8 +90,8 @@
                  
                      
                      <div class="fashion_section_2">
-                        
-                           {% for shop in shop_list %}
+                        {%if shop_images %}
+                           {% for shop in shop_images %}
                            
                                <div class="bannershop" >
                                    
@@ -104,7 +104,7 @@
                                </div>
                         
                        {% endfor %}
-                           
+                       {%endif%} 
                        
                      </div>
                   

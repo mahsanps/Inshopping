@@ -3,9 +3,9 @@ from . import views
 from .views import set_language
 from ui.view.auth import SignInView, LogOutView, SignUpView, accountInfoView, EditAccountInfo
 from ui.view.profile import ProfileView, AboutUs, ProductsSection, Contact
-from ui.view.shop import CreateShop, EditShop
+from ui.view.shop import CreateShop, EditShop , ShopImages, ShopImagesEdit
 from ui.view.storepage import StorePage, aboutShop
-from ui.view.products import ProductsView, PublishProductInstagramPost, CategoryAutocomplete, load_subcategories, ProductsListView, ProductDetails, EditProductView, DeleteProduct, SubcategoryProducts
+from ui.view.products import ProductsView,ProductsImages,EditProductsImages, PublishProductInstagramPost, CategoryAutocomplete, load_subcategories, ProductsListView, ProductDetails, EditProductView, DeleteProduct, SubcategoryProducts
 from ui.view.category import CategoryPageView
 from ui.view.productQuantity import ProductQuantityView, EditProductVariation
 from ui.view.singleproductpage import SingleProductPage, AvailableColorsView
@@ -37,11 +37,14 @@ urlpatterns = [
     path("contact/", Contact.as_view(), name="contact"),
     path("createshop/", CreateShop.as_view(), name="create_shop"),
     path("editshop/<int:pk>/", EditShop.as_view(), name='editshop'),
+    path("shop-images/<int:pk>/", ShopImages.as_view(), name='shop-images'),
+    path("edit-shop-images/<int:pk>/", ShopImagesEdit.as_view(), name='edit-shop-images'),
     path("products/", ProductsView.as_view(), name="products"),
     path("product/<str:product_pk>/publish-instagram-post/", PublishProductInstagramPost.as_view(), name="publish_product_instagram_post"),
     path("productssection/", ProductsSection.as_view(), name="productssection"),
     path("productslist/", ProductsListView.as_view(), name="products_list"),
-    path("productimages/", ProductsView.as_view(), name="product_images"),
+    path("products-images/<str:product_pk>/",  ProductsImages.as_view(), name="products_images"),
+    path("edit-product-images/<int:product_pk>/", EditProductsImages.as_view(), name='edit-products-images'),
     path("logout/", LogOutView.as_view(), name="logout"),
     path("category/<slug:category_slug>/", CategoryPageView.as_view(), name="category"),
     path("subcategory/<slug:subcategory_slug>/", SubcategoryProducts.as_view(), name="subcategory"),
@@ -67,6 +70,7 @@ urlpatterns = [
     path('privacy-policy/', views.Privacy_Policy, name='privacy_policy'),
     path('about/', views.about, name='about'),
     path('blog/', views.blog, name='blog'),
+    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('guid/', views.guid, name='guid'),
     path('contactus/', contact_view, name='contactus'),
     path('callback/<str:store_name>/', zarinpal_callback, name='zarinpal_callback'),  

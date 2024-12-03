@@ -8,12 +8,12 @@
         <h2>{% trans 'Products' %}</h2>
         <p>{% trans 'Please introduce your products and see the list of your products and variations by clicking List Of Your Products' %}.</p>
       </div>
-      <a hx-get="{% url 'products' %}" hx-target="#outerContainer" >
+      <a hx-get="{% url 'products' %}" hx-push-url="true"  hx-target="#outerContainer" >
         <div class="btn-style" ><button>{% trans 'Create Your Products' %}</button></div></a> 
       </br>
       </br>
       
-      <a hx-get="{% url 'products_list' %}" hx-target="#outerContainer"  hx-push-url="true">
+      <a hx-get="{% url 'products_list' %}" hx-push-url="true"  hx-target="#outerContainer"  hx-push-url="true">
         <div class="btn-style" ><button>{% trans 'List Of Your Products' %}</button></div> 
       </a> 
       

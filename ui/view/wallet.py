@@ -19,7 +19,10 @@ class WalletView(BaseView):
 class BankAccountView(BaseView):
     def get(self, request, *args, **kwargs):
         form= BankAccountForm()
-        return render (request, 'bankaccount.html', {"form":form})
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        if self.request.htmx:
+           return render (request, 'bankaccount.html', {'shop_instance':shop_instance,"form":form})
+        return render (request, 'bankaccount-full.html', {'shop_instance':shop_instance,"form":form})
     
     def post(self, request, *args, **kwargs):
         form= BankAccountForm(request.POST)

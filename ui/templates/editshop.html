@@ -1,5 +1,5 @@
 {% load static %}
-<a class="back-btn" href="#outerContainer" hx-get="{% url 'account-info' %}" hx-target="#outerContainer">
+<a class="back-btn" href="{% url 'account-info' %}">
     <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
 </a>
 
@@ -27,10 +27,10 @@
             </div>
         {% endfor %}
         
-        <p>توجه : هزینه ارسال یکبار برای تمام محصولات شما اعمال می شود.(هزینه به تومان)</p>
         <button type="submit" id="submitButton">ذخیره تغییرات</button>
         <div id="loader" style="display:none;"></div>
     </form>
+    <a href="edit-shop-images"  hx-get="{% url 'edit-shop-images' pk=shop_instance.pk %}" hx-target="#outerContainer" > تغییر بنرهای سایت  </a>
 </div>
 
 <!-- CSS for Spinner -->

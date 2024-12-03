@@ -1,11 +1,12 @@
 # views.py
 
 from django.shortcuts import render, redirect , get_object_or_404
-from store.models import Shop, Category , SubCategory
+from store.models import Shop, Category , SubCategory, ShopImage
 from ui.forms.shop import ShopForm
 from utils.views import BaseView
 from django.http import HttpResponse
 from django.urls import reverse
+from ui.forms.shopimages import ShopImagesForm
 
 class CreateShop(BaseView):
     def get(self, request, *args, **kwargs):
@@ -29,7 +30,7 @@ class CreateShop(BaseView):
             if self.request.htmx:
                
                 return HttpResponse(status=204)
-            return redirect('account-info')
+            return redirect('shop-images',pk=shop.pk)
         
         if self.request.htmx:
          
@@ -68,4 +69,61 @@ class EditShop(BaseView):
 
 
        
-        
+class ShopImages(BaseView):
+    def get(self, request,pk, *args, **kwargs):
+        shop = get_object_or_404(Shop, pk=pk)
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        form=ShopImagesForm()
+        if self.request.htmx:
+           return render(request, 'shop-images.html' , {'shop_instance':shop_instance,'shop':shop,'form':form})  
+        return render(request, 'shop-images-full.html' , {'shop_instance':shop_instance,'shop':shop,'form':form})       
+
+    def post(self, request,pk, *args, **kwargs):
+        shop = get_object_or_404(Shop, pk=pk)
+        form = ShopImagesForm(request.POST, request.FILES)  # داده‌ها و فایل‌ها را به فرم ارسال کنید
+
+        if form.is_valid():
+            shop_image = form.save(commit=False)
+            shop_image.shop = shop  # رابطه ForeignKey را تنظیم کنید
+            shop_image.save() 
+            return redirect('account-info')
+        return render(request, 'shop-images.html', {'shop':shop,'form':form})
+    
+    
+
+class ShopImagesEdit(BaseView):
+    def get(self, request, pk, *args, **kwargs):
+        shop = get_object_or_404(Shop, pk=pk)
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        shop_image = get_object_or_404(ShopImage, shop__pk=pk)
+        form = ShopImagesForm(instance=shop_image)
+
+        return render(
+            request, 'edit-shop-images.html',
+            {'shop_instance': shop_instance, 'shop': shop, 'form': form}
+        )
+
+    
+    def post(self, request, pk, *args, **kwargs):
+        shop = get_object_or_404(Shop, pk=pk)
+        # پیدا کردن رکورد موجود برای تصاویر فروشگاه
+        shop_image = get_object_or_404(ShopImage, shop__pk=pk)
+
+        # استفاده از instance در فرم
+        form = ShopImagesForm(request.POST, request.FILES, instance=shop_image)
+
+        if form.is_valid():
+            shop_image = form.save(commit=False)
+            shop_image.shop = shop
+            shop_image.save()
+            
+            return redirect('account-info')
+
+        return render(
+            request, 'edit-shop-images.html',
+            {
+                'shop': shop,
+                'form': form,
+                'shop_image': shop_image,
+            }
+        )

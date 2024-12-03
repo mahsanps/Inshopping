@@ -2,6 +2,12 @@
 {% load static %}
 {% block body %}
 {% load custom_filters %}
+
+<head>
+   <title>{{ subcategory.title }}</title>
+   <meta name="description" content="{{ subcategory.meta_description }}"> <!-- اگر متا دیسکریپشن دارید -->
+   <meta name="keywords" content="{{ subcategory.seo_keywords }}">
+</head>
 <!-- fashion section start -->
 <div class="fashion_section">
    <div id="main_slider" class="carousel slide" data-ride="carousel">
@@ -121,6 +127,12 @@
                   </div>  
                </div>
             </div>
+            {% if subcategory.title and subcategory.content%}
+            <div class="cat-seo">
+               <h5>درباره {{subcategory.title}}</h5>
+               <p>{{subcategory.content}}</p>
+            </div>
+            {%endif%}
          </div>
       </div>
    </div>

@@ -2,7 +2,7 @@
 
 <div class="forms">
     <form class="inputs" hx-encoding="multipart/form-data" hx-post="{% url 'products' %}" hx-swap="innerHTML" hx-target=".forms" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger="submit">
-        <a class="back-btn" href="#outerContainer"  hx-get="{% url 'productssection'  %}" hx-target="#outerContainer"><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
+        <a class="back-btn" href="{% url 'productssection'  %}" ><img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}"></a>
 
         {% csrf_token %}
         <div>
@@ -67,10 +67,7 @@
                 <!-- Options will be dynamically loaded here -->
             </select>
         </div>
-        <div>
-            <label for="id_images">تصاویر دیگر</label>
-            <input type="file" name="images" id="id_images" multiple>
-        </div>
+       
 
         <div>
             {{ form.instagram_post.errors }}

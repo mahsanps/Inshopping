@@ -15,6 +15,7 @@ from django.utils.html import format_html
 from django.templatetags.static import static 
 from urllib.parse import urlencode
 from django.contrib.sites.shortcuts import get_current_site
+from utils.utils import send_pattern_sms_order
 
 
 import requests
@@ -40,7 +41,7 @@ def send_order_notification_email(shop_email, order_id, store_name):
             </div>
             """,
             order_id=order_id,
-            website_url="https://www.inshopping.ir/dashboard/"
+            website_url="https://www.inshopping.net/dashboard/"
         )
 
         send_mail(
@@ -74,7 +75,7 @@ def send_user_order_confirmation_email(user_email, order_id, store_name, first_n
             """,
             order_id=order_id,
             first_name=first_name,
-            website_url="https://inshopping.ir/orders/"
+            website_url="https://inshopping.net/orders/"
         )
 
         send_mail(
@@ -120,11 +121,35 @@ def zarinpal_callback(request, store_name):
                 shop = Shop.objects.filter(store_name=store_name).first()
                 if shop and shop.email:
                     send_order_notification_email(shop.email, order.id, store_name)
+                    
+                if shop and shop.contact:
+                    # ارسال پیامک به فروشنده
+                    send_pattern_sms_order(
+                        mobile_number=shop.contact,
+                        pattern_code="800160",  # کد پترن پیامک فروشنده
+                        parameters={
+                            "orderId":str(order.id),
+                            "userName": shop.account.username
+                        }
+                    )   
+                    
 
                 # Send confirmation email to user
                 if order.account and order.account.email:
                     first_name = order.account.account_info.firstname if order.account.account_info else "کاربر"
                     send_user_order_confirmation_email(order.account.email, order.id, store_name, first_name)
+                    
+                if order.account and order.account.phone:
+                    first_name = order.account.account_info.firstname if order.account.account_info else "کاربر"
+                    # ارسال پیامک به خریدار
+                    send_pattern_sms_order(
+                        mobile_number=order.account.phone,
+                        pattern_code="800161",  # کد پترن پیامک خریدار
+                        parameters={
+                            "orderId": str(order.id),
+                            "firstName":first_name.encode('utf-8').decode('utf-8')
+                        }
+                    )    
 
                 # Clear cart and redirect to success page
                 success_url = f"/success/?ref_id={authority}&store_name={quote(store_name)}"

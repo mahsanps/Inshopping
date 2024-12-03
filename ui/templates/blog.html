@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{% load jformat %}
+{% load custom_filters %}
 {% load static %}
 {% block body %}
 <div class="about" >
@@ -110,6 +111,25 @@
 <br>
 <p>افزایش فروش در اینستاگرام نیازمند استراتژی‌های کارآمد و تمرکز بر روی تجربه مشتریان است. با به‌کارگیری تکنیک‌های بازاریابی محتوایی، بهینه‌سازی پروفایل و صفحات محصولات، و مدیریت موثر مشتریان، می‌توانید فروشگاه اینستاگرامی خود را به سطح بالاتری برسانید. از امکانات و ابزارهای "این شاپینگ" استفاده کنید تا فروشگاه خود را به بهترین شکل مدیریت کنید و به موفقیت بیشتری دست یابید.
 </p>
+<br>
+<br>
+
+<h5 style="color:blue;" >لیست مقالات</h5>
+<ul>
+    {% for post in posts %}
+    <div style="border:1px solid #f0f0f0; border-radius:8px; padding:3px;">
+    <li>
+        <h5><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h5>
+       
+        <small>تاریخ: {{ post.created_at|jformat:"%Y/%m/%d"  }}</small>
+    </li>
+    </div>
+    {% empty %}
+    <p>هیچ مقاله‌ای منتشر نشده است.</p>
+    {% endfor %}
+</ul>
+
+
 
 </div>
 {%endblock%}    

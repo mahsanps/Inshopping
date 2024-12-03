@@ -36,7 +36,7 @@ class ProductsForm(forms.ModelForm):
         self.fields['discount'].required = False  
       
         
-        
+        self.fields['image'].label ="عکس اصلی محصول"
         self.fields['price'].widget.attrs.update({'placeholder':'1,000,000 تومان'})
         self.fields['discount'].widget.attrs.update({
             'placeholder': '%',

@@ -81,7 +81,7 @@
            
           <li><a href="#main" hx-get="{% url 'productssection' %}" hx-push-url="true" hx-target="#outerContainer" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>محصولات</span></a></li>
 
-          <li><a href="#main" hx-get="{% url 'mywallet' %}" hx-target="#outerContainer" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>مالی</span></a></li> 
+          <li><a href="#main" hx-get="{% url 'mywallet' %}" hx-push-url="true"  hx-target="#outerContainer" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>مالی</span></a></li> 
             
           {%endif%}
           <li><a href="#main" hx-get="{% url 'orders' %}" hx-push-url="true" hx-target="#outerContainer" class="nav-link scrollto"><i class="bx bx-book-content"></i><span>سفارشات من</span></a></li>

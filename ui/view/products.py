@@ -32,27 +32,97 @@ class ProductsView(BaseView):
     def get(self, request, *args, **kwargs):
         form = ProductsForm()
         categories = Category.objects.all()
-        return render(request, 'products.html', {'form': form, 'categories': categories})
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        if self.request.htmx:
+           return render(request, 'products.html', {'shop_instance':shop_instance, 'form': form, 'categories': categories})
+        return render(request, 'products-full.html', {'shop_instance':shop_instance, 'form': form, 'categories': categories})
     
     def post(self, request, *args, **kwargs):
         form = ProductsForm(request.POST, request.FILES)
-        image_form = ProductsImagesForm(request.POST, request.FILES)
+       
 
         if form.is_valid():
             product = form.save(commit=False)
             product.shop = request.user.shop_set.first()
             product.save()
 
-            # Save product images
-            images = request.FILES.getlist('images')  # Assuming 'images' is the name for multiple image upload
-            saved_images = []
-            for image in images:
-                product_image = ProductImage.objects.create(product=product, image=image)
-                saved_images.append(product_image.image.url)  # Access the URL after saving
-
-            return redirect(reverse('products_quantity', kwargs={'product_pk': product.pk}))
+           
+            return redirect(reverse('products_images', kwargs={'product_pk': product.pk}))
 
         return render(request, 'products.html', {'form': form})
+
+class ProductsImages(BaseView):
+    def get(self, request, product_pk, *args, **kwargs):
+        product = get_object_or_404(Product, pk=product_pk)
+        form = ProductsImagesForm()
+        return render (request, 'products-images.html',{'form':form, 'product':product})  
+    
+    
+    def post (self, request, product_pk, *args, **kwargs):
+        product = get_object_or_404(Product, pk=product_pk)
+        form = ProductsImagesForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+        # Check for uploaded images
+           images = request.FILES.getlist('images')  # Assuming 'images' is the input field name
+           if not images:
+              form.add_error(None, "Please upload at least one image.")
+           else:
+            for image in images:
+                # Create ProductImage instance for each file
+                ProductImage.objects.create(product=product, image=image)
+            return redirect(reverse('products_quantity', kwargs={'product_pk': product.pk}))
+    
+           
+        return render (request, 'products-images.html', {'form':form, 'product':product})
+    
+
+
+class EditProductsImages(BaseView):
+    def get(self, request, product_pk, *args, **kwargs):
+        product = get_object_or_404(Product, pk=product_pk)
+        images = ProductImage.objects.filter(product=product)
+        form = ProductsImagesForm()
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        if self.request.htmx:
+          return render(request, 'edit-product-images.html', {'shop_instance':shop_instance,'form': form,'product': product,'images': images})
+        return render(request, 'edit-product-images-full.html', {'shop_instance':shop_instance,'form': form,'product': product,'images': images})
+
+    def post(self, request, product_pk, *args, **kwargs):
+        product = get_object_or_404(Product, pk=product_pk)
+        action = request.POST.get('action')
+
+        if action == "add":
+            form = ProductsImagesForm(request.POST, request.FILES)
+            if form.is_valid():
+                for image in request.FILES.getlist('images'):
+                    ProductImage.objects.create(product=product, image=image)
+                if request.htmx:
+                    return redirect(reverse('edit-products-images', kwargs={'product_pk': product.pk}))
+        
+        elif action == "delete":
+            image_ids = request.POST.getlist('image_ids')
+            if image_ids:
+                ProductImage.objects.filter(id__in=image_ids).delete()
+                if request.htmx:
+                    return redirect(reverse('edit-products-images', kwargs={'product_pk': product.pk}))
+
+        form = ProductsImagesForm()
+        return render(request, 'edit-product-images.html', {
+            'form': form,
+            'product': product,
+            'images': ProductImage.objects.filter(product=product)
+        })
+
+    def render_images_partial(self, request, product):
+        images = ProductImage.objects.filter(product=product)
+        form = ProductsImagesForm()
+        return render(request, 'partials/product-images.html', {
+            'form': form,
+            'product': product,
+            'images': images
+        })
+
 
 
 class CategoryAutocomplete(autocomplete.Select2QuerySetView):
@@ -81,9 +151,9 @@ def load_subcategories(request):
     
 class ProductsListView(BaseView):
     def get(self, request, *args, **kwargs):
-        shop_instance = Shop.objects.filter(account=request.user)
+        shop_instance = Shop.objects.filter(account=request.user).first()
         products= Product.objects.all()
-        product_list = Product.objects.filter(shop__account=request.user).distinct()
+        product_list = Product.objects.filter(is_ready=True,shop__account=request.user).distinct()
         
         if 'category' in request.GET:
             category=request.GET['category']
@@ -174,8 +244,10 @@ class ProductDetails(BaseView):
         product_list = Product.objects.filter(shop__account=request.user)
         product_details=get_object_or_404(Product, pk=product_pk)
         product_variation=ProductVariation.objects.filter(product__pk=product_pk)
-        return render(request, 'productdetails.html', {'product_pk': product_pk, 'product_details':product_details, 'product_variation':product_variation, 'product_list': product_list})
-    
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        if self.request.htmx:
+           return render(request, 'productdetails.html', {'shop_instance':shop_instance,'product_pk': product_pk, 'product_details':product_details, 'product_variation':product_variation, 'product_list': product_list})
+        return render(request, 'productdetails-full.html', {'shop_instance':shop_instance,'product_pk': product_pk, 'product_details':product_details, 'product_variation':product_variation, 'product_list': product_list})
         
     
 
@@ -189,8 +261,11 @@ class EditProductView(BaseView):
         for field in fields_to_remove:
             if field in product_form.fields:
                 del product_form.fields[field]
-
-        return render(request, 'editproduct.html', {'product_form': product_form, 'product': product})
+        shop_instance = Shop.objects.filter(account=request.user).first()
+        if self.request.htmx:
+           return render(request, 'editproduct.html', {'shop_instance':shop_instance,'product_form': product_form, 'product': product})
+        return render(request, 'editproduct-full.html', {'shop_instance':shop_instance,'product_form': product_form, 'product': product})
+       
 
     def post(self, request, product_pk, *args, **kwargs):
         product = get_object_or_404(Product, pk=product_pk)

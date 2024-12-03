@@ -1,0 +1,31 @@
+{% load static %}
+<form class="inputs" 
+      id="add-image-form" 
+      hx-encoding="multipart/form-data" 
+      hx-post="{% url 'edit-products-images' product_pk=product.pk %}" 
+      hx-swap="outerHTML" 
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
+      enctype="multipart/form-data">
+  
+  <a class="back-btn" href="{% url 'edit_product' product_pk=product.pk %}"  
+    
+     >
+    <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
+  </a>
+
+  <div class="forms" style="height:auto;">
+    {% csrf_token %}
+    <h3>عکس‌های محصول</h3>
+    {% include 'partials/product-images.html' %}
+    <button type="submit" name="action" value="delete">حذف عکس انتخاب شده</button>
+    <h3>اضافه کردن عکس جدید</h3>
+    {{ form.as_p }}
+
+    <input type="file" name="images" multiple>
+    <button type="submit" name="action" value="add">اضافه کردن</button>
+    
+   
+
+    <div id="loader"></div>
+  </div>   
+</form>

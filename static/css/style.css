@@ -583,6 +583,7 @@ button {
     border: 1px;
     border-radius: 8px;
     margin-top: 3px;
+    margin-bottom: 3px;
 }
 .cart {
     background-color:#30302e; 
@@ -791,6 +792,16 @@ a:hover {
     margin-bottom: 3px;
 
 }
+.cat-seo {
+    width: 90%;
+    padding: 3%;
+    text-align: right;
+    border: 1px solid #cecece;
+    border-radius: 8px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
 
 .main-list {
    
@@ -806,6 +817,7 @@ a:hover {
     margin-top: 30px;
     margin: auto;
     padding: 10px;
+    max-height: 450px;
 }
 
 .box_main {
@@ -928,8 +940,10 @@ a:hover {
     background-color: #333;
     color: #fff;
     font-weight: bold;
+    border-radius: 5px;
  }
- 
+
+
 
 .seemore_bt a {
     width: 100%;
@@ -968,7 +982,7 @@ a:hover {
 }
 /* General Filter Styling */
 .product-filters {
-    margin: 20px 0;
+    margin: 20px 4px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -1159,6 +1173,19 @@ a:hover {
     padding:5%; 
     direction: rtl; 
     text-align: right;
+}
+.blog {
+    background-color:white; 
+    padding:5%; 
+    direction: rtl; 
+    text-align: right;
+}
+.blog img {
+    width: 60%;
+    float: left;
+}
+.blog-div {
+    display: flex;
 }
 .search-result {
     padding:2%; 
@@ -1806,6 +1833,7 @@ input.mail_bt::placeholder {
         margin: auto;
         width: 48%;
         margin-top: 3px;
+        margin-bottom: 3px;
     }
     .box_main {
         padding: 0;
@@ -1862,6 +1890,19 @@ input.mail_bt::placeholder {
     }
     .subcat-title {
         margin-bottom: 0;
+    }
+    .blog {
+        background-color:white; 
+        margin:0; 
+        padding:3%; 
+        margin-top: 10%;
+    }
+    .blog img {
+        width: 100%;
+        
+    }
+    .blog-div {
+        display: block;
     }
 }
 

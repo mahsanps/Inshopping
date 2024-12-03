@@ -64,7 +64,7 @@ class AccountInfo(BaseModel):
       
     
 class OTP(BaseModel):
-    mobile_number = models.CharField(max_length=15 ,verbose_name=_("mobilenumber"))
+    mobile_number = models.CharField(max_length=15 ,verbose_name=_("mobilenumber"),db_index=True)
     otp_code = models.CharField(max_length=6, verbose_name=_("otp-code"))
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -76,6 +76,11 @@ class Category(models.Model):
     name=models.CharField(max_length=100, verbose_name=_("Category"))
     image=models.ImageField(upload_to='images/', null=True, blank=True) 
     slug = models.SlugField(max_length=100, blank=True)  # Slug field
+    title = models.CharField(max_length=255, null=True)  # عنوان مطلب
+    content = models.TextField(blank=True, null=True)
+    meta_description = models.TextField(max_length=160, blank=True, null=True)
+    seo_keywords = models.CharField(max_length=500,blank=True, null=True)
+   
 
 
     def save(self, *args, **kwargs):
@@ -94,6 +99,12 @@ class SubCategory(BaseModel):
     categoryname=models.ForeignKey(Category, on_delete=models.CASCADE, default="") 
     image=models.ImageField(upload_to='images/', null=True, blank=True) 
     slug = models.SlugField(max_length=100, blank=True)  # Slug field
+    title = models.CharField(max_length=255, null=True)  # عنوان مطلب
+    content = models.TextField(blank=True, null=True)
+    meta_description = models.TextField(max_length=160, blank=True, null=True)
+    seo_keywords = models.CharField(max_length=500,blank=True, null=True)
+   
+
 
 
     def save(self, *args, **kwargs):
@@ -118,15 +129,20 @@ class Shop(BaseModel):
     delivery_cost=models.IntegerField(default=0,verbose_name=_("delivery-cost"))
     delivery_policy= models.TextField(blank=True,verbose_name=_("delivery-policy"))
     image=models.ImageField(upload_to='images/', default="",  verbose_name=_("Image"))
-    banner_image1=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image1"))
-    banner_image2=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image2"))
-    banner_image3=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image3"))
+
    
     
     shop_auth: ShopAuth
     
     def __str__(self):
         return f'{self.store_name}' 
+    
+class ShopImage(BaseModel):
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='shop_image')
+    banner_image1=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image1"))
+    banner_image2=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image2"))
+    banner_image3=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image3"))   
+    
     
 class ShopAuth(BaseModel):
     shop = models.OneToOneField(Shop, on_delete=models.CASCADE, related_name="shop_auth")
@@ -177,7 +193,7 @@ class Product(BaseModel):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("shop"))
     instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
     discount = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, verbose_name=_("Discount"))
-   
+    is_ready = models.BooleanField(default=False)
     
     @property
     def final_price(self):
@@ -199,7 +215,7 @@ class Product(BaseModel):
         
    
 class ProductImage(BaseModel):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='images/',  verbose_name=_("Images"))
     
 
@@ -312,3 +328,40 @@ class Contact(BaseModel):
     message = models.CharField(max_length=3000)
          
     
+class Blog(BaseModel):
+    title = models.CharField(max_length=255, null=True)  # عنوان مطلب
+    slug = models.SlugField(unique=True)  # لینک یکتا
+    content = models.TextField(blank=True, null=True)  # متن اصلی
+    meta_description = models.TextField(max_length=160, blank=True, null=True)  # متا دیسکریپشن
+    created_at = models.DateTimeField(auto_now_add=True)  # زمان ایجاد
+    updated_at = models.DateTimeField(auto_now=True)  # زمان آخرین تغییر
+    is_published = models.BooleanField(default=False)  # وضعیت انتشار
+    image = models.ImageField(upload_to='images/', default="",  verbose_name=_("Image"))  # فیلد آپلود عکس
+    seo_keywords = models.CharField(
+        max_length=500,
+        blank=True,null=True
+        )
+
+    def __str__(self):
+        return self.title    
+    
+    def save(self, *args, **kwargs):
+        # Keep it in Gregorian, and handle timezone correctly
+        if timezone.is_aware(self.created_at):
+            self.created_at = self.created_at.astimezone(dt_timezone.utc).replace(tzinfo=None)
+        super().save(*args, **kwargs)
+
+    def get_jalali_created_at(self):
+        # Convert Gregorian to Jalali for display
+        return jdatetime.datetime.fromgregorian(datetime=self.created_at)
+
+
+class HomepageContent(BaseModel):
+    title = models.CharField(max_length=255)
+    main_text = models.TextField(blank=True, null=True)
+    meta_description = models.TextField(max_length=160, blank=True, null=True)
+    seo_keywords = models.CharField(
+        max_length=500,blank=True, null=True
+        )
+
+   

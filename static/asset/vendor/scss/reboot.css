@@ -7,6 +7,19 @@
     border-radius: 4px;
 
 }
+.product-image {
+    display: flex;
+    width: 200px;
+    background-color: white;
+    width: 100%;
+    margin-bottom: 3px;
+    justify-content: center;
+
+}
+.product-image img{
+   
+    width: 200px;
+}
 
 .inputs-form input, select, textarea {
     font-family: inherit;

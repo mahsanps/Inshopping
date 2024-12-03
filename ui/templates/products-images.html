@@ -1,0 +1,21 @@
+{% load static %}
+
+<form class="inputs" id="addmore" hx-encoding='multipart/form-data' hx-post="{% url 'products_images' product_pk=product.pk %}" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a class="back-btn" href="#outerContainer" hx-get="{% url 'edit_product' product_pk=product.pk  %}" hx-target="#outerContainer">
+    <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
+  </a>
+  
+  <div class="forms" style="height:auto;">
+    <h4>انتخاب عکس های بیشتر برای محصول</h4>
+    {% csrf_token %}
+    {{ form.as_p }}
+   
+        <label for="id_images">تصاویر دیگر</label>
+        <input type="file" name="images"  multiple>
+    
+  
+    <button type="submit" >ادامه</button>
+    <div id="loader"></div>
+
+  </div>   
+</form>

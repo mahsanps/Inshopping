@@ -31,7 +31,7 @@ class Dashboard(BaseView):
         if not request.user.is_authenticated:
             return redirect('signin')
         shop = request.user.shop_set.first()
-        shop_instance = Shop.objects.filter(account=request.user)
+        shop_instance = Shop.objects.filter(account=request.user).first()
 
         # Filter order items related to paid orders
         order_items = OrderItem.objects.filter(variation__product__shop=shop, order__is_paid=True)
@@ -63,7 +63,7 @@ class Reports(BaseView):
         if not request.user.is_authenticated:
             return redirect('signin')
         shop = request.user.shop_set.first()
-        shop_instance = Shop.objects.filter(account=request.user)
+        shop_instance = Shop.objects.filter(account=request.user).first()
 
         # Filter order items related to paid orders
         order_items = OrderItem.objects.filter(variation__product__shop=shop, order__is_paid=True)

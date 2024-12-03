@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 class ShopForm(forms.ModelForm):
     class Meta:
         model = Shop
-        fields = ('store_name', 'description', 'instagramId', 'email', 'contact', 'address','delivery_cost','delivery_policy','image', 'banner_image1','banner_image2','banner_image3')
+        fields = ('store_name', 'description', 'instagramId', 'email', 'contact', 'address','delivery_cost','delivery_policy','image', )
 
     def __init__(self, *args, **kwargs):
         super(ShopForm, self).__init__(*args, **kwargs)
@@ -19,9 +19,7 @@ class ShopForm(forms.ModelForm):
         self.fields['delivery_cost'].required = True
         self.fields['delivery_policy'].required = False
         self.fields['image'].required = True
-        self.fields['banner_image1'].required = True
-        self.fields['banner_image2'].required = True
-        self.fields['banner_image3'].required = True
+       
         
      
         self.fields['store_name'].widget.attrs.update({
