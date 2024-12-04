@@ -139,9 +139,9 @@ class Shop(BaseModel):
     
 class ShopImage(BaseModel):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='shop_image')
-    banner_image1=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image1"))
-    banner_image2=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image2"))
-    banner_image3=models.ImageField(upload_to='images/', default="",  verbose_name=_("banner-Image3"))   
+    banner_image1=models.ImageField(upload_to='images/',blank=True, null=True, default="",  verbose_name=_("banner-Image1"))
+    banner_image2=models.ImageField(upload_to='images/',blank=True, null=True, default="",  verbose_name=_("banner-Image2"))
+    banner_image3=models.ImageField(upload_to='images/',blank=True, null=True, default="",  verbose_name=_("banner-Image3"))   
     
     
 class ShopAuth(BaseModel):

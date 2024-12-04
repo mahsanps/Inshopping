@@ -41,9 +41,9 @@
                      
                      <div class="fashion_section_2">
                         
-                        {%if shop_images %}
+                        {%if shop_images.exists %}
                            {%for shop in shop_images%}
-                                        
+                           {% if shop.banner_image1 %}   
                                              <div class="bannershop" >
                                                 
                                                    
@@ -54,7 +54,7 @@
                                                   
                                                 </div>
                                              </div>
-                                                      
+                                      {%endif%}                     
                             {%endfor%}
                            
                           {%endif%} 
@@ -66,9 +66,9 @@
                   
                      
                      <div class="fashion_section_2">
-                        {%if shop_images %}
+                        {%if shop_images.exists %}
                            {% for shop in shop_images %}
-                          
+                           {% if shop.banner_image2 %}
                                <div class="bannershop" >
                                   
                                        
@@ -79,7 +79,7 @@
                                       
                                    </div>
                                </div>
-                           
+                               {%endif%} 
                        {% endfor %}
                        {%endif%} 
                       
@@ -90,9 +90,9 @@
                  
                      
                      <div class="fashion_section_2">
-                        {%if shop_images %}
+                        {%if shop_images.exists  %}
                            {% for shop in shop_images %}
-                           
+                           {% if shop.banner_image3 %}
                                <div class="bannershop" >
                                    
                                        
@@ -102,7 +102,7 @@
                                        </div>
                                      
                                </div>
-                        
+                             {%endif%}
                        {% endfor %}
                        {%endif%} 
                        
