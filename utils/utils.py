@@ -41,7 +41,7 @@ def send_pattern_sms_order(mobile_number, pattern_code, parameters):
      "parameters": parameters
     })
     
-    print("Payload being sent:", json.dumps(payload, indent=4, ensure_ascii=False))
+    
     
     
     headers = {
@@ -52,7 +52,7 @@ def send_pattern_sms_order(mobile_number, pattern_code, parameters):
     
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)  
+     
     
 
     return response
