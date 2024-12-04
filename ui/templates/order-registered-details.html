@@ -14,7 +14,7 @@
         <h6>نام خریدار : {{ orders_registered.first.order.account.account_info.firstname}} {{ orders_registered.first.order.account.account_info.lastname}}</h6>
         
         <h6>ایمیل خریدار :{{ orders_registered.first.order.account.email}}</h6>
-        <h6>شماره تماس خریدار :{{ orders_registered.first.order.account.account_info.phone}}</h6>
+        <h6>شماره تماس خریدار :{{ orders_registered.first.order.account.phone}}</h6>
         <h6>{% trans 'Address' %}: {{ orders_registered.first.order.full_delivery_address }}</h6> 
         <h6>{% trans 'postCode' %}: {{ orders_registered.first.order.delivery_address_postcode }}</h6>
 
