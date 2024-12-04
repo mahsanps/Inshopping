@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'unidecode',
     'store.apps.StoreConfig',
     'medianasms',
+    
 ]
 
 MIDDLEWARE = [
