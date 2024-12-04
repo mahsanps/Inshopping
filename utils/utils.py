@@ -23,7 +23,7 @@ def send_pattern_sms(mobile_number, pattern_code, otp_code):
     
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)
+    
 
     
     
