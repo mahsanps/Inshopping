@@ -76,8 +76,8 @@ class Category(models.Model):
     name=models.CharField(max_length=100, verbose_name=_("Category"))
     image=models.ImageField(upload_to='images/', null=True, blank=True) 
     slug = models.SlugField(max_length=100, blank=True)  # Slug field
-    title = models.CharField(max_length=255, null=True)  # عنوان مطلب
-    content = models.TextField(blank=True, null=True)
+    title = models.CharField(max_length=255,  null=True, blank=True)  # عنوان مطلب
+    content = models.TextField( null=True, blank=True)
     meta_description = models.TextField(max_length=160, blank=True, null=True)
     seo_keywords = models.CharField(max_length=500,blank=True, null=True)
    
@@ -99,7 +99,7 @@ class SubCategory(BaseModel):
     categoryname=models.ForeignKey(Category, on_delete=models.CASCADE, default="") 
     image=models.ImageField(upload_to='images/', null=True, blank=True) 
     slug = models.SlugField(max_length=100, blank=True)  # Slug field
-    title = models.CharField(max_length=255, null=True)  # عنوان مطلب
+    title = models.CharField(max_length=255, null=True, blank=True)  # عنوان مطلب
     content = models.TextField(blank=True, null=True)
     meta_description = models.TextField(max_length=160, blank=True, null=True)
     seo_keywords = models.CharField(max_length=500,blank=True, null=True)
