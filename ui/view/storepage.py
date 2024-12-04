@@ -26,7 +26,7 @@ class StorePage(BaseView):
         shop_images = ShopImage.objects.filter(shop__store_name=store_name) 
 
         # Start with all approved products for the shop
-        products = Product.objects.filter(shop__in=shop_list, is_approved=True).distinct()
+        products = Product.objects.filter(shop__in=shop_list, ).distinct()
         paginator = Paginator(products, 40)  # Show 10 products per page
 
         page_number = request.GET.get('page')
