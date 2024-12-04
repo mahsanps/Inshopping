@@ -5,6 +5,9 @@ import os
 from .models import ShopImage, Shop, Product, SubCategory, ProductImage, Blog
 from django.conf import settings
 
+# متغیر برای جلوگیری از حلقه بازگشتی
+is_updating = False
+
 def convert_image_to_webp(image_field):
     try:
         image_path = image_field.path
@@ -26,6 +29,11 @@ def convert_image_to_webp(image_field):
 @receiver(post_save, sender=ProductImage)
 @receiver(post_save, sender=Blog)
 def optimize_images(sender, instance, **kwargs):
+    global is_updating
+    if is_updating:  # اگر در حال به‌روزرسانی هستیم، از اجرا جلوگیری شود
+        return
+
+    # تعریف فیلدهای مرتبط با مدل‌ها
     if sender == ShopImage:
         image_fields = ['banner_image1', 'banner_image2', 'banner_image3']
     elif sender == Shop:
@@ -42,9 +50,12 @@ def optimize_images(sender, instance, **kwargs):
     for field_name in image_fields:
         image_field = getattr(instance, field_name)
         if image_field and os.path.exists(image_field.path):
-            # فقط اگر فایل تغییر کرده باشد، عملیات تبدیل را اجرا کنید
             webp_path = convert_image_to_webp(image_field)
             if webp_path:
-                # آپدیت مسیر فیلد بدون ذخیره مجدد رکورد
-                image_field.name = os.path.relpath(webp_path, settings.MEDIA_ROOT)
-                instance.save(update_fields=[field_name])  # به‌روزرسانی فیلد فقط برای ذخیره مسیر جدید
+                # از فلگ برای جلوگیری از حلقه بازگشتی استفاده می‌کنیم
+                is_updating = True
+                try:
+                    image_field.name = os.path.relpath(webp_path, settings.MEDIA_ROOT)
+                    instance.save(update_fields=[field_name])  # فقط این فیلد به‌روزرسانی می‌شود
+                finally:
+                    is_updating = False  # فلگ را به حالت اولیه بازمی‌گردانیم
