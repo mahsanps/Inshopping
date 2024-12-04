@@ -175,7 +175,7 @@ class SubcategoryProducts(BaseView):
         subcategory = get_object_or_404(SubCategory, slug=subcategory_slug)
         
         # Fetch all products in this subcategory
-        subcategory_products = Product.objects.filter(subcategory=subcategory)
+        subcategory_products = Product.objects.filter(subcategory=subcategory, is_approved=True)
 
         # Fetch available colors from products
         colors = Color.objects.exclude(color__isnull=True).exclude(color="")
