@@ -26,7 +26,7 @@ class ProductQuantityView(BaseView):
         colors_data = data.getlist('color') 
         
         color_instance = None  
-        if colors_data:
+        if colors_data and colors_data[0]:
             try:
                 color_instance = Color.objects.get(pk=colors_data[0])  #
             except Color.DoesNotExist:

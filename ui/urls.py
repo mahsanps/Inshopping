@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from .views import set_language
-from ui.view.auth import SignInView, LogOutView, SignUpView, accountInfoView, EditAccountInfo
+from ui.view.auth import SignInView, LogOutView, SignUpView, accountInfoView
 from ui.view.profile import ProfileView, AboutUs, ProductsSection, Contact
 from ui.view.shop import CreateShop, EditShop , ShopImages, ShopImagesEdit
 from ui.view.storepage import StorePage, aboutShop
@@ -33,7 +33,6 @@ urlpatterns = [
     path("profile/", ProfileView.as_view(), name="profile"),
     path("account-info/", AboutUs.as_view(), name="account-info"),
     path('accountinfo/', accountInfoView.as_view(), name='accountinfo'),
-    path("editaccountinfo/<int:pk>/", EditAccountInfo.as_view(), name='editaccountinfo'),
     path("contact/", Contact.as_view(), name="contact"),
     path("createshop/", CreateShop.as_view(), name="create_shop"),
     path("editshop/<int:pk>/", EditShop.as_view(), name='editshop'),

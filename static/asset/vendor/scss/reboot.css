@@ -66,6 +66,8 @@
     line-height: inherit;
     border: 1px solid lightgray ;
     border-radius: 4px;
+    padding: 5px;
+
 }
 .inputs button{
     background: #149ddd;
@@ -91,11 +93,12 @@
     width: 30%;
     padding-right: calc(var(--bs-gutter-x)* .5);
     padding-left: calc(var(--bs-gutter-x)* .5);
-    margin-top: var(--bs-gutter-y);
+    margin-top: 5px;
     text-align: center;
 }
 .product-list-img {
     max-height:30vh;
+    max-width: 100%;
 }
 .orders-registered li {
     display:flex; 

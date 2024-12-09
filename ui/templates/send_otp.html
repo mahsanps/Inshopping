@@ -25,17 +25,21 @@
             <div class="form login">
                 <div class="form-content"> 
 
-
+               <p>سلام !</p>
+               <p>لطفا شماره موبایل خود را وارد کنید</p>
 
 
                 <form class="signinputs"  method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <div class="field button-field">
-                        <button type="submit">ارسال رمز یکبار مصرف </button>
+                        <button type="submit">ارسال کد تایید   </button>
                     </div>
                     
                 </form>
+                <div class="form-link">
+                    <a href="{% url 'signin' %}" class="forgot-pass"> ورود با نام کاربری </a>
+                </div>
             </div>
 
                 

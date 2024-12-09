@@ -2,7 +2,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from utils.views import BaseView
 from django.shortcuts import render, redirect
-from store.models import Shop, AccountInfo
+from store.models import Shop
 
 
 class ProfileView(BaseView):
@@ -16,10 +16,10 @@ class ProfileView(BaseView):
 class AboutUs(BaseView):
      def get(self, request, *args, **kwargs):
         shop_instance = Shop.objects.filter(account=request.user).first()
-        account_info = AccountInfo.objects.filter(user=request.user)
+        
         if self.request.htmx:
-            return render(request, 'account-info.html', {'shop_instance':shop_instance, 'account_info':account_info})
-        return render(request, 'accountinfo_full.html', {'shop_instance':shop_instance, 'account_info':account_info})  
+            return render(request, 'account-info.html', {'shop_instance':shop_instance, })
+        return render(request, 'accountinfo_full.html', {'shop_instance':shop_instance, })  
     
 
 

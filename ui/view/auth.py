@@ -7,8 +7,7 @@ from authuser.models import Account
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from utils.views import BaseView, BaseLoginRequiredView
-from ui.forms.auth import AccountInfoForm
-from store.models import AccountInfo
+
 from django.urls import reverse
 
 
@@ -28,7 +27,8 @@ class SignUpView(BaseView):
             user = authenticate(username=user.username, password=form.cleaned_data["password"])
             if user is not None:
                 login(request, user)
-            return redirect("/")
+                next_url = request.GET.get('next')  # دریافت پارامتر next
+                return redirect(next_url if next_url else '/') 
         return render(request, self.template_name, {"form": form})
 
 
@@ -47,7 +47,8 @@ class SignInView(BaseView):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("/")
+                next_url = request.GET.get('next')  # دریافت پارامتر next
+                return redirect(next_url if next_url else '/') 
             else:
                 form.add_error(None, "شناسه نامعتبر است. لطفا دوباره سعی کنید")
         return render(request, self.template_name, {"form": form})
@@ -61,45 +62,10 @@ class LogOutView(BaseView):
     
 class accountInfoView(BaseView):
     def get(self, request, *args, **kwargs):
-        account_info = AccountInfo.objects.filter(user=request.user).first()
-        if account_info:
-            form = AccountInfoForm(instance=account_info)
-        else:
-            form = AccountInfoForm()
         
     
-        return render(request, 'accountinfo.html', {'form': form, 'account_info':account_info})
+        return render(request, 'accountinfo.html',)
        
     
         
-    
-    def post(self, request, *args, **kwargs):
-        account_info = AccountInfo.objects.filter(user=request.user).first()
-        if account_info:
-            form = AccountInfoForm(request.POST, instance=account_info)
-        else:
-            form = AccountInfoForm(request.POST)
-        
-        if form.is_valid():
-            account_info = form.save(commit=False)
-            account_info.user = request.user
-            account_info.save()
-            return redirect('account-info')  # Redirect after successful save
-        
-        return render(request, 'accountinfo.html', {'form': form, 'account_info':account_info})   
-    
-    
-class EditAccountInfo(BaseView):
-    def get(self, request,pk, *args, **kwargs):
-        account_info = get_object_or_404(AccountInfo, pk=pk)
-        form = AccountInfoForm(instance=account_info)
-        return render(request, 'editaccountinfo.html', {'form': form, 'account_info': account_info, 'pk': pk})
-
-    def post(self, request,pk, *args, **kwargs):
-        account_info = get_object_or_404(AccountInfo, pk=pk)
-        form = AccountInfoForm(request.POST, instance=account_info)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('account-info'))
-        return render(request, 'editaccountinfo.html', {'form': form, 'account_info': account_info, 'pk': pk})
-              
+ 

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from utils.views import BaseView
 import requests
-from store.models import Product, Order, OrderItem, ProductVariation, Color, OrderDelivery, Category, Shop, AccountInfo
+from store.models import Product, Order, OrderItem, ProductVariation, Color, OrderDelivery, Category, Shop
 from ui.forms.orderquantity import QuantityOrderForm
 from django.contrib.auth import get_user_model
 from .dataclasses import Cart, CartItem
@@ -131,12 +131,6 @@ class CheckoutView(BaseView):
         store_cart_items = []
         categories = Category.objects.all()
        
-        account_info = None
-        if request.user.is_authenticated:
-            try:
-                account_info = request.user.account_info
-            except AccountInfo.DoesNotExist:
-                account_info = None
 
 
         shop = Shop.objects.filter(store_name=store_name).first()
@@ -186,12 +180,9 @@ class CheckoutView(BaseView):
 
         if not request.user.is_authenticated:
             messages.info(request, 'برای ادامه فرایند پرداخت باید وارد حساب کاربری خود شوید.') 
-            return redirect('signin')
+            return redirect(f"{reverse('signin')}?next={request.path}")
         
-        if not account_info:
-            messages.info(request, 'برای ادامه فرایند پرداخت باید حساب کاربری خود را تکمیل کنید.') 
-            return redirect('account-info')
-         
+        
 
              
         response = HttpResponse(render(request, 'checkout.html', {

@@ -34,13 +34,17 @@
                 <div class="form-content"> 
                     
                     <br>
-                    <a class="mobile-enter-link" href="{% url 'send_otp' %}" class="forgot-pass">ورود با شماره موبایل</a>
+                  
                     <form class="signinputs" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
                        <div class="form-link">
                             <a href="{% url 'password_reset' %}" class="forgot-pass">فراموشی رمز عبور</a>
                         </div>
+                        <div class="form-link">
+                            <a href="{% url 'send_otp' %}" class="forgot-pass">ورود با شماره موبایل</a>
+                        </div>
+                        
 
                         <div class="field button-field">
                             <button type="submit">ورود</button>
@@ -48,7 +52,7 @@
                     </form>
 
                     <div class="form-link">
-                        <span>حساب کاربری ندارید؟ <a href="{% url 'signup' %} " >عضویت</a></span>
+                        <span>حساب کاربری ندارید؟ <a href="{% url 'signup' %}?next={{ request.GET.next }} " >عضویت</a></span>
                     </div>
                 </div>
 
@@ -62,4 +66,3 @@
     </body>
 </html>
 {% endblock %}
-

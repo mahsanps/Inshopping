@@ -82,7 +82,7 @@
                         {% endif %}
                         {% if not user.is_authenticated %}
                         <p class="pro-btn" >
-                        <a style="color:white;" href="{% url "signin" %}"><img  src="{% static 'images/profile.png' %}">
+                        <a style="color:white;" href="{% url "send_otp" %}"><img  src="{% static 'images/profile.png' %}">
                         ورود
                         </a>
                         {% endif %}

@@ -136,11 +136,11 @@ def zarinpal_callback(request, store_name):
 
                 # Send confirmation email to user
                 if order.account and order.account.email:
-                    first_name = order.account.account_info.firstname if order.account.account_info else "کاربر"
+                    first_name = order.account.firstname 
                     send_user_order_confirmation_email(order.account.email, order.id, store_name, first_name)
                     
                 if order.account and order.account.phone:
-                    first_name = order.account.account_info.firstname if order.account.account_info else "کاربر"
+                    first_name = order.account.firstname 
                     # ارسال پیامک به خریدار
                     send_pattern_sms_order(
                         mobile_number=order.account.phone,

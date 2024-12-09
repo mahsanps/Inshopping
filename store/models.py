@@ -56,12 +56,6 @@ class DjangoJSONEncoder(json.JSONEncoder):
                 return ""
 
 
-class AccountInfo(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="account_info", verbose_name=_("user"))
-    firstname= models.CharField(max_length=300, verbose_name=_("firstname"))
-    lastname= models.CharField(max_length=300, verbose_name=_("lastname"))
-   
-      
     
 class OTP(BaseModel):
     mobile_number = models.CharField(max_length=15 ,verbose_name=_("mobilenumber"),db_index=True)
@@ -141,7 +135,8 @@ class ShopImage(BaseModel):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='shop_image')
     banner_image1=models.ImageField(upload_to='images/',blank=True, null=True, default="",  verbose_name=_("banner-Image1"))
     banner_image2=models.ImageField(upload_to='images/',blank=True, null=True, default="",  verbose_name=_("banner-Image2"))
-    banner_image3=models.ImageField(upload_to='images/',blank=True, null=True, default="",  verbose_name=_("banner-Image3"))   
+    banner_image3=models.ImageField(upload_to='images/',blank=True, null=True, default="",  verbose_name=_("banner-Image3")) 
+    webp_image = models.ImageField(upload_to='images/', null=True, blank=True)  
     
     
 class ShopAuth(BaseModel):
@@ -194,6 +189,7 @@ class Product(BaseModel):
     instagram_post_id = models.CharField(max_length=250, null=True, blank=True)
     discount = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, verbose_name=_("Discount"))
     is_ready = models.BooleanField(default=False)
+    webp_image = models.ImageField(upload_to='images/', null=True, blank=True)
     
     @property
     def final_price(self):
@@ -217,12 +213,12 @@ class Product(BaseModel):
 class ProductImage(BaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='images/',  verbose_name=_("Images"))
-    
+    webp_image = models.ImageField(upload_to='images/', null=True, blank=True)
 
 class ProductVariation(BaseModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="variations")
     size = models.CharField(max_length=400, default="", null=True, blank=True,  verbose_name=_("size"))
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, null=True, blank=True,  verbose_name=_("color"))
+    color = models.ForeignKey(Color,default="", on_delete=models.CASCADE, null=True, blank=True,  verbose_name=_("color"))
     quantity = models.IntegerField(default=1,  verbose_name=_("quantity"))
     
     def __str__(self):

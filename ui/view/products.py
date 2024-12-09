@@ -8,12 +8,13 @@ from utils.views import BaseView
 from ui.forms.productQuantity import ProductsQuantityForm
 from django.contrib.auth import get_user_model
 from ui.forms.productimage import ProductsImagesForm
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from dal import autocomplete
 from django.urls import reverse
 from constants import COLOR_MAP 
 from django.core.paginator import Paginator
+from inshopping.tasks import convert_image_to_webp
 import requests
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -28,54 +29,75 @@ from django.utils.timezone import now as timezone_now, make_aware, is_naive
 
 User = get_user_model()
 
+
 class ProductsView(BaseView):
     def get(self, request, *args, **kwargs):
         form = ProductsForm()
         categories = Category.objects.all()
         shop_instance = Shop.objects.filter(account=request.user).first()
         if self.request.htmx:
-           return render(request, 'products.html', {'shop_instance':shop_instance, 'form': form, 'categories': categories})
-        return render(request, 'products-full.html', {'shop_instance':shop_instance, 'form': form, 'categories': categories})
-    
+            return render(request, 'products.html', {'shop_instance': shop_instance, 'form': form, 'categories': categories})
+        return render(request, 'products-full.html', {'shop_instance': shop_instance, 'form': form, 'categories': categories})
+
     def post(self, request, *args, **kwargs):
         form = ProductsForm(request.POST, request.FILES)
-       
 
         if form.is_valid():
             product = form.save(commit=False)
             product.shop = request.user.shop_set.first()
             product.save()
 
-           
+            if product.image:  # فرض کنید مدل Product فیلد image دارد
+                print(f"Processing image for product {product.id}: {product.image.path}")
+                convert_image_to_webp.apply_async(args=('Product', product.id, 'image'))
+
+
+            # Check for uploaded images and handle them
+            images = request.FILES.getlist('images')  # Assuming 'images' is the input field name
+            if not images:
+                form.add_error(None, "Please upload at least one image.")
+            else:
+                for image in images:
+                    # Create ProductImage instance for each uploaded image
+                    product_image = ProductImage.objects.create(product=product, image=image)
+                    # Call the convert_image_to_webp task to convert the image asynchronously
+                    print(product_image.image.path, 'ProductImage', product_image.id)
+                    convert_image_to_webp.apply_async(args=('Product', product_image.id, 'image'))
+
             return redirect(reverse('products_images', kwargs={'product_pk': product.pk}))
 
         return render(request, 'products.html', {'form': form})
+
+
 
 class ProductsImages(BaseView):
     def get(self, request, product_pk, *args, **kwargs):
         product = get_object_or_404(Product, pk=product_pk)
         form = ProductsImagesForm()
-        return render (request, 'products-images.html',{'form':form, 'product':product})  
-    
-    
-    def post (self, request, product_pk, *args, **kwargs):
+        return render(request, 'products-images.html', {'form': form, 'product': product})
+
+    def post(self, request, product_pk, *args, **kwargs):
         product = get_object_or_404(Product, pk=product_pk)
         form = ProductsImagesForm(request.POST, request.FILES)
-        
+
         if form.is_valid():
-        # Check for uploaded images
-           images = request.FILES.getlist('images')  # Assuming 'images' is the input field name
-           if not images:
-              form.add_error(None, "Please upload at least one image.")
-           else:
-            for image in images:
-                # Create ProductImage instance for each file
-                ProductImage.objects.create(product=product, image=image)
-            return redirect(reverse('products_quantity', kwargs={'product_pk': product.pk}))
-    
-           
-        return render (request, 'products-images.html', {'form':form, 'product':product})
-    
+            # Check for uploaded images
+            images = request.FILES.getlist('images')  # Assuming 'images' is the input field name
+            if not images:
+                form.add_error(None, "Please upload at least one image.")
+            else:
+                for image in images:
+                    # Create ProductImage instance for each uploaded file
+                    product_image = ProductImage.objects.create(product=product, image=image)
+                    print(f"Processing image for product image {product_image.id}: {product_image.image.path}")
+                    convert_image_to_webp.apply_async(args=('Product', product_image.id, 'image'))
+
+
+                # Redirect to the next page after successful image upload
+                return redirect(reverse('products_quantity', kwargs={'product_pk': product.pk}))
+
+        return render(request, 'products-images.html', {'form': form, 'product': product})
+
 
 
 class EditProductsImages(BaseView):
@@ -175,7 +197,7 @@ class SubcategoryProducts(BaseView):
         subcategory = get_object_or_404(SubCategory, slug=subcategory_slug)
         
         # Fetch all products in this subcategory
-        subcategory_products = Product.objects.filter(subcategory=subcategory, is_approved=True)
+        subcategory_products = Product.objects.filter(is_ready=True,subcategory=subcategory, is_approved=True)
 
         # Fetch available colors from products
         colors = Color.objects.exclude(color__isnull=True).exclude(color="")
@@ -288,15 +310,14 @@ class EditProductView(BaseView):
     
 
 class DeleteProduct(BaseView):
-    def post(self, request, product_pk):
+    def post(self, request, product_pk, *args, **kwargs):
         product = get_object_or_404(Product, pk=product_pk)
-        if request.method == 'POST':
-            form = DeleteProductForm(request.POST, instance=product)
-            if form.is_valid():
-                product.delete()
-                  # Redirect to your products list view
-        return redirect('products_list') 
-    
+        product.delete()
+        
+        # هدایت به صفحه لیست محصولات
+        response = HttpResponse('')
+        response['HX-Redirect'] = reverse('products_list')  # نام صحیح
+        return response
     
 class PublishProductInstagramPost(BaseView):
     def get(self, request, product_pk):
