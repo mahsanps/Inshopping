@@ -21,10 +21,20 @@ LOGIN_URL = "/login/"
 AUTH_USER_MODEL = "authuser.Account"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # آدرس Redis
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # نتایج کار Celery
-CELERY_ACCEPT_CONTENT = ['json']  # فرمت‌های قابل قبول
-CELERY_TASK_SERIALIZER = 'json' 
+
+if IS_LOCAL :
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'  # آدرس Redis
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # نتایج کار Celery
+    CELERY_ACCEPT_CONTENT = ['json']  # فرمت‌های قابل قبول
+    CELERY_TASK_SERIALIZER = 'json' 
+
+else :
+    CELERY_BROKER_URL = config('CELERY_BROKER_URL')  # آدرس Redis
+    CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')  # نتایج کار Celery
+    CELERY_ACCEPT_CONTENT = ['json']  # فرمت‌های قابل قبول
+    CELERY_TASK_SERIALIZER = 'json' 
+
+
 
 broker_connection_retry_on_startup = True
 
