@@ -35,7 +35,7 @@
                     
                     <br>
                   
-                    <form class="signinputs" method="post">
+                    <form autocomplete="off" class="signinputs" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
                        <div class="form-link">

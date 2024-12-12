@@ -22,3 +22,8 @@ tzdata
 urllib3
 waitress
 whitenoise
+celery
+python-decouple
+unidecode
+medianasms
+kavenegar

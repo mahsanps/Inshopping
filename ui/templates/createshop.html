@@ -5,7 +5,7 @@
 </a>
 
 <!-- Add an ID to the form -->
-<form id="myForm" class="inputs" action="{% url 'create_shop' %}" method="post" enctype="multipart/form-data">
+<form autocomplete="off" id="myForm" class="inputs" action="{% url 'create_shop' %}" method="post" enctype="multipart/form-data">
     <div class="forms" style="height:auto;">
         {% csrf_token %}
         {% for field in form %}

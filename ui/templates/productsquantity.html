@@ -1,6 +1,6 @@
 {% load static %}
 
-<form class="inputs" id="addmore" hx-encoding='multipart/form-data' hx-post="{% url 'products_quantity' product_pk=product.pk %}" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<form autocomplete="off" class="inputs" id="addmore" hx-encoding='multipart/form-data' hx-post="{% url 'products_quantity' product_pk=product.pk %}" hx-swap="outerHTML" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   <a class="back-btn" href="#outerContainer" hx-get="{% url 'edit_product' product_pk=product.pk  %}" hx-target="#outerContainer">
     <img style="width:20px; height:20px; margin:20px 20px 0 0;" src="{% static 'images/back-icon.png' %}">
   </a>
