@@ -22,3 +22,6 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set the entrypoint to use the custom script
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+
+CMD ["nginx", "-g", "daemon off;"]
