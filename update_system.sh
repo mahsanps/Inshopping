@@ -4,7 +4,7 @@
 set -e
 
 # 1. Navigate to your project directory
-cd /app || exit 1
+cd /root/inshopping/Inshopping || exit 1
 
 # 2. Fetch and pull the latest changes from your GitHub repository
 git fetch
