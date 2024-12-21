@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.django
-    container_name: django_app
+    container_name: django
     restart: always
     volumes:
       - .:/app
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.nginx
-    container_name: nginx_server
+    container_name: nginx
     restart: always
     ports:
       - "80:80"
@@ -32,7 +32,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.celery
-    container_name: celery_worker
+    container_name: celery
     restart: always
     volumes:
       - .:/app
@@ -46,7 +46,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.redis
-    container_name: redis_server
+    container_name: redis
     restart: always
     ports:
       - "6379:6379"
@@ -55,7 +55,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.postgresql
-    container_name: postgres_db
+    container_name: db
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
