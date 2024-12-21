@@ -7,5 +7,20 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
+# Copy wait-for-it.sh
+COPY infra/django/scripts/wait-for-it.sh /usr/local/bin/scripts/wait-for-it.sh
+
+# Make wait-for-it.sh executable
+RUN chmod +x /usr/local/bin/scripts/wait-for-it.sh
+
+# Copy entrypoint script
+COPY infra/django/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Make entrypoint.sh executable
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Set entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 CMD ["python", "manage.py", "run_system"]
 
