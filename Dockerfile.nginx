@@ -15,7 +15,7 @@ RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for
 RUN chmod +x /usr/local/bin/wait-for-it.sh
 
 # Copy entrypoint script
-COPY infra/django/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY infra/nginx/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Make entrypoint.sh executable
 RUN chmod +x /usr/local/bin/entrypoint.sh
