@@ -1,11 +1,7 @@
 from pathlib import Path
 import os
 from decouple import config, Csv
-import pymysql
 
-
-
-pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,23 +12,33 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 IS_LOCAL = config("IS_LOCAL", default=False, cast=bool)
 
+
+# Site setttings
+SITE_URL = config("SITE_URL", cast=str, default="inshopping.net")
+SITE_NAME = config("SITE_NAME", cast=str, default="inshopping")
+
+#Admin user
+ADMIN_USERNAME = config("ADMIN_USERNAME", cast=str, default="admin")
+ADMIN_PASSWORD = config("ADMIN_PASSWORD", cast=str, default="123456789")
+ADMIN_EMAIL = config("ADMIN_EMAIL", cast=str, default="admin@inshopping.net")
+
+
+
 # Authentication model
 LOGIN_URL = "/login/"
 AUTH_USER_MODEL = "authuser.Account"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-
-if IS_LOCAL :
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'  # آدرس Redis
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # نتایج کار Celery
-    CELERY_ACCEPT_CONTENT = ['json']  # فرمت‌های قابل قبول
-    CELERY_TASK_SERIALIZER = 'json' 
-
-else :
-    CELERY_BROKER_URL = config('CELERY_BROKER_URL')  # آدرس Redis
-    CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')  # نتایج کار Celery
-    CELERY_ACCEPT_CONTENT = ['json']  # فرمت‌های قابل قبول
-    CELERY_TASK_SERIALIZER = 'json' 
+if IS_LOCAL:
+    CELERY_BROKER_URL = 'redis://redis:6379/0'  # Redis address for Docker Compose
+    CELERY_RESULT_BACKEND = 'redis://redis:6379/0'  # Celery results backend
+    CELERY_ACCEPT_CONTENT = ['json']  # Acceptable formats
+    CELERY_TASK_SERIALIZER = 'json'
+else:
+    CELERY_BROKER_URL = config('CELERY_BROKER_URL')  # Redis address for production
+    CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')  # Celery results backend
+    CELERY_ACCEPT_CONTENT = ['json']
+    CELERY_TASK_SERIALIZER = 'json'
 
 
 
@@ -42,6 +48,7 @@ broker_connection_retry_on_startup = True
 PROJECT_APPS = [
     'authuser',
     'ui',
+    "utils"
 ]
 
 INSTALLED_APPS = [
@@ -52,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django.contrib.sites",
     'dal',
     'dal_select2',
     "django_htmx",
@@ -97,6 +105,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'inshopping.wsgi.application'
+ASGI_APPLICATION = 'inshopping.asgi.application'
 
 # Logging
 LOGGING = {
@@ -149,18 +158,12 @@ if IS_LOCAL :
 else :
     DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME':config('DATABASE_NAME'), 
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),  
         'PORT': config('DATABASE_PORT'),  
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET SESSION sql_mode='STRICT_TRANS_TABLES'"
-        },
-        
-
     }
 }
 # Password validation
@@ -209,7 +212,7 @@ else:
 
 MEDIA_URL = "/media/"
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
