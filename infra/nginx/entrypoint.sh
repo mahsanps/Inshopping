@@ -1,5 +1,3 @@
-# infra/nginx/entrypoint.sh
-
 #!/bin/bash
 set -e
 
