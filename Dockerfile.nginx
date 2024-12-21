@@ -5,25 +5,19 @@ FROM nginx:latest
 # Install wget to download scripts (if not already present)
 RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-# Create a directory for scripts
-RUN mkdir -p /usr/local/bin/scripts
+# Install necessary packages for wait-for-it.sh (wget)
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-# Download the wait-for-it.sh script
-RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/scripts/wait-for-it.sh
+# Download wait-for-it.sh
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/local/bin/wait-for-it.sh
 
-# Make the script executable
-RUN chmod +x /usr/local/bin/scripts/wait-for-it.sh
+# Make wait-for-it.sh executable
+RUN chmod +x /usr/local/bin/wait-for-it.sh
 
-# Remove the default Nginx server block to prevent conflicts
-RUN rm /etc/nginx/conf.d/default.conf
+# Copy entrypoint script
+COPY infra/django/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-# Copy your custom server block configuration into conf.d
-COPY infra/nginx/default.conf /etc/nginx/conf.d/default.conf
-
-# Copy the entrypoint script
-COPY infra/nginx/entrypoint.sh /usr/local/bin/entrypoint.sh
-
-# Make the entrypoint script executable
+# Make entrypoint.sh executable
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set the entrypoint to use the custom script
