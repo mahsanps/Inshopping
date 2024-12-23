@@ -8,3 +8,7 @@ DocumentRoot /home/username/public_html/yourproject/public
     Allow from all
     Options -MultiViews
 </Directory>
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(www\.)?inshopping\.ir$ [NC]
+RewriteRule ^(.*)$ https://inshopping.net/$1 [L,R=301]
