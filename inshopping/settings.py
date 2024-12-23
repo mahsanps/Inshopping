@@ -198,12 +198,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "staticfiles"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
-if IS_LOCAL:    
-    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-else:
-    MEDIA_ROOT = '/home/inshoppingir/public_html/media'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 MEDIA_URL = "/media/"
 
