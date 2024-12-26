@@ -231,3 +231,13 @@ ZARINPAL_PAYMENT_VERIFICATION = config('ZARINPAL_PAYMENT_VERIFICATION')
 # settings.py
 MEDIANA_API_KEY = config('MEDIANA_API_KEY')
 
+# Use HTTPS for cookies
+SESSION_COOKIE_SECURE = True  # Ensures session cookies are sent over HTTPS
+CSRF_COOKIE_SECURE = True     # Ensures CSRF cookies are sent over HTTPS
+# Tell Django it is behind a secure proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to all subdomains
+SECURE_HSTS_PRELOAD = True  # Preload list for browsers
+# Redirect HTTP to HTTPS
+SECURE_SSL_REDIRECT = True
