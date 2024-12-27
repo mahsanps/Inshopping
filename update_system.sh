@@ -12,4 +12,6 @@ docker-compose build
 
 docker-compose up -d
 
+docker volume prune -f
+
 docker image prune -a -f
