@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'unidecode',
     'store.apps.StoreConfig',
     'medianasms',
+    'corsheaders',
     
 ]
 
@@ -84,6 +85,19 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'https://inshopping.net',
+    'http://inshopping.net',
+    'http://www.inshopping.net',
+    'http://127.0.0.1',
+]
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 ROOT_URLCONF = 'inshopping.urls'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
