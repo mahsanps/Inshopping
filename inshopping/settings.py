@@ -12,7 +12,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 IS_LOCAL = config("IS_LOCAL", default=False, cast=bool)
 
-
+SITE_ID = 1
 # Site setttings
 SITE_URL = config("SITE_URL", cast=str, default="inshopping.net")
 SITE_NAME = config("SITE_NAME", cast=str, default="inshopping")
