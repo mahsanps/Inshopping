@@ -231,3 +231,10 @@ ZARINPAL_PAYMENT_VERIFICATION = config('ZARINPAL_PAYMENT_VERIFICATION')
 # settings.py
 MEDIANA_API_KEY = config('MEDIANA_API_KEY')
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1',
+    'http://inshopping.net',
+    'https://inshopping.net',
+    'http://64.21.191.114',
+    'https://64.21.191.114',
+]
