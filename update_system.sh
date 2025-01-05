@@ -1,17 +1,25 @@
-#!/bin/sh
-set -e
+#!/bin/bash
 
-cd /root/inshopping/Inshopping || exit 1
+# Update the system packages
+echo "Updating system packages..."
+sudo apt-get update && sudo apt-get upgrade -y
 
-git fetch
-git pull
+# Restart Docker service
+echo "Restarting Docker service..."
+sudo systemctl restart docker
 
+# Rebuild the Docker containers
+echo "Rebuilding Docker containers..."
 docker-compose down
+docker-compose up -d --build
 
-docker-compose build
+# Check the status of Docker containers
+echo "Checking Docker containers status..."
+docker ps
 
-docker-compose up -d
+# Check if the nginx container is running
+echo "Checking if nginx container is running..."
+docker ps | grep nginx
 
-docker volume prune -f
-
-docker image prune -a -f
+# Print a message indicating that the update is complete
+echo "System update complete."
