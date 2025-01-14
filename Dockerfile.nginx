@@ -24,8 +24,8 @@ RUN mkdir -p /etc/nginx/ssl
 
 # Copy your existing SSL certificate and key into the container
 # (Adjust paths as necessary if your cert files are named differently or live elsewhere)
-COPY infra/nginx/inshopping_net.chained.crt /etc/nginx/ssl/server.crt
-COPY infra/nginx/server.key /etc/nginx/ssl/server.key
+COPY infra/nginx/certs/server.crt /etc/nginx/ssl/server.crt
+COPY infra/nginx/certs/server.key /etc/nginx/ssl/server.key
 
 # Expose port 443 (HTTPS), in addition to port 80
 EXPOSE 80

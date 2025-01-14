@@ -17,6 +17,7 @@ local_settings.py
 /venv/
 myenv/
 django.log
+/certs/
 
 # OS files
 .DS_Store
