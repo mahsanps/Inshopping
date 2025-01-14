@@ -20,6 +20,9 @@ try_command() {
   fi
 }
 
+git fetch
+git pull
+
 # ---------------------------------------------------------
 # 1) Stop & disable any system-level Nginx
 # ---------------------------------------------------------
@@ -34,32 +37,35 @@ try_command \
   "Failed to disable nginx. Check if nginx is installed/running."
 
 # ---------------------------------------------------------
-# 2) Update the system packages
+# Update the system packages
 # ---------------------------------------------------------
 echo "Updating system packages..."
 sudo apt-get update && sudo apt-get upgrade -y
 
-
 # ---------------------------------------------------------
-# 4) Rebuild Docker containers
-# ---------------------------------------------------------
-echo "Rebuilding Docker containers..."
-docker-compose down
-docker-compose up -d --build
-
-# ---------------------------------------------------------
-# 5) Check Docker containers status
-# ---------------------------------------------------------
-echo "Checking Docker containers status..."
-docker ps
-
-# ---------------------------------------------------------
-# 6) Check if the nginx container is running
+# Check if the nginx container is running
 # ---------------------------------------------------------
 echo "Checking if nginx container is running..."
 docker ps | grep nginx || echo "nginx container not found."
 
 # ---------------------------------------------------------
-# 7) Print a completion message
+# Rebuild Docker containers
+# ---------------------------------------------------------
+echo "Rebuilding Docker containers..."
+docker-compose down
+docker-compose up -d --build
+
+
+
+# ---------------------------------------------------------
+# Check Docker containers status
+# ---------------------------------------------------------
+echo "Checking Docker containers status..."
+docker ps
+
+
+
+# ---------------------------------------------------------
+# Print a completion message
 # ---------------------------------------------------------
 echo "System update complete."
