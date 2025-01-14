@@ -1,25 +1,65 @@
 #!/bin/bash
 
-# Update the system packages
+# Exit immediately if a command exits with a non-zero status (optional)
+set -e
+
+# ---------------------------------------------------------
+# Function to "try" a command, and "catch" if it fails
+# ---------------------------------------------------------
+try_command() {
+  # $1 = command to run (string)
+  # $2 = error message if command fails (string)
+
+  # Evaluate the command
+  if eval "$1"; then
+    echo "Command succeeded: $1"
+  else
+    echo "ERROR: $2" 1>&2
+    # Decide if you want to exit or continue
+    # exit 1
+  fi
+}
+
+# ---------------------------------------------------------
+# 1) Stop & disable any system-level Nginx
+# ---------------------------------------------------------
+echo "Attempting to stop and disable host-level Nginx if running..."
+
+try_command \
+  "sudo systemctl stop nginx" \
+  "Failed to stop nginx. Check if nginx is installed/running."
+
+try_command \
+  "sudo systemctl disable nginx" \
+  "Failed to disable nginx. Check if nginx is installed/running."
+
+# ---------------------------------------------------------
+# 2) Update the system packages
+# ---------------------------------------------------------
 echo "Updating system packages..."
 sudo apt-get update && sudo apt-get upgrade -y
 
-# Restart Docker service
-echo "Restarting Docker service..."
-sudo systemctl restart docker
 
-# Rebuild the Docker containers
+# ---------------------------------------------------------
+# 4) Rebuild Docker containers
+# ---------------------------------------------------------
 echo "Rebuilding Docker containers..."
 docker-compose down
 docker-compose up -d --build
 
-# Check the status of Docker containers
+# ---------------------------------------------------------
+# 5) Check Docker containers status
+# ---------------------------------------------------------
 echo "Checking Docker containers status..."
 docker ps
 
-# Check if the nginx container is running
+# ---------------------------------------------------------
+# 6) Check if the nginx container is running
+# ---------------------------------------------------------
 echo "Checking if nginx container is running..."
-docker ps | grep nginx
+docker ps | grep nginx || echo "nginx container not found."
 
-# Print a message indicating that the update is complete
+# ---------------------------------------------------------
+# 7) Print a completion message
+# ---------------------------------------------------------
 echo "System update complete."
